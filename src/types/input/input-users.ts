@@ -1,7 +1,13 @@
+type LinkedinSection = "experience" | "education" | "languages" | "skills" | "certifications" | "about";
+type LinkedinAllSections = "*";
+
+type LinkedinSectionParameter = LinkedinSection | LinkedinSection[] | LinkedinAllSections;
+
 export type GetProfileInput = {
   account_id: string;
   identifier: string;
   linkedin_api?: string;
+  linkedin_sections?: LinkedinSectionParameter;
 };
 
 export type GetAllRelationsInput = {

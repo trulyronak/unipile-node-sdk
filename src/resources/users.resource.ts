@@ -19,11 +19,12 @@ export class UsersResource {
   constructor(private client: UnipileClient) {}
 
   async getProfile(input: GetProfileInput, options?: RequestOptions): Promise<Response.UntypedYet> {
-    const { identifier, account_id, linkedin_api } = input;
+    const { identifier, account_id, linkedin_api, linkedin_sections } = input;
 
     const parameters: Record<string, string> = {};
     parameters.account_id = account_id;
     if (linkedin_api) parameters.linkedin_api = linkedin_api;
+    if (linkedin_sections) parameters.linkedin_sections = typeof linkedin_sections === 'string' ? linkedin_sections : linkedin_sections.join(',');
 
     return await this.client.request.send({
       path: ['users', identifier],
