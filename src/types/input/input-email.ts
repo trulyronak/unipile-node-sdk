@@ -24,13 +24,20 @@ type MailAttendee = Array<{ display_name?: string; identifier: string }>;
 
 export type SendEmailInput = {
   account_id: string;
-  to: MailAttendee;
-  cc?: MailAttendee;
-  bcc?: MailAttendee;
+  to: MailAttendee[];
+  cc?: MailAttendee[];
+  bcc?: MailAttendee[];
+  from?: MailAttendee;
   subject?: string;
   draft_id?: string;
   body: string;
   attachments?: Array<[string, Buffer]>;
+  custom_headers?: Array<{ name: string; value: string }>;
+  tracking_options?: {
+    opens?: boolean;
+    links?: boolean;
+    label?: string;
+  }
 };
 
 export type GetEmailAttachmentInput = {

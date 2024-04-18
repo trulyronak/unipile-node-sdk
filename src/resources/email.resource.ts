@@ -96,7 +96,7 @@ export class EmailResource {
   }
 
   async send(input: SendEmailInput, options?: RequestOptions): Promise<Response.UntypedYet> {
-    const { account_id, to, cc, bcc, subject, draft_id, body, attachments } = input;
+    const { account_id, to, cc, bcc, subject, draft_id, body, attachments, from, custom_headers, tracking_options } = input;
     const formDataBody = new FormData();
 
     formDataBody.append('body', body);
@@ -116,6 +116,17 @@ export class EmailResource {
     }
     if (bcc !== undefined) {
       formDataBody.append('bcc', JSON.stringify(bcc));
+    }
+    if (from !== undefined) {
+      formDataBody.append('from', JSON.stringify(from));
+    }
+
+    if (custom_headers !== undefined) {
+      formDataBody.append('custom_headers', JSON.stringify(custom_headers));
+    }
+
+    if (tracking_options !== undefined) {
+      formDataBody.append('tracking_options', JSON.stringify(tracking_options));
     }
 
     return await this.client.request.send({
