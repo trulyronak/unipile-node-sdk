@@ -55,7 +55,7 @@ export type PostMessageInput = {
 export type PostNewChatInput = {
   account_id: string;
   text: string;
-  attendees_ids: string;
+  attendees_ids: string[];
   title?: string;
   inmail?: string;
   attachments?: Array<[string, Buffer]>;
