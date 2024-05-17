@@ -1,10 +1,10 @@
-import { SupportedProvider } from '../client.js';
+import { MessagingProvider } from '../client.js';
 
 export type GetAllChatsInput = {
   before?: string;
   after?: string;
   limit?: number;
-  account_type?: SupportedProvider;
+  account_type?: MessagingProvider;
   account_id?: string;
   cursor?: string;
   only_unreads?: boolean;
