@@ -20,7 +20,7 @@ export type GetAllFoldersInput = {
   account_id?: string;
 };
 
-type MailAttendee = Array<{ display_name?: string; identifier: string }>;
+type MailAttendee = { display_name?: string; identifier: string };
 
 export type SendEmailInput = {
   account_id: string;
