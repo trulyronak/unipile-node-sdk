@@ -13,6 +13,7 @@ import {
   GetAllInvitationsSentInput,
   CancelInvitationsSentInput,
   GetAllRelationsInput,
+  CreatePostInput,
 } from '../index.js';
 
 export class UsersResource {
@@ -119,6 +120,31 @@ export class UsersResource {
       path: ['posts', post_id, 'comments'],
       method: 'GET',
       parameters,
+      options,
+      validator: untypedYetValidator,
+    });
+  }
+
+  async createPost(input: CreatePostInput, options?: RequestOptions): Promise<Response.UntypedYet> {
+    const { account_id, text, attachments } = input;
+    const body = new FormData();
+
+    body.append('text', text);
+    if (account_id) body.append('account_id', account_id);
+
+    if (attachments !== undefined) {
+      for (const [filename, buffer] of attachments) {
+        body.append('attachments', new Blob([buffer]), filename);
+      }
+    }
+
+    return await this.client.request.send({
+      path: ['posts'],
+      method: 'POST',
+      body,
+      headers: {
+        // @todo find why adding the "Content-Type: multipart/form-data" header make the request fail
+      },
       options,
       validator: untypedYetValidator,
     });

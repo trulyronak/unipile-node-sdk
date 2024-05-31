@@ -42,6 +42,12 @@ export type GetAllPostCommentsInput = {
   cursor?: string;
 };
 
+export type CreatePostInput = {
+  account_id: string;
+  text: string;
+  attachments?: Array<[string, Buffer]>;
+};
+
 export type SendPostCommentInput = {
   account_id: string;
   post_id: string;
