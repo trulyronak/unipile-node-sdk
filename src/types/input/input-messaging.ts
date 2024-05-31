@@ -52,13 +52,35 @@ export type PostMessageInput = {
   attachments?: Array<[string, Buffer]>;
 };
 
+type LinkedinClassicPostNewChatInputOptions = {
+  api?: 'classic';
+  inmail?: boolean;
+};
+
+type LinkedinSalesPostNewChatInputOptions = {
+  api: 'sales_navigator';
+}
+
+type LinkedinRecruiterPostNewChatInputOptions = {
+  api: 'recruiter';
+  signature?: string;
+  hiring_project_id?: string;
+  email_address?: string;
+};
+
+type LinkedinPostNewChatOptions = LinkedinClassicPostNewChatInputOptions | LinkedinSalesPostNewChatInputOptions | LinkedinRecruiterPostNewChatInputOptions;
+
+type PostNewChatInputOptions = {
+  linkedin?: LinkedinPostNewChatOptions;
+};
+
 export type PostNewChatInput = {
   account_id: string;
   text: string;
   attendees_ids: string[];
-  title?: string;
-  inmail?: string;
+  subject?: string;
   attachments?: Array<[string, Buffer]>;
+  options: PostNewChatInputOptions
 };
 
 export type GetMessageAttachementInput = {

@@ -96,15 +96,18 @@ export class MessagingResource {
   }
 
   async startNewChat(input: PostNewChatInput, options?: RequestOptions): Promise<Response.UntypedYet> {
-    const { account_id, text, title, inmail, attendees_ids, attachments } = input;
+    const { account_id, text, subject, options: input_options, attendees_ids, attachments } = input;
     const body = new FormData();
 
     body.append('account_id', account_id);
     body.append('text', text);
     for (const id of attendees_ids) body.append('attendees_ids', id);
 
-    if (title) body.append('title', title);
-    if (inmail) body.append('inmail', inmail);
+    if (subject) body.append('subject', subject);
+    if (input_options) {
+      if (input_options.linkedin) body.append('linkedin', JSON.stringify(input_options.linkedin));
+    }
+
     if (attachments !== undefined) {
       for (const [filename, buffer] of attachments) {
         body.append('attachments', new Blob([buffer]), filename);
