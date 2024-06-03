@@ -14,6 +14,8 @@ import {
   GetAllChatsFromAttendeeInput,
   PostNewChatInput,
   PerformActionInput,
+  isLinkedinClassicPostNewChatInputOptions,
+  isLinkedinRecruiterPostNewChatInputOptions,
 } from '../index.js';
 import { FormData } from 'formdata-node';
 import { Blob } from 'node-fetch';
@@ -104,8 +106,33 @@ export class MessagingResource {
     for (const id of attendees_ids) body.append('attendees_ids', id);
 
     if (subject) body.append('subject', subject);
+
     if (input_options) {
-      if (input_options.linkedin) body.append('linkedin', JSON.stringify(input_options.linkedin));
+      if (input_options.linkedin) {
+        if (input_options.linkedin.api !== undefined) {
+          body.append('linkedin.api', input_options.linkedin.api);
+        }
+
+        if (isLinkedinClassicPostNewChatInputOptions(input_options.linkedin)) {
+          if (input_options.linkedin.inmail !== undefined) {
+            body.append('linkedin.inmail', input_options.linkedin.inmail ? 'true' : 'false');
+          }
+        }
+
+        if (isLinkedinRecruiterPostNewChatInputOptions(input_options.linkedin)) {
+          if (input_options.linkedin.signature !== undefined) {
+            body.append('linkedin.signature', input_options.linkedin.signature);
+          }
+
+          if (input_options.linkedin.hiring_project_id !== undefined) {
+            body.append('linkedin.hiring_project_id', input_options.linkedin.hiring_project_id);
+          }
+
+          if (input_options.linkedin.email_address !== undefined) {
+            body.append('linkedin.email_address', input_options.linkedin.email_address);
+          }
+        }
+      }
     }
 
     if (attachments !== undefined) {

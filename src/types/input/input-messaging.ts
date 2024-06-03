@@ -99,3 +99,11 @@ export type PerformActionInput = {
   action: 'setReadStatus';
   value: boolean;
 };
+
+export function isLinkedinClassicPostNewChatInputOptions(options: LinkedinPostNewChatOptions): options is LinkedinClassicPostNewChatInputOptions {
+  return options.api === 'classic' && options.inmail !== undefined;
+}
+
+export function isLinkedinRecruiterPostNewChatInputOptions(options: LinkedinPostNewChatOptions): options is LinkedinRecruiterPostNewChatInputOptions {
+  return options.api === 'recruiter';
+}
