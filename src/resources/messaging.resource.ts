@@ -110,26 +110,26 @@ export class MessagingResource {
     if (input_options) {
       if (input_options.linkedin) {
         if (input_options.linkedin.api !== undefined) {
-          body.append('linkedin.api', input_options.linkedin.api);
+          body.append('linkedin[api]', input_options.linkedin.api);
         }
 
         if (isLinkedinClassicPostNewChatInputOptions(input_options.linkedin)) {
           if (input_options.linkedin.inmail !== undefined) {
-            body.append('linkedin.inmail', input_options.linkedin.inmail ? 'true' : 'false');
+            body.append('linkedin[inmail]', input_options.linkedin.inmail ? 'true' : 'false');
           }
         }
 
         if (isLinkedinRecruiterPostNewChatInputOptions(input_options.linkedin)) {
           if (input_options.linkedin.signature !== undefined) {
-            body.append('linkedin.signature', input_options.linkedin.signature);
+            body.append('linkedin[signature]', input_options.linkedin.signature);
           }
 
           if (input_options.linkedin.hiring_project_id !== undefined) {
-            body.append('linkedin.hiring_project_id', input_options.linkedin.hiring_project_id);
+            body.append('linkedin[hiring_project_id]', input_options.linkedin.hiring_project_id);
           }
 
           if (input_options.linkedin.email_address !== undefined) {
-            body.append('linkedin.email_address', input_options.linkedin.email_address);
+            body.append('linkedin[email_address]', input_options.linkedin.email_address);
           }
         }
       }
