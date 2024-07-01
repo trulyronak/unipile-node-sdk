@@ -80,7 +80,7 @@ export type PostNewChatInput = {
   attendees_ids: string[];
   subject?: string;
   attachments?: Array<[string, Buffer]>;
-  options: PostNewChatInputOptions
+  options?: PostNewChatInputOptions
 };
 
 export type GetMessageAttachementInput = {
