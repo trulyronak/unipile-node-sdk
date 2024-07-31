@@ -57,11 +57,11 @@ export class EmailResource {
     });
   }
 
-  async update(input: UpdateEmailInput, options?: RequestOptions): Promise<Response.UntypedYet> {
-    const { email_id, folders } = input;
+    const { email_id, folders, unread } = input;
 
     const body: Record<string, any> = {};
-    body.folders = folders;
+    if (folders) body.folders = folders;
+    if (unread !== undefined) body.unread = unread;
 
     return await this.client.request.send({
       path: ['emails', email_id],

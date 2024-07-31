@@ -13,7 +13,9 @@ export type GetAllEmailsInput = {
 
 export type UpdateEmailInput = {
   email_id: string;
-  folders: string[];
+  folders?: string[];
+  unread?: boolean;
+};
 };
 
 export type GetAllFoldersInput = {
