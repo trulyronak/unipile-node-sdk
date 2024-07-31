@@ -16,6 +16,12 @@ export type UpdateEmailInput = {
   folders?: string[];
   unread?: boolean;
 };
+
+export type UpdateEmailByProviderIdInput = {
+  email_provider_id: string;
+  account_id: string;
+  folders?: string[];
+  unread?: boolean;
 };
 
 export type GetAllFoldersInput = {
@@ -45,4 +51,10 @@ export type SendEmailInput = {
 export type GetEmailAttachmentInput = {
   email_id: string;
   attachment_id: string;
+};
+
+export type GetEmailAttachmentByProviderIdInput = {
+  email_provider_id: string;
+  attachment_id: string;
+  account_id: string;
 };

@@ -10,10 +10,73 @@ import {
   SendEmailInput,
   UnipileClient,
   untypedYetValidator,
+  UpdateEmailByProviderIdInput,
+  GetEmailAttachmentByProviderIdInput,
 } from '../index.js';
 
+type EmailMethodCallableByProviderId<T> = {
+  (...args: any): Promise<T>;
+  byId(...args: any): Promise<T>;
+  byProviderId(...args: any): Promise<T>;
+}
+
 export class EmailResource {
-  constructor(private client: UnipileClient) {}
+  /**
+   * Get one email, either by its ID or by its provider ID.
+   * @example email.getOne('email_id')
+   * @example email.getOne.byProviderId('email_provider_id', 'account_id')
+   */
+  public getOne: EmailMethodCallableByProviderId<Response.UntypedYet>;
+
+  /**
+   * Delete an email, either by its ID or by its provider ID.
+   * @example email.delete('email_id')
+   * @example email.delete.byProviderId('email_provider_id', 'account_id')
+   */
+  public delete: EmailMethodCallableByProviderId<Response.UntypedYet>;
+
+  /**
+   * Update an email, either by its ID or by its provider ID.
+   * @example email.update({ email_id: 'email_id', folders: ['folder'] })
+   * @example email.update.byProviderId({ email_provider_id: 'email_provider_id', account_id: 'account_id', folders: ['folder'] })
+   */
+  public update: EmailMethodCallableByProviderId<Response.UntypedYet>;
+
+  /**
+   * Get one folder, either by its ID or by its provider ID.
+   * @example email.getOneFolder('folder_id')
+   * @example email.getOneFolder.byProviderId('folder_provider_id', 'account_id')
+   */
+  public getOneFolder: EmailMethodCallableByProviderId<Response.UntypedYet>;
+
+  /**
+   * Get an attachment, either by the email ID or by the email provider ID.
+   * @example email.getEmailAttachment({ email_id: 'email_id', attachment_id: 'attachment_id' })
+   * @example email.getEmailAttachment.byProviderId({ email_provider_id: 'email_provider_id', attachment_id: 'attachment_id', account_id: 'account_id' })
+  */
+  public getEmailAttachment: EmailMethodCallableByProviderId<Response.UntypedYet>;
+
+  constructor(private client: UnipileClient) {
+    this.getOne = this._getOne.bind(this) as EmailMethodCallableByProviderId<Response.UntypedYet>;
+    this.getOne.byId = this._getOne.bind(this);
+    this.getOne.byProviderId = this._getOneByProviderId.bind(this);
+
+    this.delete = this._delete.bind(this) as EmailMethodCallableByProviderId<Response.UntypedYet>;
+    this.delete.byId = this._delete.bind(this);
+    this.delete.byProviderId = this._deleteByProviderId.bind(this);
+
+    this.update = this._update.bind(this) as EmailMethodCallableByProviderId<Response.UntypedYet>;
+    this.update.byId = this._update.bind(this);
+    this.update.byProviderId = this._updateByProviderId.bind(this);
+
+    this.getOneFolder = this._getOneFolder.bind(this) as EmailMethodCallableByProviderId<Response.UntypedYet>;
+    this.getOneFolder.byId = this._getOneFolder.bind(this);
+    this.getOneFolder.byProviderId = this._getOneFolderByProviderId.bind(this);
+
+    this.getEmailAttachment = this._getEmailAttachment.bind(this) as EmailMethodCallableByProviderId<Response.UntypedYet>;
+    this.getEmailAttachment.byId = this._getEmailAttachment.bind(this);
+    this.getEmailAttachment.byProviderId = this._getEmailAttachmentByProviderId.bind(this);
+  }
 
   async getAll(input: GetAllEmailsInput = {}, options?: RequestOptions): Promise<Response.UntypedYet> {
     const { account_id, role, folder, from, to, any_email, before, after, limit, cursor } = input;
@@ -39,7 +102,7 @@ export class EmailResource {
     });
   }
 
-  async getOne(email_id: string, options?: RequestOptions): Promise<Response.UntypedYet> {
+  private async _getOne(email_id: string, options?: RequestOptions): Promise<Response.UntypedYet> {
     return await this.client.request.send({
       path: ['emails', email_id],
       method: 'GET',
@@ -48,7 +111,17 @@ export class EmailResource {
     });
   }
 
-  async delete(email_id: string, options?: RequestOptions): Promise<Response.UntypedYet> {
+  private async _getOneByProviderId(email_provider_id: string, account_id: string, options?: RequestOptions): Promise<Response.UntypedYet> {
+    return await this.client.request.send({
+      path: ['emails', email_provider_id],
+      method: 'GET',
+      options,
+      parameters: { account_id },
+      validator: untypedYetValidator,
+    });
+  }
+
+  private async _delete(email_id: string, options?: RequestOptions): Promise<Response.UntypedYet> {
     return await this.client.request.send({
       path: ['emails', email_id],
       method: 'DELETE',
@@ -57,6 +130,17 @@ export class EmailResource {
     });
   }
 
+  private async _deleteByProviderId(email_provider_id: string, account_id: string, options?: RequestOptions): Promise<Response.UntypedYet> {
+    return await this.client.request.send({
+      path: ['emails', email_provider_id],
+      method: 'DELETE',
+      options,
+      parameters: { account_id },
+      validator: untypedYetValidator,
+    });
+  }
+
+  private async _update(input: UpdateEmailInput, options?: RequestOptions): Promise<Response.UntypedYet> {
     const { email_id, folders, unread } = input;
 
     const body: Record<string, any> = {};
@@ -68,6 +152,23 @@ export class EmailResource {
       method: 'PUT',
       body,
       options,
+      validator: untypedYetValidator,
+    });
+  }
+
+  private async _updateByProviderId(input: UpdateEmailByProviderIdInput, options?: RequestOptions): Promise<Response.UntypedYet> {
+    const { email_provider_id, account_id, folders, unread } = input;
+
+    const body: Record<string, any> = {};
+    if (folders) body.folders = folders;
+    if (unread !== undefined) body.unread = unread;
+
+    return await this.client.request.send({
+      path: ['emails', email_provider_id],
+      method: 'PUT',
+      body,
+      options,
+      parameters: { account_id },
       validator: untypedYetValidator,
     });
   }
@@ -87,11 +188,21 @@ export class EmailResource {
     });
   }
 
-  async getOneFolder(folder_id: string, options?: RequestOptions): Promise<Response.UntypedYet> {
+  private async _getOneFolder(folder_id: string, options?: RequestOptions): Promise<Response.UntypedYet> {
     return await this.client.request.send({
       path: ['folders', folder_id],
       method: 'GET',
       options,
+      validator: untypedYetValidator,
+    });
+  }
+
+  private async _getOneFolderByProviderId(folder_provider_id: string, account_id: string, options?: RequestOptions): Promise<Response.UntypedYet> {
+    return await this.client.request.send({
+      path: ['folders', folder_provider_id],
+      method: 'GET',
+      options,
+      parameters: { account_id },
       validator: untypedYetValidator,
     });
   }
@@ -142,13 +253,25 @@ export class EmailResource {
     });
   }
 
-  async getEmailAttachment(input: GetEmailAttachmentInput, options?: RequestOptions): Promise<Response.UntypedYet> {
+  private async _getEmailAttachment(input: GetEmailAttachmentInput, options?: RequestOptions): Promise<Response.UntypedYet> {
     const { email_id, attachment_id } = input;
 
     return await this.client.request.send({
       path: [email_id, 'attachments', attachment_id],
       method: 'GET',
       options,
+      validator: untypedYetValidator,
+    });
+  }
+
+  private async _getEmailAttachmentByProviderId(input: GetEmailAttachmentByProviderIdInput, options?: RequestOptions): Promise<Response.UntypedYet> {
+    const { email_provider_id, attachment_id, account_id } = input;
+
+    return await this.client.request.send({
+      path: [email_provider_id, 'attachments', attachment_id],
+      method: 'GET',
+      options,
+      parameters: { account_id },
       validator: untypedYetValidator,
     });
   }
