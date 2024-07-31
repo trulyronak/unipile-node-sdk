@@ -82,6 +82,7 @@ export class EmailResource {
       path: ['folders'],
       method: 'GET',
       options,
+      parameters,
       validator: untypedYetValidator,
     });
   }
