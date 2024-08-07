@@ -7,7 +7,7 @@ export type GetAllChatsInput = {
   account_type?: MessagingProvider;
   account_id?: string;
   cursor?: string;
-  only_unreads?: boolean;
+  unread?: boolean;
 };
 
 export type GetAllMessagesInput = {
