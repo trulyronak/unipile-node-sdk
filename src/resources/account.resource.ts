@@ -17,11 +17,12 @@ import {
   LinkedinBasicAuthenticationInput,
   LinkedinCookieAuthenticationInput,
 } from '../index.js';
+import { AccountListApiResponse, AccountListResponseValidator } from '../accounts/accounts-list.schema.js';
 
 export class AccountResource {
   constructor(private client: UnipileClient) {}
 
-  async getAll(input: GetAccountsInput = {}, options?: RequestOptions): Promise<Response.UntypedYet> {
+  async getAll(input: GetAccountsInput = {}, options?: RequestOptions): Promise<AccountListApiResponse> {
     const { limit, cursor } = input;
 
     const parameters: Record<string, string> = {};
@@ -33,7 +34,7 @@ export class AccountResource {
       method: 'GET',
       options,
       parameters,
-      validator: untypedYetValidator,
+      validator: AccountListResponseValidator,
     });
   }
 

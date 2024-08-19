@@ -30,5 +30,5 @@ export type RequestInput = {
   parameters?: Record<string, string>;
   body?: Record<string, any>;
   headers?: RequestHeaders;
-  options?: RequestOptions;
+  options?: RequestOptions | undefined;
 };

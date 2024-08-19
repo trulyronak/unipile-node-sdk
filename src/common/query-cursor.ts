@@ -1,6 +1,6 @@
 import { TypeSystem } from '@sinclair/typebox/system';
 
-import { Base64, isBase64 } from '../types/core.types.tmp.js';
+import { Base64, isBase64 } from './core.types.tmp.js';
 
 /**
  * @note Opaque type.
