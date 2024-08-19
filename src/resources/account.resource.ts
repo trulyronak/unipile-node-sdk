@@ -20,6 +20,7 @@ import {
 import { AccountListApiResponse, AccountListResponseValidator } from '../accounts/accounts-list.schema.js';
 import { AccountApiResponse, AccountApiResponseValidator } from '../accounts/account.types.js';
 import { AccountConnectApiResponse, AccountConnectApiResponseValidator } from '../accounts/accounts-create.types.js';
+import { AccountReconnectApiResponse, AccountReconnectApiResponseValidator } from '../accounts/accounts-reconnect.types.js';
 
 export class AccountResource {
   constructor(private client: UnipileClient) {}
@@ -62,7 +63,7 @@ export class AccountResource {
     });
   }
 
-  async reconnect(input: ReconnectAccountInput, options?: RequestOptions): Promise<Response.UntypedYet> {
+  async reconnect(input: ReconnectAccountInput, options?: RequestOptions): Promise<AccountReconnectApiResponse> {
     return await this.client.request.send({
       path: ['accounts', input.account_id],
       method: 'POST',
@@ -71,7 +72,7 @@ export class AccountResource {
         'Content-Type': 'application/json',
       },
       options,
-      validator: untypedYetValidator,
+      validator: AccountReconnectApiResponseValidator,
     });
   }
 
