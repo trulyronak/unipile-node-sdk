@@ -156,7 +156,7 @@ export class AccountResource {
     };
   }
 
-  async connectLinkedin(input: LinkedinBasicAuthenticationInput, options?: RequestOptions): Promise<Response.UntypedYet> {
+  async connectLinkedin(input: LinkedinBasicAuthenticationInput, options?: RequestOptions): Promise<AccountConnectApiResponse> {
     return await this.client.request.send({
       path: ['accounts'],
       method: 'POST',
@@ -168,7 +168,7 @@ export class AccountResource {
         'Content-Type': 'application/json',
       },
       options,
-      validator: untypedYetValidator,
+      validator: AccountConnectApiResponseValidator,
     });
   }
 
