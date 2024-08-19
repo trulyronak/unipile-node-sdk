@@ -175,7 +175,7 @@ export class AccountResource {
   async connectLinkedinWithCookie(
     input: LinkedinCookieAuthenticationInput,
     options?: RequestOptions,
-  ): Promise<Response.UntypedYet> {
+  ): Promise<AccountConnectApiResponse> {
     return await this.client.request.send({
       path: ['accounts'],
       method: 'POST',
@@ -187,14 +187,14 @@ export class AccountResource {
         'Content-Type': 'application/json',
       },
       options,
-      validator: untypedYetValidator,
+      validator: AccountConnectApiResponseValidator,
     });
   }
 
   async reconnectLinkedin(
     input: LinkedinBasicAuthenticationInput & { account_id: string },
     options?: RequestOptions,
-  ): Promise<Response.UntypedYet> {
+  ): Promise<AccountReconnectApiResponse> {
     return await this.client.request.send({
       path: ['accounts', input.account_id],
       method: 'POST',
@@ -206,14 +206,14 @@ export class AccountResource {
         'Content-Type': 'application/json',
       },
       options,
-      validator: untypedYetValidator,
+      validator: AccountReconnectApiResponseValidator,
     });
   }
 
   async reconnectLinkedinWithCookie(
     input: LinkedinCookieAuthenticationInput & { account_id: string },
     options?: RequestOptions,
-  ): Promise<Response.UntypedYet> {
+  ): Promise<AccountReconnectApiResponse> {
     return await this.client.request.send({
       path: ['accounts', input.account_id],
       method: 'POST',
@@ -225,7 +225,7 @@ export class AccountResource {
         'Content-Type': 'application/json',
       },
       options,
-      validator: untypedYetValidator,
+      validator: AccountReconnectApiResponseValidator,
     });
   }
 
