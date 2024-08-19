@@ -13,6 +13,7 @@ import {
   TwitterAccountWithSourceStatusSchema,
   WhatsAppAccountWithSourceStatusSchema,
 } from "./ressource.types.js";
+import { TypeCompiler } from "@sinclair/typebox/compiler";
 
 // --------------------------------------------------------------------------
 // RESPONSE
@@ -131,3 +132,7 @@ export const AccounApiResponseSchema = Type.Union([
 ]);
 
 export type AccountApiResponse = Static<typeof AccounApiResponseSchema>;
+
+
+/**  */
+export const AccountApiResponseValidator = TypeCompiler.Compile(AccounApiResponseSchema);

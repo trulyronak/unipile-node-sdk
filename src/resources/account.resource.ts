@@ -18,6 +18,7 @@ import {
   LinkedinCookieAuthenticationInput,
 } from '../index.js';
 import { AccountListApiResponse, AccountListResponseValidator } from '../accounts/accounts-list.schema.js';
+import { AccountApiResponse, AccountApiResponseValidator } from '../accounts/account.types.js';
 
 export class AccountResource {
   constructor(private client: UnipileClient) {}
@@ -38,12 +39,12 @@ export class AccountResource {
     });
   }
 
-  async getOne(account_id: string, options?: RequestOptions): Promise<Response.UntypedYet> {
+  async getOne(account_id: string, options?: RequestOptions): Promise<AccountApiResponse> {
     return await this.client.request.send({
       path: ['accounts', account_id],
       method: 'GET',
       options,
-      validator: untypedYetValidator,
+      validator: AccountApiResponseValidator,
     });
   }
 

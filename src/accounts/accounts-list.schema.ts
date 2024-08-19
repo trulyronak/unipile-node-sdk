@@ -79,7 +79,5 @@ export type AccountListApiResponse = Static<typeof AccounListApiResponseSchema>;
 //   AccounListApiResponseSchema
 // );
 
-/**
- *
- */
+/**  */
 export const AccountListResponseValidator = TypeCompiler.Compile(AccounListApiResponseSchema);
