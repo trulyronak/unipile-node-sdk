@@ -19,6 +19,7 @@ import {
 } from '../index.js';
 import { AccountListApiResponse, AccountListResponseValidator } from '../accounts/accounts-list.schema.js';
 import { AccountApiResponse, AccountApiResponseValidator } from '../accounts/account.types.js';
+import { AccountConnectApiResponse, AccountConnectApiResponseValidator } from '../accounts/accounts-create.types.js';
 
 export class AccountResource {
   constructor(private client: UnipileClient) {}
@@ -48,7 +49,7 @@ export class AccountResource {
     });
   }
 
-  async connect(input: ConnectAccountInput, options?: RequestOptions): Promise<Response.UntypedYet> {
+  async connect(input: ConnectAccountInput, options?: RequestOptions): Promise<AccountConnectApiResponse> {
     return await this.client.request.send({
       path: ['accounts'],
       method: 'POST',
@@ -57,7 +58,7 @@ export class AccountResource {
         'Content-Type': 'application/json',
       },
       options,
-      validator: untypedYetValidator,
+      validator: AccountConnectApiResponseValidator,
     });
   }
 
