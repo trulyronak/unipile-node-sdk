@@ -20,6 +20,11 @@ import {
 import { FormData } from 'formdata-node';
 import { Blob } from 'node-fetch';
 import { ChatListApiResponse, ChatListApiResponseValidator } from '../messaging/chats/chats-list.types.js';
+import { ChatResponse, ChatResponseValidator } from '../messaging/chats/chat.types.js';
+import { MessageListApiResponse, MessageListApiResponseValidator } from '../messaging/messages/message-list.types.js';
+import { MessageSentResponse, MessageSentResponseValidator } from '../messaging/messages/message-send.types.js';
+import { ChatStartedApiResponse, ChatStartedApiResponseValidator } from '../messaging/chats/chat-start.types.js';
+import { ChatAttendeeByChatListApiResponse, ChatAttendeeListApiResponseValidator } from '../messaging/chat-attendees/chat-attendees-list.types.js';
 
 export class MessagingResource {
   constructor(private client: UnipileClient) {}
@@ -45,16 +50,16 @@ export class MessagingResource {
     });
   }
 
-  async getChat(chatId: string, options?: RequestOptions): Promise<Response.UntypedYet> {
+  async getChat(chatId: string, options?: RequestOptions): Promise<ChatResponse> {
     return await this.client.request.send({
       path: ['chats', chatId],
       method: 'GET',
       options,
-      validator: untypedYetValidator,
+      validator: ChatResponseValidator,
     });
   }
 
-  async getAllMessagesFromChat(input: GetAllMessagesFromChatInput, options?: RequestOptions): Promise<Response.UntypedYet> {
+  async getAllMessagesFromChat(input: GetAllMessagesFromChatInput, options?: RequestOptions): Promise<MessageListApiResponse> {
     const { chat_id, sender_id, before, after, limit, cursor } = input;
 
     const parameters: Record<string, string> = {};
@@ -69,11 +74,11 @@ export class MessagingResource {
       method: 'GET',
       parameters,
       options,
-      validator: untypedYetValidator,
+      validator: MessageListApiResponseValidator,
     });
   }
 
-  async sendMessage(input: PostMessageInput, options?: RequestOptions): Promise<Response.UntypedYet> {
+  async sendMessage(input: PostMessageInput, options?: RequestOptions): Promise<MessageSentResponse> {
     const { chat_id, text, thread_id, attachments } = input;
     const body = new FormData();
 
@@ -94,11 +99,11 @@ export class MessagingResource {
         // @todo find why adding the "Content-Type: multipart/form-data" header make the request fail
       },
       options,
-      validator: untypedYetValidator,
+      validator: MessageSentResponseValidator,
     });
   }
 
-  async startNewChat(input: PostNewChatInput, options?: RequestOptions): Promise<Response.UntypedYet> {
+  async startNewChat(input: PostNewChatInput, options?: RequestOptions): Promise<ChatStartedApiResponse> {
     const { account_id, text, subject, options: input_options, attendees_ids, attachments } = input;
     const body = new FormData();
 
@@ -150,16 +155,16 @@ export class MessagingResource {
         // @todo find why adding the "Content-Type: multipart/form-data" header make the request fail
       },
       options,
-      validator: untypedYetValidator,
+      validator: ChatStartedApiResponseValidator,
     });
   }
 
-  async getAllAttendeesFromChat(chat_id: string, options?: RequestOptions): Promise<Response.UntypedYet> {
+  async getAllAttendeesFromChat(chat_id: string, options?: RequestOptions): Promise<ChatAttendeeByChatListApiResponse> {
     return await this.client.request.send({
       path: ['chats', chat_id, 'attendees'],
       method: 'GET',
       options,
-      validator: untypedYetValidator,
+      validator: ChatAttendeeListApiResponseValidator,
     });
   }
 
