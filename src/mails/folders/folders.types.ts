@@ -190,3 +190,9 @@ export const FolderApiResponseSchema = Type.Intersect([
  *
  */
 export type FolderApiResponse = Static<typeof FolderApiResponseSchema>;
+
+/**  */
+export const FolderListApiResponseValidator = TypeCompiler.Compile(FolderListApiResponseSchema);
+
+/**  */
+export const FolderApiResponseValidator = TypeCompiler.Compile(FolderApiResponseSchema);

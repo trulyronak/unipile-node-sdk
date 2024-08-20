@@ -13,12 +13,23 @@ import {
   UpdateEmailByProviderIdInput,
   GetEmailAttachmentByProviderIdInput,
 } from '../index.js';
+import { MailApiResponse, MailApiResponseValidator } from '../mails/mail.types.js';
+import { MailDeletedApiResponse, MailDeletedApiResponseValidator } from '../mails/mail.delete.types.js';
+import { MailUpdatedApiResponse, MailUpdatedApiResponseValidator } from '../mails/mail.update.types.js';
+import { MailListApiResponse, MailListApiResponseValidator } from '../mails/mails-list.types.js';
+import {
+  FolderApiResponse,
+  FolderApiResponseValidator,
+  FolderListApiResponse,
+  FolderListApiResponseValidator,
+} from '../mails/folders/folders.types.js';
+import { MailSentApiResponse, MailSentApiResponseValidator } from '../mails/mail.send.types.js';
 
 type EmailMethodCallableByProviderId<T> = {
   (...args: any): Promise<T>;
   byId(...args: any): Promise<T>;
   byProviderId(...args: any): Promise<T>;
-}
+};
 
 export class EmailResource {
   /**
@@ -26,46 +37,46 @@ export class EmailResource {
    * @example email.getOne('email_id')
    * @example email.getOne.byProviderId('email_provider_id', 'account_id')
    */
-  public getOne: EmailMethodCallableByProviderId<Response.UntypedYet>;
+  public getOne: EmailMethodCallableByProviderId<MailApiResponse>;
 
   /**
    * Delete an email, either by its ID or by its provider ID.
    * @example email.delete('email_id')
    * @example email.delete.byProviderId('email_provider_id', 'account_id')
    */
-  public delete: EmailMethodCallableByProviderId<Response.UntypedYet>;
+  public delete: EmailMethodCallableByProviderId<MailDeletedApiResponse>;
 
   /**
    * Update an email, either by its ID or by its provider ID.
    * @example email.update({ email_id: 'email_id', folders: ['folder'] })
    * @example email.update.byProviderId({ email_provider_id: 'email_provider_id', account_id: 'account_id', folders: ['folder'] })
    */
-  public update: EmailMethodCallableByProviderId<Response.UntypedYet>;
+  public update: EmailMethodCallableByProviderId<MailUpdatedApiResponse>;
 
   /**
    * Get one folder, either by its ID or by its provider ID.
    * @example email.getOneFolder('folder_id')
    * @example email.getOneFolder.byProviderId('folder_provider_id', 'account_id')
    */
-  public getOneFolder: EmailMethodCallableByProviderId<Response.UntypedYet>;
+  public getOneFolder: EmailMethodCallableByProviderId<FolderApiResponse>;
 
   /**
    * Get an attachment, either by the email ID or by the email provider ID.
    * @example email.getEmailAttachment({ email_id: 'email_id', attachment_id: 'attachment_id' })
    * @example email.getEmailAttachment.byProviderId({ email_provider_id: 'email_provider_id', attachment_id: 'attachment_id', account_id: 'account_id' })
-  */
+   */
   public getEmailAttachment: EmailMethodCallableByProviderId<Response.UntypedYet>;
 
   constructor(private client: UnipileClient) {
-    this.getOne = this._getOne.bind(this) as EmailMethodCallableByProviderId<Response.UntypedYet>;
+    this.getOne = this._getOne.bind(this) as EmailMethodCallableByProviderId<MailApiResponse>;
     this.getOne.byId = this._getOne.bind(this);
     this.getOne.byProviderId = this._getOneByProviderId.bind(this);
 
-    this.delete = this._delete.bind(this) as EmailMethodCallableByProviderId<Response.UntypedYet>;
+    this.delete = this._delete.bind(this) as EmailMethodCallableByProviderId<MailDeletedApiResponse>;
     this.delete.byId = this._delete.bind(this);
     this.delete.byProviderId = this._deleteByProviderId.bind(this);
 
-    this.update = this._update.bind(this) as EmailMethodCallableByProviderId<Response.UntypedYet>;
+    this.update = this._update.bind(this) as EmailMethodCallableByProviderId<MailUpdatedApiResponse>;
     this.update.byId = this._update.bind(this);
     this.update.byProviderId = this._updateByProviderId.bind(this);
 
@@ -73,12 +84,12 @@ export class EmailResource {
     this.getOneFolder.byId = this._getOneFolder.bind(this);
     this.getOneFolder.byProviderId = this._getOneFolderByProviderId.bind(this);
 
-    this.getEmailAttachment = this._getEmailAttachment.bind(this) as EmailMethodCallableByProviderId<Response.UntypedYet>;
+    this.getEmailAttachment = this._getEmailAttachment.bind(this) as EmailMethodCallableByProviderId<Blob>;
     this.getEmailAttachment.byId = this._getEmailAttachment.bind(this);
     this.getEmailAttachment.byProviderId = this._getEmailAttachmentByProviderId.bind(this);
   }
 
-  async getAll(input: GetAllEmailsInput = {}, options?: RequestOptions): Promise<Response.UntypedYet> {
+  async getAll(input: GetAllEmailsInput = {}, options?: RequestOptions): Promise<MailListApiResponse> {
     const { account_id, role, folder, from, to, any_email, before, after, limit, cursor } = input;
 
     const parameters: Record<string, string> = {};
@@ -98,49 +109,57 @@ export class EmailResource {
       method: 'GET',
       options,
       parameters,
-      validator: untypedYetValidator,
+      validator: MailListApiResponseValidator,
     });
   }
 
-  private async _getOne(email_id: string, options?: RequestOptions): Promise<Response.UntypedYet> {
+  private async _getOne(email_id: string, options?: RequestOptions): Promise<MailApiResponse> {
     return await this.client.request.send({
       path: ['emails', email_id],
       method: 'GET',
       options,
-      validator: untypedYetValidator,
+      validator: MailApiResponseValidator,
     });
   }
 
-  private async _getOneByProviderId(email_provider_id: string, account_id: string, options?: RequestOptions): Promise<Response.UntypedYet> {
+  private async _getOneByProviderId(
+    email_provider_id: string,
+    account_id: string,
+    options?: RequestOptions,
+  ): Promise<MailApiResponse> {
     return await this.client.request.send({
       path: ['emails', email_provider_id],
       method: 'GET',
       options,
       parameters: { account_id },
-      validator: untypedYetValidator,
+      validator: MailApiResponseValidator,
     });
   }
 
-  private async _delete(email_id: string, options?: RequestOptions): Promise<Response.UntypedYet> {
+  private async _delete(email_id: string, options?: RequestOptions): Promise<MailDeletedApiResponse> {
     return await this.client.request.send({
       path: ['emails', email_id],
       method: 'DELETE',
       options,
-      validator: untypedYetValidator,
+      validator: MailDeletedApiResponseValidator,
     });
   }
 
-  private async _deleteByProviderId(email_provider_id: string, account_id: string, options?: RequestOptions): Promise<Response.UntypedYet> {
+  private async _deleteByProviderId(
+    email_provider_id: string,
+    account_id: string,
+    options?: RequestOptions,
+  ): Promise<MailDeletedApiResponse> {
     return await this.client.request.send({
       path: ['emails', email_provider_id],
       method: 'DELETE',
       options,
       parameters: { account_id },
-      validator: untypedYetValidator,
+      validator: MailDeletedApiResponseValidator,
     });
   }
 
-  private async _update(input: UpdateEmailInput, options?: RequestOptions): Promise<Response.UntypedYet> {
+  private async _update(input: UpdateEmailInput, options?: RequestOptions): Promise<MailUpdatedApiResponse> {
     const { email_id, folders, unread } = input;
 
     const body: Record<string, any> = {};
@@ -152,11 +171,14 @@ export class EmailResource {
       method: 'PUT',
       body,
       options,
-      validator: untypedYetValidator,
+      validator: MailUpdatedApiResponseValidator,
     });
   }
 
-  private async _updateByProviderId(input: UpdateEmailByProviderIdInput, options?: RequestOptions): Promise<Response.UntypedYet> {
+  private async _updateByProviderId(
+    input: UpdateEmailByProviderIdInput,
+    options?: RequestOptions,
+  ): Promise<MailUpdatedApiResponse> {
     const { email_provider_id, account_id, folders, unread } = input;
 
     const body: Record<string, any> = {};
@@ -169,11 +191,11 @@ export class EmailResource {
       body,
       options,
       parameters: { account_id },
-      validator: untypedYetValidator,
+      validator: MailUpdatedApiResponseValidator,
     });
   }
 
-  async getAllFolders(input: GetAllFoldersInput = {}, options?: RequestOptions): Promise<Response.UntypedYet> {
+  async getAllFolders(input: GetAllFoldersInput = {}, options?: RequestOptions): Promise<FolderListApiResponse> {
     const { account_id } = input;
 
     const parameters: Record<string, string> = {};
@@ -184,30 +206,34 @@ export class EmailResource {
       method: 'GET',
       options,
       parameters,
-      validator: untypedYetValidator,
+      validator: FolderListApiResponseValidator,
     });
   }
 
-  private async _getOneFolder(folder_id: string, options?: RequestOptions): Promise<Response.UntypedYet> {
+  private async _getOneFolder(folder_id: string, options?: RequestOptions): Promise<FolderApiResponse> {
     return await this.client.request.send({
       path: ['folders', folder_id],
       method: 'GET',
       options,
-      validator: untypedYetValidator,
+      validator: FolderApiResponseValidator,
     });
   }
 
-  private async _getOneFolderByProviderId(folder_provider_id: string, account_id: string, options?: RequestOptions): Promise<Response.UntypedYet> {
+  private async _getOneFolderByProviderId(
+    folder_provider_id: string,
+    account_id: string,
+    options?: RequestOptions,
+  ): Promise<FolderApiResponse> {
     return await this.client.request.send({
       path: ['folders', folder_provider_id],
       method: 'GET',
       options,
       parameters: { account_id },
-      validator: untypedYetValidator,
+      validator: FolderApiResponseValidator,
     });
   }
 
-  async send(input: SendEmailInput, options?: RequestOptions): Promise<Response.UntypedYet> {
+  async send(input: SendEmailInput, options?: RequestOptions): Promise<MailSentApiResponse> {
     const { account_id, to, cc, bcc, subject, draft_id, body, attachments, from, custom_headers, tracking_options } = input;
     const formDataBody = new FormData();
 
@@ -249,11 +275,11 @@ export class EmailResource {
         // @todo find why adding the "Content-Type: multipart/form-data" header make the request fail
       },
       options,
-      validator: untypedYetValidator,
+      validator: MailSentApiResponseValidator,
     });
   }
 
-  private async _getEmailAttachment(input: GetEmailAttachmentInput, options?: RequestOptions): Promise<Response.UntypedYet> {
+  private async _getEmailAttachment(input: GetEmailAttachmentInput, options?: RequestOptions): Promise<Blob> {
     const { email_id, attachment_id } = input;
 
     return await this.client.request.send({
@@ -264,7 +290,10 @@ export class EmailResource {
     });
   }
 
-  private async _getEmailAttachmentByProviderId(input: GetEmailAttachmentByProviderIdInput, options?: RequestOptions): Promise<Response.UntypedYet> {
+  private async _getEmailAttachmentByProviderId(
+    input: GetEmailAttachmentByProviderIdInput,
+    options?: RequestOptions,
+  ): Promise<Blob> {
     const { email_provider_id, attachment_id, account_id } = input;
 
     return await this.client.request.send({
