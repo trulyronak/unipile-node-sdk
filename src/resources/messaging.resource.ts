@@ -19,11 +19,12 @@ import {
 } from '../index.js';
 import { FormData } from 'formdata-node';
 import { Blob } from 'node-fetch';
+import { ChatListApiResponse, ChatListApiResponseValidator } from '../messaging/chats/chats-list.types.js';
 
 export class MessagingResource {
   constructor(private client: UnipileClient) {}
 
-  async getAllChats(input: GetAllChatsInput = {}, options?: RequestOptions): Promise<Response.UntypedYet> {
+  async getAllChats(input: GetAllChatsInput = {}, options?: RequestOptions): Promise<ChatListApiResponse> {
     const { before, after, limit, account_type, account_id, cursor, unread } = input;
 
     const parameters: Record<string, string> = {};
@@ -40,7 +41,7 @@ export class MessagingResource {
       method: 'GET',
       options,
       parameters,
-      validator: untypedYetValidator,
+      validator: ChatListApiResponseValidator,
     });
   }
 
