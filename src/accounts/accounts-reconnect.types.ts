@@ -10,6 +10,7 @@ import {
   AccountCreateOutlookBodySchema,
   AccountCreateTwitterBodySchema,
   AccountCreateCheckpointApiResponseSchema,
+  AccountCreatedApiResponseSchema,
 } from './accounts-create.types.js';
 import { TypeCompiler } from '@sinclair/typebox/compiler';
 
@@ -74,3 +75,17 @@ export type AccountReconnectApiResponse = Static<
 
 /**  */
 export const AccountReconnectApiResponseValidator = TypeCompiler.Compile(AccountReconnectApiResponseSchema);
+
+/**  */
+export const AccountSolveCheckpointApiResponseSchema = Type.Union([
+    AccountCreatedApiResponseSchema,
+    AccountReconnectedApiResponseSchema,
+    AccountCreateCheckpointApiResponseSchema
+])
+
+export type AccountSolveCheckpointApiResponse = Static<
+  typeof AccountSolveCheckpointApiResponseSchema
+>;
+
+/**  */
+export const AccountSolveCheckpointApiResponseValidator = TypeCompiler.Compile(AccountSolveCheckpointApiResponseSchema);

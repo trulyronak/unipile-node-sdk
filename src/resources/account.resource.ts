@@ -8,7 +8,6 @@ import {
   ReconnectAccountInput,
   RequestOptions,
   Response,
-  untypedYetValidator,
   UnipileClient,
   PostInstagramAccountInput,
   PostMessengerAccountInput,
@@ -20,7 +19,14 @@ import {
 import { AccountListApiResponse, AccountListResponseValidator } from '../accounts/accounts-list.schema.js';
 import { AccountApiResponse, AccountApiResponseValidator } from '../accounts/account.types.js';
 import { AccountConnectApiResponse, AccountConnectApiResponseValidator } from '../accounts/accounts-create.types.js';
-import { AccountReconnectApiResponse, AccountReconnectApiResponseValidator } from '../accounts/accounts-reconnect.types.js';
+import {
+  AccountReconnectApiResponse,
+  AccountReconnectApiResponseValidator,
+  AccountSolveCheckpointApiResponse,
+  AccountSolveCheckpointApiResponseValidator,
+} from '../accounts/accounts-reconnect.types.js';
+import { AccountDeletedApiResponse, AccountDeletedApiResponseValidator } from '../accounts/accounts-delete.types.js';
+import { HostedAuthLinkResponse, HostedAuthLinkResponseValidator } from '../hosted/hosted-auth-link.types.js';
 
 export class AccountResource {
   constructor(private client: UnipileClient) {}
@@ -229,7 +235,7 @@ export class AccountResource {
     });
   }
 
-  async connectInstagram(input: PostInstagramAccountInput, options?: RequestOptions): Promise<Response.UntypedYet> {
+  async connectInstagram(input: PostInstagramAccountInput, options?: RequestOptions): Promise<AccountConnectApiResponse> {
     return await this.client.request.send({
       path: ['accounts'],
       method: 'POST',
@@ -241,14 +247,14 @@ export class AccountResource {
         'Content-Type': 'application/json',
       },
       options,
-      validator: untypedYetValidator,
+      validator: AccountConnectApiResponseValidator,
     });
   }
 
   async reconnectInstagram(
     input: PostInstagramAccountInput & { account_id: string },
     options?: RequestOptions,
-  ): Promise<Response.UntypedYet> {
+  ): Promise<AccountReconnectApiResponse> {
     return await this.client.request.send({
       path: ['accounts', input.account_id],
       method: 'POST',
@@ -260,11 +266,11 @@ export class AccountResource {
         'Content-Type': 'application/json',
       },
       options,
-      validator: untypedYetValidator,
+      validator: AccountReconnectApiResponseValidator,
     });
   }
 
-  async connectTwitter(input: PostTwitterAccountInput, options?: RequestOptions): Promise<Response.UntypedYet> {
+  async connectTwitter(input: PostTwitterAccountInput, options?: RequestOptions): Promise<AccountConnectApiResponse> {
     return await this.client.request.send({
       path: ['accounts'],
       method: 'POST',
@@ -276,14 +282,14 @@ export class AccountResource {
         'Content-Type': 'application/json',
       },
       options,
-      validator: untypedYetValidator,
+      validator: AccountConnectApiResponseValidator,
     });
   }
 
   async reconnectTwitter(
     input: PostTwitterAccountInput & { account_id: string },
     options?: RequestOptions,
-  ): Promise<Response.UntypedYet> {
+  ): Promise<AccountReconnectApiResponse> {
     return await this.client.request.send({
       path: ['accounts', input.account_id],
       method: 'POST',
@@ -295,11 +301,11 @@ export class AccountResource {
         'Content-Type': 'application/json',
       },
       options,
-      validator: untypedYetValidator,
+      validator: AccountReconnectApiResponseValidator,
     });
   }
 
-  async connectMessenger(input: PostMessengerAccountInput, options?: RequestOptions): Promise<Response.UntypedYet> {
+  async connectMessenger(input: PostMessengerAccountInput, options?: RequestOptions): Promise<AccountConnectApiResponse> {
     return await this.client.request.send({
       path: ['accounts'],
       method: 'POST',
@@ -311,14 +317,14 @@ export class AccountResource {
         'Content-Type': 'application/json',
       },
       options,
-      validator: untypedYetValidator,
+      validator: AccountConnectApiResponseValidator,
     });
   }
 
   async reconnectMessenger(
     input: PostMessengerAccountInput & { account_id: string },
     options?: RequestOptions,
-  ): Promise<Response.UntypedYet> {
+  ): Promise<AccountReconnectApiResponse> {
     return await this.client.request.send({
       path: ['accounts', input.account_id],
       method: 'POST',
@@ -330,20 +336,23 @@ export class AccountResource {
         'Content-Type': 'application/json',
       },
       options,
-      validator: untypedYetValidator,
+      validator: AccountReconnectApiResponseValidator,
     });
   }
 
-  async delete(account_id: string, options?: RequestOptions): Promise<Response.UntypedYet> {
+  async delete(account_id: string, options?: RequestOptions): Promise<AccountDeletedApiResponse> {
     return await this.client.request.send({
       path: ['accounts', account_id],
       method: 'DELETE',
       options,
-      validator: untypedYetValidator,
+      validator: AccountDeletedApiResponseValidator,
     });
   }
 
-  async solveCodeCheckpoint(input: PostCodeCheckpointInput, options?: RequestOptions): Promise<Response.UntypedYet> {
+  async solveCodeCheckpoint(
+    input: PostCodeCheckpointInput,
+    options?: RequestOptions,
+  ): Promise<AccountSolveCheckpointApiResponse> {
     return await this.client.request.send({
       path: ['accounts', 'checkpoint'],
       method: 'POST',
@@ -352,11 +361,11 @@ export class AccountResource {
         'Content-Type': 'application/json',
       },
       options,
-      validator: untypedYetValidator,
+      validator: AccountSolveCheckpointApiResponseValidator,
     });
   }
 
-  async createHostedAuthLink(input: PostHostedAuthLinkInput, options?: RequestOptions): Promise<Response.UntypedYet> {
+  async createHostedAuthLink(input: PostHostedAuthLinkInput, options?: RequestOptions): Promise<HostedAuthLinkResponse> {
     return await this.client.request.send({
       path: ['hosted', 'accounts', 'link'],
       method: 'POST',
@@ -365,7 +374,7 @@ export class AccountResource {
         'Content-Type': 'application/json',
       },
       options,
-      validator: untypedYetValidator,
+      validator: HostedAuthLinkResponseValidator,
     });
   }
 }
