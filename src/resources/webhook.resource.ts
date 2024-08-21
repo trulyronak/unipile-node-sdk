@@ -1,6 +1,7 @@
 import { UnipileClient } from '../client.js';
 import { RequestOptions, Response } from '../types/index.js';
-import { deleteWebhookValidator, getWebhooksValidator, postWebhookValidator } from '../validation.js';
+import { deleteWebhookValidator, postWebhookValidator } from '../validation.js';
+import { WebhookCreateResponse, WebhookCreateResponseValidator } from '../webhooks/webhooks-create.types.js';
 import { WebhookListResponse, WebhookListResponseValidator } from '../webhooks/webhooks-list.types.js';
 
 export class WebhookResource {
@@ -15,13 +16,13 @@ export class WebhookResource {
     });
   }
 
-  async create(input: any, options?: RequestOptions): Promise<Response.PostWebhook> {
+  async create(input: any, options?: RequestOptions): Promise<WebhookCreateResponse> {
     return await this.client.request.send({
       path: ['webhooks'],
       method: 'POST',
       body: input,
       options,
-      validator: postWebhookValidator,
+      validator: WebhookCreateResponseValidator,
     });
   }
 
