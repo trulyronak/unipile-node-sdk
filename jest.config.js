@@ -17,9 +17,9 @@ const config = {
   moduleFileExtensions: ['js', 'mjs', 'ts', 'json'],
   //   modulePathIgnorePatterns: ['/node_modules/'],
   clearMocks: true,
-  collectCoverage: true,
-  coverageDirectory: 'coverage',
-  coverageReporters: ['html'],
+  collectCoverage: false,
+//   coverageDirectory: 'coverage',
+//   coverageReporters: ['html'],
   moduleNameMapper: {
     '^(.+)\\.js$': '$1',
   },
