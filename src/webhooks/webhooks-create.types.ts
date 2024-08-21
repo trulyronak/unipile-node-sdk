@@ -198,12 +198,12 @@ export const WebhookCreateBodyValidator = TypeCompiler.Compile(
   WebhookCreateBodySchema
 );
 
-/**
- *
- */
-export const getWebhookCreateBodyOpenApiSchema = makeOpenApiSchemaGetter(
-  WebhookCreateBodySchema
-);
+// /**
+//  *
+//  */
+// export const getWebhookCreateBodyOpenApiSchema = makeOpenApiSchemaGetter(
+//   WebhookCreateBodySchema
+// );
 
 // --------------------------------------------------------------------------
 // RESPONSE
