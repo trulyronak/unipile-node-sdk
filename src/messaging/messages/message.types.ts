@@ -1,5 +1,6 @@
 import { Static, Type } from "@sinclair/typebox";
 import { MessageSchema } from "./ressource.types.js";
+import { TypeCompiler } from "@sinclair/typebox/compiler";
 
 // --------------------------------------------------------------------------
 // RESPONSE
@@ -20,3 +21,6 @@ export type MessageResponse = Static<typeof MessageResponseSchema>;
 // export const getMessageResponseOpenApiSchema = makeOpenApiSchemaGetter(
 //   MessageResponseSchema,
 // );
+
+/**  */
+export const MessageResponseValidator = TypeCompiler.Compile(MessageResponseSchema);
