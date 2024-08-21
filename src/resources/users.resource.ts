@@ -14,6 +14,7 @@ import {
   CancelInvitationsSentInput,
   GetAllRelationsInput,
   CreatePostInput,
+  CompanyProfileInput,
 } from '../index.js';
 
 export class UsersResource {
@@ -25,7 +26,8 @@ export class UsersResource {
     const parameters: Record<string, string> = {};
     parameters.account_id = account_id;
     if (linkedin_api) parameters.linkedin_api = linkedin_api;
-    if (linkedin_sections) parameters.linkedin_sections = typeof linkedin_sections === 'string' ? linkedin_sections : linkedin_sections.join(',');
+    if (linkedin_sections)
+      parameters.linkedin_sections = typeof linkedin_sections === 'string' ? linkedin_sections : linkedin_sections.join(',');
 
     return await this.client.request.send({
       path: ['users', identifier],
@@ -204,6 +206,20 @@ export class UsersResource {
     return await this.client.request.send({
       path: ['users', 'invite', 'sent', invitation_id],
       method: 'DELETE',
+      parameters: {
+        account_id,
+      },
+      options,
+      validator: untypedYetValidator,
+    });
+  }
+
+  async getCompanyProfile(input: CompanyProfileInput, options?: RequestOptions): Promise<Response.UntypedYet> {
+    const { account_id, identifier } = input;
+
+    return await this.client.request.send({
+      path: ['linkedin', 'company', identifier],
+      method: 'GET',
       parameters: {
         account_id,
       },
