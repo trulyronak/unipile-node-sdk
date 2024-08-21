@@ -4,14 +4,18 @@
  */
 
 const config = {
-  //   preset: 'ts-jest',
+//   preset: 'ts-jest',
   testEnvironment: 'node',
   verbose: true,
   transform: {
     '^.+\\.[tj]sx?$': 'babel-jest',
+    // '^.+\\.tsx?$': 'ts-jest',
+    // '^.+\\.js$': 'babel-jest',
   },
-  //   moduleFileExtensions: ['js', 'ts', 'json'],
-  modulePathIgnorePatterns: ['/node_modules/'],
+  transformIgnorePatterns: ['/node_modules/(?!(node-fetch|data-uri-to-buffer|fetch-blob|formdata-polyfill)/)'],
+  extensionsToTreatAsEsm: ['.ts'],
+  moduleFileExtensions: ['js', 'mjs', 'ts', 'json'],
+  //   modulePathIgnorePatterns: ['/node_modules/'],
   clearMocks: true,
   collectCoverage: true,
   coverageDirectory: 'coverage',

@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "types": ["jest", "node"],
+    "noEmit": true,
+    "target": "ES6",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true,
+    "skipLibCheck": false,
+    "outDir": "dist",
+    //--------------------------------------------------------------------------
+    "strict": true,
+    "alwaysStrict": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
+    //--------------------------------------------------------------------------
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    // "exactOptionalPropertyTypes": true,
+    "useUnknownInCatchVariables": true
+    // "noUncheckedIndexedAccess": true
+    //--------------------------------------------------------------------------
+  },
+  "include": ["./**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}

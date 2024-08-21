@@ -16,6 +16,7 @@
   "scripts": {
     "test-e2e-clean": "jest --clearCache && jest --showConfig && jest --verbose --config ./jest.config.js",
     "test-e2e": "jest --verbose --config ./jest.config.js",
+    "test-e2e-watch": "jest --verbose --config ./jest.config.js  --watch",
     "prepublishOnly": "tsc",
     "postversion": "git push origin"
   },
