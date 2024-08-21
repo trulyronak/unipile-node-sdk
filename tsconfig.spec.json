@@ -1,0 +1,58 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true,
+    "skipLibCheck": false,
+    "outDir": "dist",
+    //--------------------------------------------------------------------------
+    "strict": true,
+    "alwaysStrict": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
+    //--------------------------------------------------------------------------
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "exactOptionalPropertyTypes": true,
+    "useUnknownInCatchVariables": true
+    // "noUncheckedIndexedAccess": true
+    //--------------------------------------------------------------------------
+  },
+  "include": ["./tests-e2e/**/*.ts"]
+}
+
+// {
+//   "compilerOptions": {
+//     "types": ["jest", "node"],
+//     "target": "ES6",
+//     "module": "CommonJS",
+//     "moduleResolution": "node",
+//     "esModuleInterop": true,
+//     "skipLibCheck": false,
+//     "outDir": "dist",
+//     "rootDir": "../..",
+//     "resolveJsonModule": true,
+//     //--------------------------------------------------------------------------
+//     "strict": true,
+//     "alwaysStrict": true,
+//     "noImplicitAny": true,
+//     "noImplicitThis": true,
+//     "strictFunctionTypes": true,
+//     "strictBindCallApply": true,
+//     "strictNullChecks": true,
+//     "strictPropertyInitialization": true,
+//     //--------------------------------------------------------------------------
+//     "forceConsistentCasingInFileNames": true,
+//     "noFallthroughCasesInSwitch": true,
+//     "exactOptionalPropertyTypes": true,
+//     "useUnknownInCatchVariables": true
+//     // "noUncheckedIndexedAccess": true
+//     //--------------------------------------------------------------------------
+//   },
+//   "include": ["./tests-e2e/**/*.ts"]
+// }

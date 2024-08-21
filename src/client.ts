@@ -21,8 +21,3 @@ export class UnipileClient {
     this.request = new RequestSender(this.state);
   }
 }
-
-// async function check() {
-//   const client = new UnipileClient('https://{YOUR_DSN}', '{YOUR_ACCESS_TOKEN}');
-//   const r1 = await client.account.connect();
-// }
