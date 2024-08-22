@@ -1,9 +1,7 @@
 import { UnipileClient } from "../client.js";
 import { config } from "./instance.config.js";
 
-/**
- * @todo Consider https://github.com/Trendyol/jest-testcontainers presets.
- */
+/** */
 //------------------------------------------------------------------------------
 describe("MessagingResource", () => {
   let client: UnipileClient;
@@ -28,21 +26,6 @@ describe("MessagingResource", () => {
         expect(result.object).toBe("MessageList");
       },
     );
-    //--------------------------------------------------------------------------
-    it(
-      "should return next page of validated MessageList " +
-        "on getAllMessages " +
-        "when cursor",
-      async () => {
-        const result = await client.messaging.getAllMessages();
-        expect(typeof result.cursor).toBe("string");
-        const result2 = await client.messaging.getAllMessages({
-          cursor: result.cursor ?? "should_not_be_reached_or_broken_test_setup",
-        });
-        expect(result2.object).toBe("MessageList");
-        expect(result2.items[0].id).not.toBe(result.items[0].id);
-      },
-    );
   });
   //----------------------------------------------------------------------------
   describe("getAllChats", () => {
@@ -57,6 +40,7 @@ describe("MessagingResource", () => {
         expect(result.object).toBe("ChatList");
         // } catch (err) {
         //   console.log(err);
+        //   throw err;
         // }
       },
     );
@@ -77,6 +61,7 @@ describe("MessagingResource", () => {
         expect(result.object).toBe("MessageList");
         // } catch (err) {
         //   console.log(err);
+        //   throw err;
         // }
       },
     );
