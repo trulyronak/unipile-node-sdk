@@ -1,6 +1,7 @@
-import { Static, Type } from "@sinclair/typebox";
-import { ChatSchema } from "./ressource.types.js";
-import { TypeCompiler } from "@sinclair/typebox/compiler";
+import { Static, Type } from '@sinclair/typebox';
+import { ChatSchema } from './ressource.types.js';
+import { TypeCompiler } from '@sinclair/typebox/compiler';
+import { MessageSchema } from '../messages/ressource.types.js';
 
 // --------------------------------------------------------------------------
 // RESPONSE
@@ -12,7 +13,8 @@ import { TypeCompiler } from "@sinclair/typebox/compiler";
 export const ChatResponseSchema = Type.Composite([
   ChatSchema,
   Type.Object({
-    object: Type.Literal("Chat"),
+    object: Type.Literal('Chat'),
+    lastMessage: Type.Union([MessageSchema, Type.Null()]),
   }),
 ]);
 

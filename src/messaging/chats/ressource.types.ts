@@ -1,6 +1,5 @@
 import { Static, Type } from "@sinclair/typebox";
 import { UniqueIdSchema } from "../../common/common.types.js";
-import { MessageSchema } from "../messages/ressource.types.js";
 import { MessagingAccountTypeSchema } from "../messaging.types.js";
 
 export const ChatTypeSchema = Type.Enum({ SINGLE: 0, GROUP: 1, CHANNEL: 2 });
@@ -54,7 +53,7 @@ export const ChatSchema = Type.Object({
       Type.Literal("linkedin_offer"),
     ])
   ),
-  lastMessage: Type.Union([MessageSchema, Type.Null()]),
+//   lastMessage: Type.Union([MessageSchema, Type.Null()]), // This doesn't appear on Chat, only on ChatandMessage.
   folder: Type.Optional(Type.Array(ChatFolderSchema)),
 });
 
