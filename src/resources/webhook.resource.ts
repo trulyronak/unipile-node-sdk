@@ -1,6 +1,5 @@
 import { UnipileClient } from '../client.js';
-import { RequestOptions, Response } from '../types/index.js';
-import { deleteWebhookValidator, postWebhookValidator } from '../validation.js';
+import { RequestOptions } from '../types/index.js';
 import { WebhookCreateResponse, WebhookCreateResponseValidator } from '../webhooks/webhooks-create.types.js';
 import { WebhookDeleteResponse, WebhookDeleteResponseValidator } from '../webhooks/webhooks-delete.types.js';
 import { WebhookListResponse, WebhookListResponseValidator } from '../webhooks/webhooks-list.types.js';
