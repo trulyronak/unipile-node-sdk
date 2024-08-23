@@ -34,6 +34,6 @@ export const config = {
   MESSENGER_RECONNECT_PASSWORD: "",
   MAIL_USERNAME: "",
   MAIL_PASSWORD: "",
-  logRequestPayload: true,
-  logRequestResult: true,
+  logRequestPayload: false,
+  logRequestResult: false,
 };
