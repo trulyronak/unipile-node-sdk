@@ -54,7 +54,7 @@ export const ChatSchema = Type.Object({
     ])
   ),
 //   lastMessage: Type.Union([MessageSchema, Type.Null()]), // This doesn't appear on Chat, only on ChatandMessage.
-folder: Type.Optional(Type.Array(ChatFolderSchema)),
+  folder: Type.Optional(Type.Array(ChatFolderSchema)),
 });
 
 export type Chat = Static<typeof ChatSchema>;
