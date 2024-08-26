@@ -154,7 +154,6 @@ export const AvailableAccountProvider = StringEnum([
   'OUTLOOK',
   'TWITTER',
   'MAIL',
-  'OUTLOOK',
 ]);
 
 /**
@@ -258,7 +257,10 @@ export const MobileAccountSchema = Type.Composite([
   ViewAccountBaseSchema,
 ]);
 
-export const MobileAccountWithSourceStatusSchema = Type.Composite([MobileAccountSchema, SourceStatusSchema]);
+export const MobileAccountWithSourceStatusSchema = Type.Composite([
+  Type.Omit(MobileAccountSchema, ['sources']),
+  SourceStatusSchema,
+]);
 
 /**
  *
@@ -279,7 +281,7 @@ export const MailAccountSchema = Type.Composite([
   MailFetchAccountSchema,
 ]);
 
-export const MailAccountWithSourceStatusSchema = Type.Composite([MailAccountSchema, SourceStatusSchema]);
+export const MailAccountWithSourceStatusSchema = Type.Composite([Type.Omit(MailAccountSchema, ['sources']), SourceStatusSchema]);
 
 /**
  *
@@ -300,7 +302,10 @@ export const GoogleAccountSchema = Type.Composite([
   MailFetchAccountSchema,
 ]);
 
-export const GoogleAccountWithSourceStatusSchema = Type.Composite([GoogleAccountSchema, SourceStatusSchema]);
+export const GoogleAccountWithSourceStatusSchema = Type.Composite([
+  Type.Omit(GoogleAccountSchema, ['sources']),
+  SourceStatusSchema,
+]);
 
 /**
  *
@@ -321,7 +326,10 @@ export const ICloudAccountSchema = Type.Composite([
   MailFetchAccountSchema,
 ]);
 
-export const ICloudAccountWithSourceStatusSchema = Type.Composite([ICloudAccountSchema, SourceStatusSchema]);
+export const ICloudAccountWithSourceStatusSchema = Type.Composite([
+  Type.Omit(ICloudAccountSchema, ['sources']),
+  SourceStatusSchema,
+]);
 
 /**
  *
@@ -342,7 +350,10 @@ export const OutlookAccountSchema = Type.Composite([
   MailFetchAccountSchema,
 ]);
 
-export const OutlookAccountWithSourceStatusSchema = Type.Composite([OutlookAccountSchema, SourceStatusSchema]);
+export const OutlookAccountWithSourceStatusSchema = Type.Composite([
+  Type.Omit(OutlookAccountSchema, ['sources']),
+  SourceStatusSchema,
+]);
 
 /**
  *
@@ -364,7 +375,10 @@ export const GoogleCalendarAccountSchema = Type.Composite([
   ViewAccountBaseSchema,
 ]);
 
-export const GoogleCalendarAccountWithSourceStatusSchema = Type.Composite([GoogleCalendarAccountSchema, SourceStatusSchema]);
+export const GoogleCalendarAccountWithSourceStatusSchema = Type.Composite([
+  Type.Omit(GoogleCalendarAccountSchema, ['sources']),
+  SourceStatusSchema,
+]);
 
 /**
  *
@@ -384,7 +398,10 @@ export const WhatsAppAccountSchema = Type.Composite([
   ViewAccountBaseSchema,
 ]);
 
-export const WhatsAppAccountWithSourceStatusSchema = Type.Composite([WhatsAppAccountSchema, SourceStatusSchema]);
+export const WhatsAppAccountWithSourceStatusSchema = Type.Composite([
+  Type.Omit(WhatsAppAccountSchema, ['sources']),
+  SourceStatusSchema,
+]);
 
 /**
  *
@@ -404,7 +421,10 @@ export const LinkedInAccountSchema = Type.Composite([
   ViewAccountBaseSchema,
 ]);
 
-export const LinkedInAccountWithSourceStatusSchema = Type.Composite([LinkedInAccountSchema, SourceStatusSchema]);
+export const LinkedInAccountWithSourceStatusSchema = Type.Composite([
+  Type.Omit(LinkedInAccountSchema, ['sources']),
+  SourceStatusSchema,
+]);
 
 /**
  *
@@ -424,7 +444,10 @@ export const SlackAccountSchema = Type.Composite([
   ViewAccountBaseSchema,
 ]);
 
-export const SlackAccountWithSourceStatusSchema = Type.Composite([SlackAccountSchema, SourceStatusSchema]);
+export const SlackAccountWithSourceStatusSchema = Type.Composite([
+  Type.Omit(SlackAccountSchema, ['sources']),
+  SourceStatusSchema,
+]);
 
 /**
  *
@@ -444,7 +467,10 @@ export const TwitterAccountSchema = Type.Composite([
   ViewAccountBaseSchema,
 ]);
 
-export const TwitterAccountWithSourceStatusSchema = Type.Composite([TwitterAccountSchema, SourceStatusSchema]);
+export const TwitterAccountWithSourceStatusSchema = Type.Composite([
+  Type.Omit(TwitterAccountSchema, ['sources']),
+  SourceStatusSchema,
+]);
 
 /**
  *
@@ -465,7 +491,10 @@ export const ExchangeAccountSchema = Type.Composite([
   MailFetchAccountSchema,
 ]);
 
-export const ExchangeAccountWithSourceStatusSchema = Type.Composite([ExchangeAccountSchema, SourceStatusSchema]);
+export const ExchangeAccountWithSourceStatusSchema = Type.Composite([
+  Type.Omit(ExchangeAccountSchema, ['sources']),
+  SourceStatusSchema,
+]);
 
 export const TelegramAccountSchema = Type.Composite([
   Type.Object({
@@ -482,7 +511,10 @@ export const TelegramAccountSchema = Type.Composite([
   ViewAccountBaseSchema,
 ]);
 
-export const TelegramAccountWithSourceStatusSchema = Type.Composite([TelegramAccountSchema, SourceStatusSchema]);
+export const TelegramAccountWithSourceStatusSchema = Type.Composite([
+  Type.Omit(TelegramAccountSchema, ['sources']),
+  SourceStatusSchema,
+]);
 
 /**
  *
