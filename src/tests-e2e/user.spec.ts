@@ -133,11 +133,11 @@ describe("UserResource", () => {
           (acc) => acc.type === "LINKEDIN",
         )[0].id;
 
-        // Search provider id of someone you don't have in relations to send invitation
-        // Don't know if method exist ---> ask Jonathan
+        // Search provider id of someone you have in relations or not to send invitation
+        const accountTestProviderId = "ACoAAFET2tcBxW3tSw1OyASzEO8SO5T8Bk8a3Wg";
         const result = await client.users.sendInvitation({
           account_id,
-          provider_id,
+          provider_id: accountTestProviderId,
           message: "test send invitation",
         });
 
