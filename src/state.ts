@@ -28,6 +28,7 @@ export class ClientState {
     this.logRequestResult = options.logRequestResult ?? DEFAULT_LOG_REQUEST_RESULT;
     this.logRequestPayload = options.logRequestPayload ?? DEFAULT_LOG_REQUEST_PAYLOAD;
     this.validateRequestPayload = options.validateRequestPayload ?? DEFAULT_VALIDATE_REQUEST_PAYLOAD;
+    // this.validateRequestPayload = false;
   }
 
   get token(): string {

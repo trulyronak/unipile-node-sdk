@@ -1,7 +1,7 @@
 import { UnipileClient } from '../client.js';
-import { RequestOptions, Response } from '../types/index.js';
-import { deleteWebhookValidator, postWebhookValidator } from '../validation.js';
+import { RequestOptions } from '../types/index.js';
 import { WebhookCreateResponse, WebhookCreateResponseValidator } from '../webhooks/webhooks-create.types.js';
+import { WebhookDeleteResponse, WebhookDeleteResponseValidator } from '../webhooks/webhooks-delete.types.js';
 import { WebhookListResponse, WebhookListResponseValidator } from '../webhooks/webhooks-list.types.js';
 
 export class WebhookResource {
@@ -26,12 +26,12 @@ export class WebhookResource {
     });
   }
 
-  async delete(id: string, options?: RequestOptions): Promise<Response.DeleteWebhook> {
+  async delete(id: string, options?: RequestOptions): Promise<WebhookDeleteResponse> {
     return await this.client.request.send({
       path: ['webhooks', id],
       method: 'DELETE',
       options,
-      validator: deleteWebhookValidator,
+      validator: WebhookDeleteResponseValidator,
     });
   }
 }
