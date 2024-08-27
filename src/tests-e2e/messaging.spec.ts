@@ -18,18 +18,18 @@ describe("MessagingResource", () => {
   //----------------------------------------------------------------------------
   describe("getAllChats", () => {
     //--------------------------------------------------------------------------
-    it(
+    it.only(
       "should return a validated ChatList " +
         "on getAllChats " +
         "when no arguments",
       async () => {
-        // try {
-        const result = await client.messaging.getAllChats();
-        expect(result.object).toBe("ChatList");
-        // } catch (err) {
-        //   console.log(err);
-        //   throw err;
-        // }
+        try {
+          const result = await client.messaging.getAllChats();
+          expect(result.object).toBe("ChatList");
+        } catch (err) {
+          console.log("err", err, JSON.stringify(err.body[0].value));
+          throw err;
+        }
       },
     );
   });
@@ -44,7 +44,7 @@ describe("MessagingResource", () => {
         const resultGetChat = await client.messaging.getChat(chat.items[0].id);
         expect(resultGetChat.object).toBe("Chat");
         // } catch (err) {
-        //   console.log(err);
+        //   console.log("err", err, JSON.stringify(err.body[0].value));
         //   throw err;
         // }
       },
@@ -65,7 +65,7 @@ describe("MessagingResource", () => {
         });
         expect(result.object).toBe("MessageList");
         // } catch (err) {
-        //   console.log(err);
+        //   console.log("err", err, JSON.stringify(err.body[0].value));
         //   throw err;
         // }
       },
@@ -88,7 +88,7 @@ describe("MessagingResource", () => {
         });
         expect(resultSend.object).toBe("MessageSent");
         // } catch (err) {
-        //   console.log(err);
+        //   console.log("err", err, JSON.stringify(err.body[0].value));
         //   throw err;
         // }
       },
@@ -116,7 +116,7 @@ describe("MessagingResource", () => {
         });
         expect(result.object).toBe("ChatStarted");
         // } catch (err) {
-        //   console.log(err);
+        //   console.log("err", err, JSON.stringify(err.body[0].value));
         //   throw err;
         // }
       },
@@ -138,7 +138,7 @@ describe("MessagingResource", () => {
 
         expect(resultAttendees.object).toBe("ChatAttendeeList");
         // } catch (err) {
-        //   console.log(err);
+        //   console.log("err", err, JSON.stringify(err.body[0].value));
         //   throw err;
         // }
       },
@@ -158,7 +158,7 @@ describe("MessagingResource", () => {
 
         expect(resultGetMessage.object).toBe("Message");
         // } catch (err) {
-        //   console.log(err);
+        //   console.log("err", err, JSON.stringify(err.body[0].value));
         //   throw err;
         // }
       },
@@ -176,7 +176,7 @@ describe("MessagingResource", () => {
         const result = await client.messaging.getAllMessages();
         expect(result.object).toBe("MessageList");
         // } catch (err) {
-        //   console.log(err);
+        //   console.log("err", err, JSON.stringify(err.body[0].value));
         //   throw err;
         // }
       },
@@ -203,7 +203,7 @@ describe("MessagingResource", () => {
         });
         expect(result.object).toBe("MessageList");
         // } catch (err) {
-        //   console.log(err);
+        //   console.log("err", err, JSON.stringify(err.body[0].value));
         //   throw err;
         // }
       },
@@ -229,7 +229,7 @@ describe("MessagingResource", () => {
         });
         expect(result.object).toBe("MessageList");
         // } catch (err) {
-        //   console.log(err);
+        //   console.log("err", err, JSON.stringify(err.body[0].value));
         //   throw err;
         // }
       },
@@ -249,7 +249,7 @@ describe("MessagingResource", () => {
         const chat = await client.messaging.getAllChats({ limit: 1 });
         const resultSend = await client.messaging.sendMessage({
           chat_id: chat.items[0].id,
-          text: "messaging.spec.ts sendMessage",
+          text: "messaging.spec.ts getMessageAttachment",
           attachments: [["getMessageAttachment.png", fileBuffer]],
         });
         expect(resultSend.object).toBe("MessageSent");
@@ -264,7 +264,7 @@ describe("MessagingResource", () => {
         });
         expect(typeof result).toBeInstanceOf(Blob);
         // } catch (err) {
-        //   console.log(err);
+        //   console.log("err", err, JSON.stringify(err.body[0].value));
         //   throw err;
         // }
       },
@@ -286,7 +286,7 @@ describe("MessagingResource", () => {
         });
         expect(result.object).toBe("ChatAttendeeList");
         // } catch (err) {
-        //   console.log(err);
+        //   console.log("err", err, JSON.stringify(err.body[0].value));
         //   throw err;
         // }
       },
@@ -307,7 +307,7 @@ describe("MessagingResource", () => {
         const result = await client.messaging.getAttendee(attendee.items[0].id);
         expect(result.object).toBe("ChatAttendee");
         // } catch (err) {
-        //   console.log(err);
+        //   console.log("err", err, JSON.stringify(err.body[0].value));
         //   throw err;
         // }
       },
@@ -330,7 +330,7 @@ describe("MessagingResource", () => {
         });
         expect(result.object).toBe("ChatPatched");
         // } catch (err) {
-        //   console.log(err);
+        //   console.log("err", err, JSON.stringify(err.body[0].value));
         //   throw err;
         // }
       },
