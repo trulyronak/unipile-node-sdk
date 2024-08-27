@@ -20,7 +20,7 @@ describe("EmailResource", () => {
   //----------------------------------------------------------------------------
   describe("getAll", () => {
     //--------------------------------------------------------------------------
-    it.only(
+    it(
       "should return return a validated EmailList " +
         "on getAll " +
         "when account_id",
@@ -44,7 +44,7 @@ describe("EmailResource", () => {
           const result = await client.email.getAll({ account_id });
           expect(result.object).toBe("EmailList");
         } catch (err) {
-          console.log("err", err, JSON.stringify(err.body[0].value));
+          console.log("err", err, JSON.stringify((err as any).body[0].value));
           throw err;
         }
       },

@@ -1,6 +1,7 @@
 import { UnipileClient } from "../client.js";
 import { config } from "./instance.config.js";
-
+import fs from "fs/promises";
+import path from "path";
 /** */
 //------------------------------------------------------------------------------
 describe("MessagingResource", () => {
@@ -14,19 +15,6 @@ describe("MessagingResource", () => {
     });
   });
 
-  //----------------------------------------------------------------------------
-  describe("getAllMessages", () => {
-    //--------------------------------------------------------------------------
-    it(
-      "should return a validated MessageList " +
-        "on getAllMessages " +
-        "when no arguments",
-      async () => {
-        const result = await client.messaging.getAllMessages();
-        expect(result.object).toBe("MessageList");
-      },
-    );
-  });
   //----------------------------------------------------------------------------
   describe("getAllChats", () => {
     //--------------------------------------------------------------------------
@@ -42,7 +30,23 @@ describe("MessagingResource", () => {
         //   console.log(err);
         //   throw err;
         // }
-        
+      },
+    );
+  });
+  //----------------------------------------------------------------------------
+  describe("getChat", () => {
+    //--------------------------------------------------------------------------
+    it(
+      "should return a validated Chat " + "on getChat " + "when no arguments",
+      async () => {
+        // try {
+        const chat = await client.messaging.getAllChats({ limit: 1 });
+        const resultGetChat = await client.messaging.getChat(chat.items[0].id);
+        expect(resultGetChat.object).toBe("Chat");
+        // } catch (err) {
+        //   console.log(err);
+        //   throw err;
+        // }
       },
     );
   });
@@ -60,6 +64,271 @@ describe("MessagingResource", () => {
           chat_id: chat.items[0].id,
         });
         expect(result.object).toBe("MessageList");
+        // } catch (err) {
+        //   console.log(err);
+        //   throw err;
+        // }
+      },
+    );
+  });
+
+  //----------------------------------------------------------------------------
+  describe("sendMessage", () => {
+    //--------------------------------------------------------------------------
+    it(
+      "should return a validated MessageSent response " +
+        "on sendMessage " +
+        "when ",
+      async () => {
+        // try {
+        const chat = await client.messaging.getAllChats({ limit: 1 });
+        const resultSend = await client.messaging.sendMessage({
+          chat_id: chat.items[0].id,
+          text: "messaging.spec.ts sendMessage",
+        });
+        expect(resultSend.object).toBe("MessageSent");
+        // } catch (err) {
+        //   console.log(err);
+        //   throw err;
+        // }
+      },
+    );
+  });
+  //----------------------------------------------------------------------------
+  describe("startNewChat", () => {
+    //--------------------------------------------------------------------------
+    it(
+      "should return a validated ChatStarted response " +
+        "on startNewChat " +
+        "when ",
+      async () => {
+        // try {
+        const account = await client.account.getAll({ limit: 1 });
+        const account_id = account.items[0].id;
+        const attendee = await client.messaging.getAllAttendees({
+          account_id,
+          limit: 1,
+        });
+        const result = await client.messaging.startNewChat({
+          account_id,
+          attendees_ids: [attendee.items[0].id],
+          text: "messaging.spec.ts startNewChat",
+        });
+        expect(result.object).toBe("ChatStarted");
+        // } catch (err) {
+        //   console.log(err);
+        //   throw err;
+        // }
+      },
+    );
+  });
+  //----------------------------------------------------------------------------
+  describe("getAllAttendeesFromChat", () => {
+    //--------------------------------------------------------------------------
+    it(
+      "should return a validated ChatAttendeeList " +
+        "on getAllAttendeesFromChat " +
+        "when ",
+      async () => {
+        // try {
+        const chat = await client.messaging.getAllChats({ limit: 1 });
+        const resultAttendees = await client.messaging.getAllAttendeesFromChat(
+          chat.items[0].id,
+        );
+
+        expect(resultAttendees.object).toBe("ChatAttendeeList");
+        // } catch (err) {
+        //   console.log(err);
+        //   throw err;
+        // }
+      },
+    );
+  });
+  //----------------------------------------------------------------------------
+  describe("getMessage", () => {
+    //--------------------------------------------------------------------------
+    it(
+      "should return a validated Message " + "on getMessage " + "when ",
+      async () => {
+        // try {
+        const message = await client.messaging.getAllMessages({ limit: 1 });
+        const resultGetMessage = await client.messaging.getMessage(
+          message.items[0].id,
+        );
+
+        expect(resultGetMessage.object).toBe("Message");
+        // } catch (err) {
+        //   console.log(err);
+        //   throw err;
+        // }
+      },
+    );
+  });
+  //----------------------------------------------------------------------------
+  describe("getAllMessages", () => {
+    //--------------------------------------------------------------------------
+    it(
+      "should return a validated MessageList " +
+        "on getAllMessages " +
+        "when no arguments",
+      async () => {
+        // try {
+        const result = await client.messaging.getAllMessages();
+        expect(result.object).toBe("MessageList");
+        // } catch (err) {
+        //   console.log(err);
+        //   throw err;
+        // }
+      },
+    );
+  });
+
+  //----------------------------------------------------------------------------
+  describe("getAllMessagesFromAttendee", () => {
+    //--------------------------------------------------------------------------
+    it(
+      "should return a validated MessageList " +
+        "on getAllMessagesFromAttendee " +
+        "when ",
+      async () => {
+        // try {
+        const account = await client.account.getAll({ limit: 1 });
+        const account_id = account.items[0].id;
+        const attendee = await client.messaging.getAllAttendees({
+          account_id,
+          limit: 1,
+        });
+        const result = await client.messaging.getAllMessagesFromAttendee({
+          attendee_id: attendee.items[0].id,
+        });
+        expect(result.object).toBe("MessageList");
+        // } catch (err) {
+        //   console.log(err);
+        //   throw err;
+        // }
+      },
+    );
+  });
+  //----------------------------------------------------------------------------
+  describe("getAllChatsFromAttendee", () => {
+    //--------------------------------------------------------------------------
+    it(
+      "should return a validated MessageList " +
+        "on getAllChatsFromAttendee " +
+        "when ",
+      async () => {
+        // try {
+        const account = await client.account.getAll({ limit: 1 });
+        const account_id = account.items[0].id;
+        const attendee = await client.messaging.getAllAttendees({
+          account_id,
+          limit: 1,
+        });
+        const result = await client.messaging.getAllMessagesFromAttendee({
+          attendee_id: attendee.items[0].id,
+        });
+        expect(result.object).toBe("MessageList");
+        // } catch (err) {
+        //   console.log(err);
+        //   throw err;
+        // }
+      },
+    );
+  });
+  //----------------------------------------------------------------------------
+  describe("getMessageAttachment", () => {
+    //--------------------------------------------------------------------------
+    it(
+      "should return a Blob " + "on getMessageAttachment " + "when ",
+      async () => {
+        // try {
+        const filepath = path.resolve(__dirname, "./getMessageAttachment.png");
+        console.log(filepath);
+        const fileBuffer = await fs.readFile(filepath);
+        console.log(fileBuffer);
+        const chat = await client.messaging.getAllChats({ limit: 1 });
+        const resultSend = await client.messaging.sendMessage({
+          chat_id: chat.items[0].id,
+          text: "messaging.spec.ts sendMessage",
+          attachments: [["getMessageAttachment.png", fileBuffer]],
+        });
+        expect(resultSend.object).toBe("MessageSent");
+        expect(typeof resultSend.message_id).toBe("string");
+        const message = await client.messaging.getMessage(
+          resultSend.message_id ?? "expected a message_id",
+        );
+
+        const result = await client.messaging.getMessageAttachment({
+          message_id: message.id,
+          attachment_id: message.attachments[0].id,
+        });
+        expect(typeof result).toBeInstanceOf(Blob);
+        // } catch (err) {
+        //   console.log(err);
+        //   throw err;
+        // }
+      },
+    );
+  });
+  //----------------------------------------------------------------------------
+  describe("getAllAttendees", () => {
+    //--------------------------------------------------------------------------
+    it(
+      "should return a validated ChatAttendeeList " +
+        "on getAllAttendees " +
+        "when ",
+      async () => {
+        // try {
+        const account = await client.account.getAll({ limit: 1 });
+        const account_id = account.items[0].id;
+        const result = await client.messaging.getAllAttendees({
+          account_id,
+        });
+        expect(result.object).toBe("ChatAttendeeList");
+        // } catch (err) {
+        //   console.log(err);
+        //   throw err;
+        // }
+      },
+    );
+  });
+  //----------------------------------------------------------------------------
+  describe("getAttendee", () => {
+    //--------------------------------------------------------------------------
+    it(
+      "should return a validated ChatAttendee " + "on getAttendee " + "when ",
+      async () => {
+        // try {
+        const account = await client.account.getAll({ limit: 1 });
+        const account_id = account.items[0].id;
+        const attendee = await client.messaging.getAllAttendees({
+          account_id,
+        });
+        const result = await client.messaging.getAttendee(attendee.items[0].id);
+        expect(result.object).toBe("ChatAttendee");
+        // } catch (err) {
+        //   console.log(err);
+        //   throw err;
+        // }
+      },
+    );
+  });
+  //----------------------------------------------------------------------------
+  describe("setChatStatus", () => {
+    //--------------------------------------------------------------------------
+    it(
+      "should return a validated ChatPatched response " +
+        "on setChatStatus " +
+        "when ",
+      async () => {
+        // try {
+        const chat = await client.messaging.getAllChats({ limit: 1 });
+        const result = await client.messaging.setChatStatus({
+          chat_id: chat.items[0].id,
+          action: "setReadStatus",
+          value: true,
+        });
+        expect(result.object).toBe("ChatPatched");
         // } catch (err) {
         //   console.log(err);
         //   throw err;
