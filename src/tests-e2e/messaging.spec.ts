@@ -18,18 +18,18 @@ describe("MessagingResource", () => {
   //----------------------------------------------------------------------------
   describe("getAllChats", () => {
     //--------------------------------------------------------------------------
-    it.only(
+    it(
       "should return a validated ChatList " +
         "on getAllChats " +
         "when no arguments",
       async () => {
-        try {
-          const result = await client.messaging.getAllChats();
-          expect(result.object).toBe("ChatList");
-        } catch (err) {
-          console.log("err", err, JSON.stringify(err.body[0].value));
-          throw err;
-        }
+        // try {
+        const result = await client.messaging.getAllChats({ limit: 8 });
+        expect(result.object).toBe("ChatList");
+        // } catch (err) {
+        //   console.log("err", err, JSON.stringify(err.body[0].value));
+        //   throw err;
+        // }
       },
     );
   });
@@ -84,7 +84,8 @@ describe("MessagingResource", () => {
         const chat = await client.messaging.getAllChats({ limit: 1 });
         const resultSend = await client.messaging.sendMessage({
           chat_id: chat.items[0].id,
-          text: "messaging.spec.ts sendMessage",
+        //   text: "messaging.spec.ts sendMessage",
+          text: "All T, all shade.",
         });
         expect(resultSend.object).toBe("MessageSent");
         // } catch (err) {
@@ -103,20 +104,28 @@ describe("MessagingResource", () => {
         "when ",
       async () => {
         // try {
-        const account = await client.account.getAll({ limit: 1 });
+        const account = await client.account.getAll({ limit: 2 });
         const account_id = account.items[0].id;
-        const attendee = await client.messaging.getAllAttendees({
-          account_id,
-          limit: 1,
-        });
+        const attendee = (
+          await client.messaging.getAllAttendees({
+            account_id,
+            limit: 3,
+          })
+        ).items.find((att) => att.is_self !== 1);
+        expect(attendee).toBeDefined();
+
         const result = await client.messaging.startNewChat({
           account_id,
-          attendees_ids: [attendee.items[0].id],
-          text: "messaging.spec.ts startNewChat",
+          //   attendees_ids: ["ACoAAAcDMMQBODyLwZrRcgYhrkCafURGqva0U4E"],
+          attendees_ids: [
+            attendee?.provider_id ?? "expected an attendee_provider_id",
+          ],
+        //   text: "messaging.spec.ts startNewChat",
+          text: "extravaganza",
         });
         expect(result.object).toBe("ChatStarted");
         // } catch (err) {
-        //   console.log("err", err, JSON.stringify(err.body[0].value));
+        // console.log("err", err, JSON.stringify(err.body[0].value));
         //   throw err;
         // }
       },
@@ -130,17 +139,16 @@ describe("MessagingResource", () => {
         "on getAllAttendeesFromChat " +
         "when ",
       async () => {
-        // try {
-        const chat = await client.messaging.getAllChats({ limit: 1 });
-        const resultAttendees = await client.messaging.getAllAttendeesFromChat(
-          chat.items[0].id,
-        );
+        try {
+          const chat = await client.messaging.getAllChats({ limit: 1 });
+          const resultAttendees =
+            await client.messaging.getAllAttendeesFromChat(chat.items[0].id);
 
-        expect(resultAttendees.object).toBe("ChatAttendeeList");
-        // } catch (err) {
-        //   console.log("err", err, JSON.stringify(err.body[0].value));
-        //   throw err;
-        // }
+          expect(resultAttendees.object).toBe("ChatAttendeeList");
+        } catch (err) {
+          console.log("err", err, JSON.stringify(err.body[0].value));
+          throw err;
+        }
       },
     );
   });
@@ -245,15 +253,22 @@ describe("MessagingResource", () => {
         const filepath = path.resolve(__dirname, "./getMessageAttachment.png");
         console.log(filepath);
         const fileBuffer = await fs.readFile(filepath);
-        console.log(fileBuffer);
+        // console.log(fileBuffer);
         const chat = await client.messaging.getAllChats({ limit: 1 });
         const resultSend = await client.messaging.sendMessage({
           chat_id: chat.items[0].id,
-          text: "messaging.spec.ts getMessageAttachment",
+        //   text: "messaging.spec.ts getMessageAttachment",
+          text: "eleganza",
           attachments: [["getMessageAttachment.png", fileBuffer]],
         });
         expect(resultSend.object).toBe("MessageSent");
         expect(typeof resultSend.message_id).toBe("string");
+
+        /**
+         * @todo Find another way to guarantee a message with an attachment exists.
+         *       Sending one and waiting for it to be synced is very flaky.
+         */
+        await new Promise((resolve) => setTimeout(resolve, 1000));
         const message = await client.messaging.getMessage(
           resultSend.message_id ?? "expected a message_id",
         );
@@ -262,12 +277,14 @@ describe("MessagingResource", () => {
           message_id: message.id,
           attachment_id: message.attachments[0].id,
         });
-        expect(typeof result).toBeInstanceOf(Blob);
+        // expect(result).toBeInstanceOf(Blob);
+        expect(result.constructor.name).toBe("Blob");
         // } catch (err) {
         //   console.log("err", err, JSON.stringify(err.body[0].value));
         //   throw err;
         // }
       },
+      10000,
     );
   });
   //----------------------------------------------------------------------------
