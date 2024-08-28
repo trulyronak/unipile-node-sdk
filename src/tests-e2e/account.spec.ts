@@ -115,6 +115,94 @@ describe("AccountResource", () => {
     );
   });
   //----------------------------------------------------------------------------
+  describe("connectWhatsapp", () => {
+    //--------------------------------------------------------------------------
+    it(
+      "should return a validated PostQrCodeBasedAccount response " +
+        "on connectWhatsapp " +
+        "when ",
+      async () => {
+        // try {
+        const result = await client.account.connectWhatsapp();
+
+        expect(typeof result.code).toBe("string");
+        expect(typeof result.qrCodeString).toBe("string");
+        // } catch (err) {
+        //   console.log(err);
+        //   throw err;
+        // }
+      },
+    );
+  });
+
+  //----------------------------------------------------------------------------
+  describe("reconnectWhatsapp", () => {
+    //--------------------------------------------------------------------------
+    it(
+      "should return a validated PostQrCodeBasedAccount response  " +
+        "on reconnectWhatsapp " +
+        "when ",
+      async () => {
+        // try {
+        /**
+         * @note This one requires a pre-existing Account.
+         *
+         * @todo Consider using a container image ?
+         */
+        const result = await client.account.reconnectWhatsapp(
+          config.WHATSAPP_RECONNECT_ACCOUNT_ID,
+        );
+
+        expect(typeof result.code).toBe("string");
+        expect(typeof result.qrCodeString).toBe("string");
+      },
+    );
+  });
+  //----------------------------------------------------------------------------
+  describe("connectTelegram", () => {
+    //--------------------------------------------------------------------------
+    it(
+      "should return a validated PostQrCodeBasedAccount response " +
+        "on connectTelegram " +
+        "when ",
+      async () => {
+        // try {
+        const result = await client.account.connectTelegram();
+
+        expect(typeof result.code).toBe("string");
+        expect(typeof result.qrCodeString).toBe("string");
+        // } catch (err) {
+        //   console.log(err);
+        //   throw err;
+        // }
+      },
+    );
+  });
+
+  //----------------------------------------------------------------------------
+  describe("reconnectTelegram", () => {
+    //--------------------------------------------------------------------------
+    it(
+      "should return a validated PostQrCodeBasedAccount response  " +
+        "on reconnectTelegram " +
+        "when ",
+      async () => {
+        // try {
+        /**
+         * @note This one requires a pre-existing Account.
+         *
+         * @todo Consider using a container image ?
+         */
+        const result = await client.account.reconnectTelegram(
+          config.TELEGRAM_RECONNECT_ACCOUNT_ID,
+        );
+
+        expect(typeof result.code).toBe("string");
+        expect(typeof result.qrCodeString).toBe("string");
+      },
+    );
+  });
+  //----------------------------------------------------------------------------
   describe("connectLinkedin", () => {
     //--------------------------------------------------------------------------
     it(
