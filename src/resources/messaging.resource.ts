@@ -24,6 +24,7 @@ import { MessageSentResponse, MessageSentResponseValidator } from '../messaging/
 import { ChatStartedApiResponse, ChatStartedApiResponseValidator } from '../messaging/chats/chat-start.types.js';
 import {
   ChatAttendeeByChatListApiResponse,
+  ChatAttendeeByChatListApiResponseValidator,
   ChatAttendeeListApiResponse,
   ChatAttendeeListApiResponseValidator,
 } from '../messaging/chat-attendees/chat-attendees-list.types.js';
@@ -169,7 +170,7 @@ export class MessagingResource {
       path: ['chats', chat_id, 'attendees'],
       method: 'GET',
       options,
-      validator: ChatAttendeeListApiResponseValidator,
+      validator: ChatAttendeeByChatListApiResponseValidator,
     });
   }
 
