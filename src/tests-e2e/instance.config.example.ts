@@ -1,4 +1,8 @@
 /**
+ * 1 - Make a copy of this file.
+ * 2 - Rename copy : instance.config.ts
+ * 3 - Fill in the blanks
+ * 
  * @todo Consider setting up a dedicated test instance that a CI job could run
  *       these tests against.
  */

@@ -84,7 +84,7 @@ describe("MessagingResource", () => {
         const chat = await client.messaging.getAllChats({ limit: 1 });
         const resultSend = await client.messaging.sendMessage({
           chat_id: chat.items[0].id,
-        //   text: "messaging.spec.ts sendMessage",
+          //   text: "messaging.spec.ts sendMessage",
           text: "All T, all shade.",
         });
         expect(resultSend.object).toBe("MessageSent");
@@ -120,7 +120,7 @@ describe("MessagingResource", () => {
           attendees_ids: [
             attendee?.provider_id ?? "expected an attendee_provider_id",
           ],
-        //   text: "messaging.spec.ts startNewChat",
+          //   text: "messaging.spec.ts startNewChat",
           text: "extravaganza",
         });
         expect(result.object).toBe("ChatStarted");
@@ -139,16 +139,17 @@ describe("MessagingResource", () => {
         "on getAllAttendeesFromChat " +
         "when ",
       async () => {
-        try {
-          const chat = await client.messaging.getAllChats({ limit: 1 });
-          const resultAttendees =
-            await client.messaging.getAllAttendeesFromChat(chat.items[0].id);
+        // try {
+        const chat = await client.messaging.getAllChats({ limit: 1 });
+        const resultAttendees = await client.messaging.getAllAttendeesFromChat(
+          chat.items[0].id,
+        );
 
-          expect(resultAttendees.object).toBe("ChatAttendeeList");
-        } catch (err) {
-          console.log("err", err, JSON.stringify(err.body[0].value));
-          throw err;
-        }
+        expect(resultAttendees.object).toBe("ChatAttendeeList");
+        // } catch (err) {
+        //   console.log("err", err, JSON.stringify(err.body[0].value));
+        //   throw err;
+        // }
       },
     );
   });
@@ -257,7 +258,7 @@ describe("MessagingResource", () => {
         const chat = await client.messaging.getAllChats({ limit: 1 });
         const resultSend = await client.messaging.sendMessage({
           chat_id: chat.items[0].id,
-        //   text: "messaging.spec.ts getMessageAttachment",
+          //   text: "messaging.spec.ts getMessageAttachment",
           text: "eleganza",
           attachments: [["getMessageAttachment.png", fileBuffer]],
         });
