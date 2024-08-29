@@ -2,7 +2,7 @@
  * 1 - Make a copy of this file.
  * 2 - Rename copy : instance.config.ts
  * 3 - Fill in the blanks
- * 
+ *
  * @todo Consider setting up a dedicated test instance that a CI job could run
  *       these tests against.
  */
@@ -37,9 +37,14 @@ export const config = {
   MESSENGER_RECONNECT_USERNAME: "",
   MESSENGER_RECONNECT_PASSWORD: "",
   WHATSAPP_RECONNECT_ACCOUNT_ID: "",
-  TELEGRAM_RECONNECT_ACCOUNT_ID : "",
+  TELEGRAM_RECONNECT_ACCOUNT_ID: "",
   MAIL_USERNAME: "",
   MAIL_PASSWORD: "",
+  MAIL_IMAP_PORT: 993,
+  MAIL_IMAP_HOST: "ssl0.ovh.net",
+  MAIL_SMTP_PORT: 465,
+  MAIL_SMTP_HOST: "ssl0.ovh.net",
+  MAIL_IMAP_ENCRYPTION: "default",
   logRequestPayload: false,
   logRequestResult: false,
 };

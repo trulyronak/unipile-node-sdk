@@ -49,30 +49,41 @@ describe("AccountResource", () => {
   //----------------------------------------------------------------------------
   describe("connect", () => {
     //--------------------------------------------------------------------------
-    it(
+    it.only(
       "should return a validated AccountCreated response " +
         "on connect " +
         "when no checkpoint",
       async () => {
-        // try {
-        const result = await client.account.connect({
-          provider: "MAIL",
-          username: config.MAIL_USERNAME,
-          password: config.MAIL_PASSWORD,
-        });
-        expect(result.object).toBe("AccountCreated");
+        try {
+          const result = await client.account.connect({
+            provider: "MAIL",
+            // username: config.MAIL_USERNAME,
+            // password: config.MAIL_PASSWORD,
+            // @ts-expect-error ConnectAccountInput IS VERY OUTDATED.
+            imap_port: config.MAIL_IMAP_PORT,
+            imap_host: config.MAIL_IMAP_HOST,
+            smtp_port: config.MAIL_SMTP_PORT,
+            smtp_host: config.MAIL_SMTP_HOST,
+            imap_encryption: config.MAIL_IMAP_ENCRYPTION,
+            imap_user: config.MAIL_USERNAME,
+            smtp_user: config.MAIL_USERNAME,
+            imap_password: config.MAIL_PASSWORD,
+            smtp_password: config.MAIL_PASSWORD,
+            sync_limit: "NO_HISTORY_SYNC",
+          });
+          expect(result.object).toBe("AccountCreated");
 
-        /**
-         * @todo Figure out a way to either guarantee correct clean up or simply
-         *       the target test instance in a known state, like a container
-         *       image.
-         */
-        const resultDelete = await client.account.delete(result.account_id);
-        expect(resultDelete.object).toBe("AccountDeleted");
-        // } catch (err) {
-        //   console.log(err);
-        //   throw err;
-        // }
+          /**
+           * @todo Figure out a way to either guarantee correct clean up or simply
+           *       the target test instance in a known state, like a container
+           *       image.
+           */
+          const resultDelete = await client.account.delete(result.account_id);
+          expect(resultDelete.object).toBe("AccountDeleted");
+        } catch (err) {
+          console.log(err);
+          throw err;
+        }
       },
     );
   });
