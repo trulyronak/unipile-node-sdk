@@ -252,7 +252,7 @@ describe("MessagingResource", () => {
       async () => {
         // try {
         const filepath = path.resolve(__dirname, "./getMessageAttachment.png");
-        console.log(filepath);
+        // console.log(filepath);
         const fileBuffer = await fs.readFile(filepath);
         // console.log(fileBuffer);
         const chat = await client.messaging.getAllChats({ limit: 1 });
@@ -263,11 +263,16 @@ describe("MessagingResource", () => {
           attachments: [["getMessageAttachment.png", fileBuffer]],
         });
         expect(resultSend.object).toBe("MessageSent");
-        expect(typeof resultSend.message_id).toBe("string");
+        expect(
+          resultSend.message_id === null ||
+            typeof resultSend.message_id === "string",
+        ).toBe(true);
 
         /**
          * @todo Find another way to guarantee a message with an attachment exists.
          *       Sending one and waiting for it to be synced is very flaky.
+         *       Also it WON'T WORK with Account types that do not return a 
+         *       message_id when sending a message, e.g. WHATSAPP.
          */
         await new Promise((resolve) => setTimeout(resolve, 1000));
         const message = await client.messaging.getMessage(
@@ -339,18 +344,19 @@ describe("MessagingResource", () => {
         "on setChatStatus " +
         "when ",
       async () => {
-        // try {
-        const chat = await client.messaging.getAllChats({ limit: 1 });
-        const result = await client.messaging.setChatStatus({
-          chat_id: chat.items[0].id,
-          action: "setReadStatus",
-          value: true,
-        });
-        expect(result.object).toBe("ChatPatched");
-        // } catch (err) {
-        //   console.log("err", err, JSON.stringify(err.body[0].value));
-        //   throw err;
-        // }
+        try {
+          const chat = await client.messaging.getAllChats({ limit: 1 });
+        //   console.log(chat);
+          const result = await client.messaging.setChatStatus({
+            chat_id: chat.items[0].id,
+            action: "setReadStatus",
+            value: true,
+          });
+          expect(result.object).toBe("ChatPatched");
+        } catch (err) {
+          console.log("err", err);
+          throw err;
+        }
       },
     );
   });
