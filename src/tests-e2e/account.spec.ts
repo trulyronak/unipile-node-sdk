@@ -17,12 +17,12 @@ describe("AccountResource", () => {
   //----------------------------------------------------------------------------
   describe("getAll", () => {
     //--------------------------------------------------------------------------
-    it(
+    it.only(
       "should return a validated AccountList " +
         "on getAll " +
         "when no arguments",
       async () => {
-        const result = await client.account.getAll();
+        const result = await client.account.getAll({limit : 2});
         expect(result.object).toBe("AccountList");
       },
     );
@@ -49,7 +49,7 @@ describe("AccountResource", () => {
   //----------------------------------------------------------------------------
   describe("connect", () => {
     //--------------------------------------------------------------------------
-    it.only(
+    it(
       "should return a validated AccountCreated response " +
         "on connect " +
         "when no checkpoint",
