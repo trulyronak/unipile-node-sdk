@@ -8,16 +8,23 @@ export class UnsuccessfulRequestError extends UnipileError {
 }
 
 export class InvalidResponseTypeError extends UnipileError {
-  constructor(errorIterator: ValueErrorIterator) {
+  constructor(
+    errorIterator: ValueErrorIterator,
+    public invalid_response: unknown,
+  ) {
     const body = Array.from(errorIterator);
     super({
       message: `Invalid response type : the response type didn't match the one expected by the SDK.
 
 Make sure the SDK is up to date. If the SDK is up to date and you still get the error, please contact our support.
-You may also disable the optional validation to ignore this issue and work with the current response.
 
-The full error list is available in the .body property of this error.
+To ignore this issue and try work with the current response 'as is' :
+  - You may use the .invalid_response property of this error 
+  - Or disable the optional validation altogether.
+
+The full error list is available on the .body property of this error.
 Here is the first error :
+
 ${JSON.stringify(body[0], null, 2)}`,
       body,
     });

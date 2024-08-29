@@ -82,7 +82,9 @@ export class RequestSender {
   }
 
   private validate<T extends TSchema>(value: unknown, validator: TypeCheck<T>): Static<T> {
-    if (!validator.Check(value)) throw new InvalidResponseTypeError(validator.Errors(value));
+    if (!validator.Check(value)) {
+      throw new InvalidResponseTypeError(validator.Errors(value), value);
+    }
 
     return value;
   }
