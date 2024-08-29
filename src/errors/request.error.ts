@@ -11,8 +11,10 @@ export class InvalidResponseTypeError extends UnipileError {
   constructor(
     errorIterator: ValueErrorIterator,
     public invalid_response: unknown,
+    errorSampleLength = 1000,
   ) {
     const body = Array.from(errorIterator);
+    const firstError = JSON.stringify(body[0], null, 2);
     super({
       message: `Invalid response type : the response type didn't match the one expected by the SDK.
 
@@ -25,7 +27,7 @@ To ignore this issue and try work with the current response 'as is' :
 The full error list is available on the .body property of this error.
 Here is the first error :
 
-${JSON.stringify(body[0], null, 2)}`,
+${firstError.substring(0, errorSampleLength)}${firstError.length > errorSampleLength ? '\n... (continued in .body)' : ''}`,
       body,
     });
   }
