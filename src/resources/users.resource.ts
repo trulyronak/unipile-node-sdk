@@ -12,6 +12,7 @@ import {
   CancelInvitationsSentInput,
   GetAllRelationsInput,
   CreatePostInput,
+  CompanyProfileInput,
 } from '../index.js';
 import { PostCommentListApiResponse, PostCommentListApiResponseValidator } from '../posts/comment-list.types.js';
 import { CommentPostResponse, CommentPostResponseValidator } from '../posts/comment-send.types.js';
@@ -232,6 +233,20 @@ export class UsersResource {
       },
       options,
       validator: CancelUserInvitationApiResponseValidator,
+    });
+  }
+
+  async getCompanyProfile(input: CompanyProfileInput, options?: RequestOptions): Promise<Response.UntypedYet> {
+    const { account_id, identifier } = input;
+
+    return await this.client.request.send({
+      path: ['linkedin', 'company', identifier],
+      method: 'GET',
+      parameters: {
+        account_id,
+      },
+      options,
+      validator: untypedYetValidator,
     });
   }
 }
