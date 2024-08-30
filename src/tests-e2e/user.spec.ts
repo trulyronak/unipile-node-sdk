@@ -484,37 +484,36 @@ describe("UserResource", () => {
     );
   });
   //----------------------------------------------------------------------------
-  //// feature to add with branch feat/2780
-  // describe("getCompanyProfile", () => {
-  //   //--------------------------------------------------------------------------
-  //   it(
-  //     "should return a validated @todo " +
-  //       "on getCompanyProfile " +
-  //       "when linkedIn account Id" +
-  //       "and company name",
-  //     async () => {
-  //       // try {
-  //       const accounts = await client.account.getAll({ limit: 1 });
-  //       //   accounts.items = [accounts.items[0]];
-  //       //   console.log(
-  //       //     ...AccountListResponseValidator.Errors(accounts),
-  //       //     JSON.stringify(accounts.items[0], null, 2),
-  //       //   );
-  //       const account_id = accounts.items.filter(
-  //         (acc) => acc.type === "LINKEDIN",
-  //       )[0].id;
+  describe("getCompanyProfile", () => {
+    //--------------------------------------------------------------------------
+    it(
+      "should return a validated CompanyProfile " +
+        "on getCompanyProfile " +
+        "when linkedIn account Id" +
+        "and company name",
+      async () => {
+        // try {
+        const accounts = await client.account.getAll({ limit: 1 });
+        //   accounts.items = [accounts.items[0]];
+        //   console.log(
+        //     ...AccountListResponseValidator.Errors(accounts),
+        //     JSON.stringify(accounts.items[0], null, 2),
+        //   );
+        const account_id = accounts.items.filter(
+          (acc) => acc.type === "LINKEDIN",
+        )[0].id;
 
-  //       const result = await client.users.getCompanyProfile({
-  //         account_id,
-  //         identifier:"Unipile",
-  //       });
-  //       expect(result.object).toBe("@todo");
-  //       // } catch (err) {
-  //       //   console.log(err);
-  //       //   throw err;
-  //       // }
-  //     },
-  //   );
-  // });
+        const result = await client.users.getCompanyProfile({
+          account_id,
+          identifier: "Unipile",
+        });
+        expect(result.object).toBe("CompanyProfile");
+        // } catch (err) {
+        //   console.log(err);
+        //   throw err;
+        // }
+      },
+    );
+  });
   //----------------------------------------------------------------------------
 });
