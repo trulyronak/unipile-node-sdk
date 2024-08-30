@@ -13,6 +13,7 @@ import {
   TwitterAccountWithSourceStatusSchema,
   WhatsAppAccountWithSourceStatusSchema,
   InstagramAccountWithSourceStatusSchema,
+  MessengerAccountWithSourceStatusSchema,
 } from "./ressource.types.js";
 import { TypeCompiler } from "@sinclair/typebox/compiler";
 
@@ -125,6 +126,14 @@ export const AccountMobileApiResponse = Type.Composite(
     { title: "Instagram" }
   );
   
+  export const AccountMessengerApiResponse = Type.Composite(
+    [
+      Type.Object({ object: Type.Literal("Account") }),
+      MessengerAccountWithSourceStatusSchema,
+    ],
+    { title: "Messenger" }
+  );
+  
   /**
    *
    */
@@ -142,6 +151,7 @@ export const AccountMobileApiResponse = Type.Composite(
     AccountExchangeApiResponse,
     AccountTelegramApiResponse,
     AccountInstagramApiResponse,
+    AccountMessengerApiResponse,
   ]);
   
   export type AccountApiResponse = Static<typeof AccounApiResponseSchema>;

@@ -3,7 +3,6 @@ import { StringEnum, UniqueIdSchema } from '../common/common.types.js';
 import { UTCDateTimeMsSchema } from '../common/date.types.js';
 import { FolderSyncErrorSchema, FolderSyncingSchema } from '../mails/folders/folders.types.js';
 import { i18n } from '../common/i18n.fake.js';
-
 // --------------------------------------------------------------
 //  CONNECTION PARAMS
 // --------------------------------------------------------------
@@ -85,6 +84,10 @@ export const ProxyParamsSchema = Type.Object({
       username: Type.String(),
     }),
     Instagram: Type.Object({
+      id: Type.String(),
+      username: Type.String(),
+    }),
+    Messenger: Type.Object({
       id: Type.String(),
       username: Type.String(),
     }),
@@ -557,6 +560,26 @@ export const ProxyParamsSchema = Type.Object({
     SourceStatusSchema,
   ]);
   
+  export const MessengerAccountSchema = Type.Composite([
+    Type.Object({
+      type: Type.Literal("MESSENGER"),
+      connection_params: Type.Object({
+        im: ConnectionParamsSchema.Messenger,
+      }),
+      sources: Type.Object({
+        MESSAGING: Type.Object({
+          status: AccountSourceStatusSchema,
+        }),
+      }),
+    }),
+    ViewAccountBaseSchema,
+  ]);
+  
+  export const MessengerAccountWithSourceStatusSchema = Type.Composite([
+    Type.Omit(MessengerAccountSchema, ["sources"]),
+    SourceStatusSchema,
+  ]);
+  
   /**
    *
    */
@@ -574,6 +597,7 @@ export const ProxyParamsSchema = Type.Object({
     ExchangeAccountSchema,
     TelegramAccountSchema,
     InstagramAccountSchema,
+    MessengerAccountSchema,
   ]);
   
   export const ViewAccountWithSourceStatusSchema = Type.Union([
@@ -590,6 +614,7 @@ export const ProxyParamsSchema = Type.Object({
     MobileAccountWithSourceStatusSchema,
     TelegramAccountWithSourceStatusSchema,
     InstagramAccountWithSourceStatusSchema,
+    MessengerAccountWithSourceStatusSchema,
   ]);
   
   export type ViewAccount = Static<typeof ViewAccountSchema>;

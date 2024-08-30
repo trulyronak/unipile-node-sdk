@@ -22,7 +22,7 @@ describe("AccountResource", () => {
         "on getAll " +
         "when no arguments",
       async () => {
-        const result = await client.account.getAll({limit : 2});
+        const result = await client.account.getAll({limit : 5});
         expect(result.object).toBe("AccountList");
       },
     );
