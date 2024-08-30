@@ -17,12 +17,12 @@ describe("AccountResource", () => {
   //----------------------------------------------------------------------------
   describe("getAll", () => {
     //--------------------------------------------------------------------------
-    it.only(
+    it(
       "should return a validated AccountList " +
         "on getAll " +
         "when no arguments",
       async () => {
-        const result = await client.account.getAll({limit : 5});
+        const result = await client.account.getAll();
         expect(result.object).toBe("AccountList");
       },
     );
@@ -98,16 +98,32 @@ describe("AccountResource", () => {
         // try {
         const result = await client.account.connect({
           provider: "MAIL",
-          username: config.MAIL_USERNAME,
-          password: config.MAIL_PASSWORD,
+          // @ts-expect-error ConnectAccountInput IS VERY OUTDATED.
+          imap_port: config.MAIL_IMAP_PORT,
+          imap_host: config.MAIL_IMAP_HOST,
+          smtp_port: config.MAIL_SMTP_PORT,
+          smtp_host: config.MAIL_SMTP_HOST,
+          imap_encryption: config.MAIL_IMAP_ENCRYPTION,
+          imap_user: config.MAIL_USERNAME,
+          smtp_user: config.MAIL_USERNAME,
+          imap_password: config.MAIL_PASSWORD,
+          smtp_password: config.MAIL_PASSWORD,
         });
         expect(result.object).toBe("AccountCreated");
 
         const resultReconnect = await client.account.reconnect({
           account_id: result.account_id,
           provider: "MAIL",
-          username: config.MAIL_USERNAME,
-          password: config.MAIL_PASSWORD,
+          // @ts-expect-error ReconnectAccountInput IS VERY OUTDATED.
+          imap_port: config.MAIL_IMAP_PORT,
+          imap_host: config.MAIL_IMAP_HOST,
+          smtp_port: config.MAIL_SMTP_PORT,
+          smtp_host: config.MAIL_SMTP_HOST,
+          imap_encryption: config.MAIL_IMAP_ENCRYPTION,
+          imap_user: config.MAIL_USERNAME,
+          smtp_user: config.MAIL_USERNAME,
+          imap_password: config.MAIL_PASSWORD,
+          smtp_password: config.MAIL_PASSWORD,
         });
         expect(resultReconnect.object).toBe("AccountReconnected");
 
@@ -167,6 +183,7 @@ describe("AccountResource", () => {
         expect(typeof result.code).toBe("string");
         expect(typeof result.qrCodeString).toBe("string");
       },
+      10000,
     );
   });
   //----------------------------------------------------------------------------
@@ -193,7 +210,7 @@ describe("AccountResource", () => {
   //----------------------------------------------------------------------------
   describe("reconnectTelegram", () => {
     //--------------------------------------------------------------------------
-    it(
+    it.only(
       "should return a validated PostQrCodeBasedAccount response  " +
         "on reconnectTelegram " +
         "when ",

@@ -15,6 +15,7 @@ import {
   PostTwitterAccountInput,
   LinkedinBasicAuthenticationInput,
   LinkedinCookieAuthenticationInput,
+  InvalidInputTypeError,
 } from '../index.js';
 import { AccountListApiResponse, AccountListResponseValidator } from '../accounts/accounts-list.schema.js';
 import { AccountApiResponse, AccountApiResponseValidator } from '../accounts/account.types.js';
@@ -27,6 +28,7 @@ import {
 } from '../accounts/accounts-reconnect.types.js';
 import { AccountDeletedApiResponse, AccountDeletedApiResponseValidator } from '../accounts/accounts-delete.types.js';
 import { HostedAuthLinkResponse, HostedAuthLinkResponseValidator } from '../hosted/hosted-auth-link.types.js';
+import { UniqueIdValidator } from '../common/common.types.js';
 
 export class AccountResource {
   constructor(private client: UnipileClient) {}
@@ -103,6 +105,9 @@ export class AccountResource {
   }
 
   async reconnectWhatsapp(account_id: string, options?: RequestOptions): Promise<Output.PostQrCodeBasedAccount> {
+    if (!UniqueIdValidator.Check(account_id)) {
+      throw new InvalidInputTypeError(UniqueIdValidator.Errors(account_id));
+    }
     const response = await this.client.request.send<Response.PostQrCodeBasedAccount>({
       path: ['accounts', account_id],
       method: 'POST',
@@ -143,6 +148,9 @@ export class AccountResource {
   }
 
   async reconnectTelegram(account_id: string, options?: RequestOptions): Promise<Output.PostQrCodeBasedAccount> {
+    if (!UniqueIdValidator.Check(account_id)) {
+      throw new InvalidInputTypeError(UniqueIdValidator.Errors(account_id));
+    }
     const response = await this.client.request.send<Response.PostQrCodeBasedAccount>({
       path: ['accounts', account_id],
       method: 'POST',

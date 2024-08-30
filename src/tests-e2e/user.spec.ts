@@ -44,7 +44,7 @@ describe("UserResource", () => {
 
           expect(result.object).toBe("UserProfile");
         } catch (err) {
-          console.log("err", err, JSON.stringify(err.body[0].value));
+          console.log("err", err);
           throw err;
         }
       },
