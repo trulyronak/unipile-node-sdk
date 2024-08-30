@@ -23,4 +23,4 @@ export type LinkedinCompanyProfileApiResponse = Static<
 
 
 /**  */
-export const LinkedinCompanyProfileResponseValidator = TypeCompiler.Compile(LinkedinCompanyProfileResponseSchema);
+export const LinkedinCompanyProfileApiResponseValidator = TypeCompiler.Compile(LinkedinCompanyProfileResponseSchema);

@@ -14,6 +14,7 @@ import {
   CreatePostInput,
   CompanyProfileInput,
 } from '../index.js';
+import { LinkedinCompanyProfileApiResponse, LinkedinCompanyProfileApiResponseValidator } from '../linkedin/company.js';
 import { PostCommentListApiResponse, PostCommentListApiResponseValidator } from '../posts/comment-list.types.js';
 import { CommentPostResponse, CommentPostResponseValidator } from '../posts/comment-send.types.js';
 import { CreatePostResponse, CreatePostResponseValidator } from '../posts/post-create.types.js';
@@ -236,7 +237,7 @@ export class UsersResource {
     });
   }
 
-  async getCompanyProfile(input: CompanyProfileInput, options?: RequestOptions): Promise<Response.UntypedYet> {
+  async getCompanyProfile(input: CompanyProfileInput, options?: RequestOptions): Promise<LinkedinCompanyProfileApiResponse> {
     const { account_id, identifier } = input;
 
     return await this.client.request.send({
@@ -246,7 +247,7 @@ export class UsersResource {
         account_id,
       },
       options,
-      validator: untypedYetValidator,
+      validator: LinkedinCompanyProfileApiResponseValidator,
     });
   }
 }
