@@ -40,3 +40,19 @@ export class ValidatorMissingError extends UnipileError {
     });
   }
 }
+
+export class InvalidInputTypeError extends UnipileError {
+  constructor(errorIterator: ValueErrorIterator, errorSampleLength = 1000) {
+    const body = Array.from(errorIterator);
+    const firstError = JSON.stringify(body[0], null, 2);
+    super({
+      message: `Invalid input type : the input type didn't match the one expected by the SDK.
+      
+The full error list is available on the .body property of this error.
+Here is the first error :
+
+${firstError.substring(0, errorSampleLength)}${firstError.length > errorSampleLength ? '\n... (continued in .body)' : ''}`,
+      body,
+    });
+  }
+}
