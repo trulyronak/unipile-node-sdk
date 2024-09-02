@@ -80,7 +80,7 @@ export class EmailResource {
     this.update.byId = this._update.bind(this);
     this.update.byProviderId = this._updateByProviderId.bind(this);
 
-    this.getOneFolder = this._getOneFolder.bind(this) as EmailMethodCallableByProviderId<Response.UntypedYet>;
+    this.getOneFolder = this._getOneFolder.bind(this) as EmailMethodCallableByProviderId<FolderApiResponse>;
     this.getOneFolder.byId = this._getOneFolder.bind(this);
     this.getOneFolder.byProviderId = this._getOneFolderByProviderId.bind(this);
 
