@@ -45,6 +45,10 @@ export const config = {
   MAIL_SMTP_PORT: 465,
   MAIL_SMTP_HOST: "ssl0.ovh.net",
   MAIL_IMAP_ENCRYPTION: "default",
+  MAIL_ATTACHMENT_MAIL_ID: "",
+  MAIL_ATTACHMENT_ACCOUNT_ID: "",
+  MAIL_ATTACHMENT_ATTACHMENT_ID: "",
+  MAIL_ATTACHMENT_MAIL_PROVIDER_ID: "",
   logRequestPayload: false,
   logRequestResult: false,
 };

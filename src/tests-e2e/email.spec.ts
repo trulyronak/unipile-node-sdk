@@ -530,83 +530,38 @@ describe("EmailResource", () => {
   //----------------------------------------------------------------------------
   describe("getEmailAttachment", () => {
     //--------------------------------------------------------------------------
-    it.skip(
+    it(
       "should return a validated Email Attachment " +
         "on getEmailAttachment " +
         "when mail Id " +
         "and attachment Id",
       async () => {
         // try {
-
-        const accounts = await client.account.getAll();
-        //   accounts.items = [accounts.items[0]];
-        //   console.log(
-        //     ...AccountListResponseValidator.Errors(accounts),
-        //     JSON.stringify(accounts.items[0], null, 2),
-        //   );
-        const account_id = accounts.items.filter(
-          (acc) =>
-            acc.type === "MAIL" ||
-            acc.type === "EXCHANGE" ||
-            acc.type === "GOOGLE_OAUTH" ||
-            acc.type === "OUTLOOK" ||
-            acc.type === "ICLOUD",
-        )[0].id;
-
-        const mail = await client.email.getAll({
-          account_id,
-          limit: 1,
-        });
-
-        const email_id = mail.items[0].id;
-        const attachment_id = ""; // don't know how to retrieve this
         const result = await client.email.getEmailAttachment({
-          email_id,
-          attachment_id,
+          email_id: config.MAIL_ATTACHMENT_MAIL_ID,
+          attachment_id: config.MAIL_ATTACHMENT_ATTACHMENT_ID,
         });
-        expect(result.object).toBe("Email");
+        expect(result.constructor.name).toBe("Blob");
         // } catch (err) {
         //   console.log(err);
         //   throw err;
         // }
       },
+      10000,
     );
     //--------------------------------------------------------------------------
-    it.skip(
+    it(
       "should return a validated Email Attachment " +
         "on getEmailAttachment.byId " +
         "when mail Id " +
         "and attachment Id",
       async () => {
         // try {
-
-        const accounts = await client.account.getAll();
-        //   accounts.items = [accounts.items[0]];
-        //   console.log(
-        //     ...AccountListResponseValidator.Errors(accounts),
-        //     JSON.stringify(accounts.items[0], null, 2),
-        //   );
-        const account_id = accounts.items.filter(
-          (acc) =>
-            acc.type === "MAIL" ||
-            acc.type === "EXCHANGE" ||
-            acc.type === "GOOGLE_OAUTH" ||
-            acc.type === "OUTLOOK" ||
-            acc.type === "ICLOUD",
-        )[0].id;
-
-        const mail = await client.email.getAll({
-          account_id,
-          limit: 1,
-        });
-
-        const email_id = mail.items[0].id;
-        const attachment_id = ""; // don't know how to retrieve this
         const result = await client.email.getEmailAttachment.byId({
-          email_id,
-          attachment_id,
+          email_id: config.MAIL_ATTACHMENT_MAIL_ID,
+          attachment_id: config.MAIL_ATTACHMENT_ATTACHMENT_ID,
         });
-        expect(result.object).toBe("Email");
+        expect(result.constructor.name).toBe("Blob");
         // } catch (err) {
         //   console.log(err);
         //   throw err;
@@ -614,7 +569,7 @@ describe("EmailResource", () => {
       },
     );
     //--------------------------------------------------------------------------
-    it.skip(
+    it.only(
       "should return a validated Email Attachment " +
         "on getEmailAttachment.byProviderId " +
         "when provider_id " +
@@ -622,34 +577,12 @@ describe("EmailResource", () => {
       async () => {
         // try {
 
-        const accounts = await client.account.getAll();
-        //   accounts.items = [accounts.items[0]];
-        //   console.log(
-        //     ...AccountListResponseValidator.Errors(accounts),
-        //     JSON.stringify(accounts.items[0], null, 2),
-        //   );
-        const account_id = accounts.items.filter(
-          (acc) =>
-            acc.type === "MAIL" ||
-            acc.type === "EXCHANGE" ||
-            acc.type === "GOOGLE_OAUTH" ||
-            acc.type === "OUTLOOK" ||
-            acc.type === "ICLOUD",
-        )[0].id;
-
-        const mail = await client.email.getAll({
-          account_id,
-          limit: 1,
-        });
-
-        const email_provider_id = mail.items[0].provider_id;
-        const attachment_id = ""; // don't know how to retrieve this
         const result = await client.email.getEmailAttachment.byProviderId({
-          email_provider_id,
-          attachment_id,
-          account_id,
+          account_id: config.MAIL_ATTACHMENT_ACCOUNT_ID,
+          email_provider_id: config.MAIL_ATTACHMENT_MAIL_PROVIDER_ID,
+          attachment_id: config.MAIL_ATTACHMENT_ATTACHMENT_ID,
         });
-        expect(result.object).toBe("Email");
+        expect(result.constructor.name).toBe("Blob");
         // } catch (err) {
         //   console.log(err);
         //   throw err;
