@@ -1,29 +1,29 @@
 import { FormData } from 'formdata-node';
 import { Blob } from 'node-fetch';
+
 import {
   GetAllEmailsInput,
   GetAllFoldersInput,
+  GetEmailAttachmentByProviderIdInput,
   GetEmailAttachmentInput,
-  UpdateEmailInput,
   RequestOptions,
-  Response,
   SendEmailInput,
   UnipileClient,
   untypedYetValidator,
   UpdateEmailByProviderIdInput,
-  GetEmailAttachmentByProviderIdInput,
+  UpdateEmailInput,
 } from '../index.js';
-import { MailApiResponse, MailApiResponseValidator } from '../mails/mail.types.js';
-import { MailDeletedApiResponse, MailDeletedApiResponseValidator } from '../mails/mail.delete.types.js';
-import { MailUpdatedApiResponse, MailUpdatedApiResponseValidator } from '../mails/mail.update.types.js';
-import { MailListApiResponse, MailListApiResponseValidator } from '../mails/mails-list.types.js';
 import {
   FolderApiResponse,
   FolderApiResponseValidator,
   FolderListApiResponse,
   FolderListApiResponseValidator,
 } from '../mails/folders/folders.types.js';
+import { MailDeletedApiResponse, MailDeletedApiResponseValidator } from '../mails/mail.delete.types.js';
 import { MailSentApiResponse, MailSentApiResponseValidator } from '../mails/mail.send.types.js';
+import { MailApiResponse, MailApiResponseValidator } from '../mails/mail.types.js';
+import { MailUpdatedApiResponse, MailUpdatedApiResponseValidator } from '../mails/mail.update.types.js';
+import { MailListApiResponse, MailListApiResponseValidator } from '../mails/mails-list.types.js';
 
 type EmailMethodCallableByProviderId<T> = {
   (...args: any): Promise<T>;
@@ -283,7 +283,7 @@ export class EmailResource {
     const { email_id, attachment_id } = input;
 
     return await this.client.request.send({
-      path: [email_id, 'attachments', attachment_id],
+      path: ['emails', email_id, 'attachments', attachment_id],
       method: 'GET',
       options,
       validator: untypedYetValidator,
@@ -297,7 +297,7 @@ export class EmailResource {
     const { email_provider_id, attachment_id, account_id } = input;
 
     return await this.client.request.send({
-      path: [email_provider_id, 'attachments', attachment_id],
+      path: ['emails', email_provider_id, 'attachments', attachment_id],
       method: 'GET',
       options,
       parameters: { account_id },
