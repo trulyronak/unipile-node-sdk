@@ -101,6 +101,7 @@ export class AccountResource {
     return {
       qrCodeString: await QRCode.toString(response.checkpoint.qrcode),
       code: response.checkpoint.qrcode,
+      account_id: response.account_id,
     };
   }
 
@@ -124,6 +125,7 @@ export class AccountResource {
     return {
       qrCodeString: await QRCode.toString(response.checkpoint.qrcode),
       code: response.checkpoint.qrcode,
+      account_id: response.account_id,
     };
   }
 
@@ -144,6 +146,7 @@ export class AccountResource {
     return {
       qrCodeString: await QRCode.toString(response.checkpoint.qrcode),
       code: response.checkpoint.qrcode,
+      account_id: response.account_id,
     };
   }
 
@@ -167,6 +170,7 @@ export class AccountResource {
     return {
       qrCodeString: await QRCode.toString(response.checkpoint.qrcode),
       code: response.checkpoint.qrcode,
+      account_id: response.account_id,
     };
   }
 
