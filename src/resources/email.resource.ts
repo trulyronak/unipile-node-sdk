@@ -65,7 +65,7 @@ export class EmailResource {
    * @example email.getEmailAttachment({ email_id: 'email_id', attachment_id: 'attachment_id' })
    * @example email.getEmailAttachment.byProviderId({ email_provider_id: 'email_provider_id', attachment_id: 'attachment_id', account_id: 'account_id' })
    */
-  public getEmailAttachment: EmailMethodCallableByProviderId<Response.UntypedYet>;
+  public getEmailAttachment: EmailMethodCallableByProviderId<Blob>;
 
   constructor(private client: UnipileClient) {
     this.getOne = this._getOne.bind(this) as EmailMethodCallableByProviderId<MailApiResponse>;
