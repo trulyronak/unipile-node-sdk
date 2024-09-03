@@ -1,3 +1,4 @@
+import { AccountCreateBody } from '../../accounts/accounts-create.types.js';
 import { SupportedProvider } from '../client.js';
 
 export type GetAccountsInput = {
@@ -6,13 +7,7 @@ export type GetAccountsInput = {
 };
 
 /** ConnectAccountInput */
-export type ConnectAccountInput = {
-  provider: SupportedProvider;
-  username?: string;
-  password?: string;
-  proxy?: ProxyParams;
-  access_token?: string;
-};
+export type ConnectAccountInput = AccountCreateBody;
 
 /** ReconnectAccountInput */
 export type ReconnectAccountInput = ConnectAccountInput & { account_id: string };

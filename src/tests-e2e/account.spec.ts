@@ -59,7 +59,6 @@ describe("AccountResource", () => {
             provider: "MAIL",
             // username: config.MAIL_USERNAME,
             // password: config.MAIL_PASSWORD,
-            // @ts-expect-error ConnectAccountInput IS VERY OUTDATED.
             imap_port: config.MAIL_IMAP_PORT,
             imap_host: config.MAIL_IMAP_HOST,
             smtp_port: config.MAIL_SMTP_PORT,
@@ -98,7 +97,6 @@ describe("AccountResource", () => {
         // try {
         const result = await client.account.connect({
           provider: "MAIL",
-          // @ts-expect-error ConnectAccountInput IS VERY OUTDATED.
           imap_port: config.MAIL_IMAP_PORT,
           imap_host: config.MAIL_IMAP_HOST,
           smtp_port: config.MAIL_SMTP_PORT,
@@ -114,7 +112,6 @@ describe("AccountResource", () => {
         const resultReconnect = await client.account.reconnect({
           account_id: result.account_id,
           provider: "MAIL",
-          // @ts-expect-error ReconnectAccountInput IS VERY OUTDATED.
           imap_port: config.MAIL_IMAP_PORT,
           imap_host: config.MAIL_IMAP_HOST,
           smtp_port: config.MAIL_SMTP_PORT,
