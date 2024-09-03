@@ -48,6 +48,7 @@ describe("EmailResource", () => {
           throw err;
         }
       },
+      10000,
     );
   });
   //----------------------------------------------------------------------------
@@ -131,10 +132,7 @@ describe("EmailResource", () => {
         });
 
         //missing query options (e.g. unread)
-        const result = await client.email.getOne.byId({
-          email_id: mail.items[0].id,
-          account_id,
-        });
+        const result = await client.email.getOne.byId(mail.items[0].id);
         expect(result.object).toBe("Email");
         // } catch (err) {
         //   console.log(err);
@@ -170,10 +168,10 @@ describe("EmailResource", () => {
         });
 
         //missing query options (e.g. unread)
-        const result = await client.email.getOne.byProviderId({
-          email_provider_id: mail.items[0].id,
+        const result = await client.email.getOne.byProviderId(
+          mail.items[0].provider_id,
           account_id,
-        });
+        );
         expect(result.object).toBe("Email");
         // } catch (err) {
         //   console.log(err);
@@ -246,10 +244,7 @@ describe("EmailResource", () => {
           limit: 1,
         });
 
-        const result = await client.email.delete.byId({
-          email_id: mail.items[0].id,
-          account_id,
-        });
+        const result = await client.email.delete.byId(mail.items[0].id);
         expect(result.object).toBe("EmailDeleted");
         // } catch (err) {
         //   console.log(err);
@@ -285,10 +280,10 @@ describe("EmailResource", () => {
           limit: 1,
         });
 
-        const result = await client.email.delete.byProviderId({
-          email_provider_id: mail.items[0].id,
+        const result = await client.email.delete.byProviderId(
+          mail.items[0].provider_id,
           account_id,
-        });
+        );
         expect(result.object).toBe("EmailDeleted");
         // } catch (err) {
         //   console.log(err);
@@ -326,7 +321,10 @@ describe("EmailResource", () => {
         });
 
         //missing query options (e.g. unread)
-        const result = await client.email.update(mail.items[0].id);
+        const result = await client.email.update({
+          email_id: mail.items[0].id,
+          unread: true,
+        });
         expect(result.object).toBe("EmailUpdated");
         // } catch (err) {
         //   console.log(err);
@@ -364,7 +362,7 @@ describe("EmailResource", () => {
 
         const result = await client.email.update.byId({
           email_id: mail.items[0].id,
-          account_id,
+          unread: true,
         });
         expect(result.object).toBe("EmailUpdated");
         // } catch (err) {
@@ -477,10 +475,9 @@ describe("EmailResource", () => {
           account_id,
         });
 
-        const result = await client.email.getOneFolder.byId({
-          folder_id: folders.items[0].id,
-          account_id,
-        });
+        const result = await client.email.getOneFolder.byId(
+          folders.items[0].id,
+        );
         expect(result.object).toBe("Folder");
         // } catch (err) {
         //   console.log(err);
@@ -515,10 +512,10 @@ describe("EmailResource", () => {
           account_id,
         });
 
-        const result = await client.email.getOneFolder.byProviderId({
-          folder_provider_id: folders.items[0].id,
+        const result = await client.email.getOneFolder.byProviderId(
+          folders.items[0].id,
           account_id,
-        });
+        );
         expect(result.object).toBe("Folder");
         // } catch (err) {
         //   console.log(err);
@@ -569,7 +566,7 @@ describe("EmailResource", () => {
       },
     );
     //--------------------------------------------------------------------------
-    it.only(
+    it(
       "should return a validated Email Attachment " +
         "on getEmailAttachment.byProviderId " +
         "when provider_id " +
@@ -593,7 +590,7 @@ describe("EmailResource", () => {
   //----------------------------------------------------------------------------
   describe("send", () => {
     //--------------------------------------------------------------------------
-    it.skip(
+    it(
       "should send a validated EmailSent " +
         "on send " +
         "when minimal options",

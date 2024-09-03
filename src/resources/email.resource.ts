@@ -116,6 +116,7 @@ export class EmailResource {
     this.update.byProviderId = this._updateByProviderId.bind(this);
 
     this.getOneFolder = this._getOneFolder.bind(this) as EmailResource['getOneFolder'];
+    this.getOneFolder.byId = this._getOneFolder.bind(this);
     this.getOneFolder.byProviderId = this._getOneFolderByProviderId.bind(this);
 
     this.getEmailAttachment = this._getEmailAttachment.bind(this) as EmailResource['getEmailAttachment'];
