@@ -555,8 +555,16 @@ describe("AccountResource", () => {
         // try {
         const result = await client.account.connect({
           provider: "MAIL",
-          username: config.MAIL_USERNAME,
-          password: config.MAIL_PASSWORD,
+          imap_port: config.MAIL_IMAP_PORT,
+          imap_host: config.MAIL_IMAP_HOST,
+          smtp_port: config.MAIL_SMTP_PORT,
+          smtp_host: config.MAIL_SMTP_HOST,
+          imap_encryption: config.MAIL_IMAP_ENCRYPTION,
+          imap_user: config.MAIL_USERNAME,
+          smtp_user: config.MAIL_USERNAME,
+          imap_password: config.MAIL_PASSWORD,
+          smtp_password: config.MAIL_PASSWORD,
+          sync_limit: "NO_HISTORY_SYNC",
         });
         expect(result.object).toBe("AccountCreated");
 
