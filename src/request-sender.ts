@@ -48,7 +48,10 @@ export class RequestSender {
     if (bodyType === 'application/json; charset=utf-8') body = await response.json();
     else body = await response.blob();
 
-    if (options.logRequestPayload ?? this.clientState.logRequestPayload) console.log(body);
+    if (options.logRequestPayload ?? this.clientState.logRequestPayload) {
+      console.log(body);
+      //   console.log(JSON.stringify(body, null, 2));
+    }
 
     const successfulRequest = response.status >= 200 && response.status < 300;
     const validationActivated = options.validateRequestPayload ?? this.clientState.validateRequestPayload;

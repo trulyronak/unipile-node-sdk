@@ -13,7 +13,8 @@ describe("EmailResource", () => {
     client = new UnipileClient(config.BASE_URL, config.ACCESS_TOKEN, {
       logRequestPayload: config.logRequestPayload,
       logRequestResult: config.logRequestResult,
-      validateRequestPayload: false,
+      validateRequestPayload: true,
+      validateRequestPayloadLevel: "error",
     });
   });
 
@@ -72,7 +73,7 @@ describe("EmailResource", () => {
   //----------------------------------------------------------------------------
   describe("getOne", () => {
     //--------------------------------------------------------------------------
-    it(
+    it.only(
       "should return a validated Email " + "on getOne " + "when mail Id",
       async () => {
         // try {
