@@ -1,5 +1,5 @@
 import { InvalidDomainError, InvalidProtocolError, InvalidTokenError } from './errors/index.js';
-import { ApiVersion, ClientInstantiationOptions, SupportedProtocols } from './types/index.js';
+import { ApiVersion, ClientInstantiationOptions, ClientOptions, SupportedProtocols } from './types/index.js';
 
 const DEFAULT_API_VERSION = 'v1';
 const DEFAULT_LOG_REQUEST_RESULT = false;
@@ -16,6 +16,7 @@ export class ClientState {
   public readonly logRequestResult: boolean;
   public readonly logRequestPayload: boolean;
   public readonly validateRequestPayload: boolean;
+  public readonly validateRequestPayloadLevel: ClientOptions['validateRequestPayloadLevel'];
 
   constructor(baseUrl: string, token: string, options: ClientInstantiationOptions) {
     this._baseUrl = baseUrl;
@@ -28,6 +29,7 @@ export class ClientState {
     this.logRequestResult = options.logRequestResult ?? DEFAULT_LOG_REQUEST_RESULT;
     this.logRequestPayload = options.logRequestPayload ?? DEFAULT_LOG_REQUEST_PAYLOAD;
     this.validateRequestPayload = options.validateRequestPayload ?? DEFAULT_VALIDATE_REQUEST_PAYLOAD;
+    this.validateRequestPayloadLevel = options.validateRequestPayloadLevel ?? 'warn';
     // this.validateRequestPayload = false;
   }
 

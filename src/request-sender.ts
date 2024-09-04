@@ -4,6 +4,7 @@ import { DefaultHeaders, RequestInput, RequestUrl } from './types/request.js';
 import { ValidatorMissingError, UnsuccessfulRequestError, InvalidResponseTypeError } from './errors/index.js';
 import { ClientState } from './state.js';
 import fetch from 'node-fetch';
+import { ClientOptions } from './types/client.js';
 
 export class RequestSender {
   private clientState: ClientState;
@@ -51,9 +52,10 @@ export class RequestSender {
 
     const successfulRequest = response.status >= 200 && response.status < 300;
     const validationActivated = options.validateRequestPayload ?? this.clientState.validateRequestPayload;
+    const validationLevel = options.validateRequestPayloadLevel ?? this.clientState.validateRequestPayloadLevel;
     if (successfulRequest && validationActivated) {
       if (input.validator === undefined) throw new ValidatorMissingError();
-      return this.validate(body, input.validator) as PayloadType;
+      return this.validate(body, input.validator, validationLevel) as PayloadType;
     } else if (successfulRequest && !validationActivated) {
       return body as PayloadType;
     } else {
@@ -81,9 +83,31 @@ export class RequestSender {
     return url;
   }
 
-  private validate<T extends TSchema>(value: unknown, validator: TypeCheck<T>): Static<T> {
+  private validate<T extends TSchema>(
+    value: unknown,
+    validator: TypeCheck<T>,
+    level: ClientOptions['validateRequestPayloadLevel'],
+  ): Static<T> {
     if (!validator.Check(value)) {
-      throw new InvalidResponseTypeError(validator.Errors(value), value);
+      switch (level) {
+        case 'warn': {
+          const errors = Array.from(validator.Errors(value));
+          const firstError = JSON.stringify(errors[0], null, 2);
+          const errorSampleLength = 1000;
+          console.warn(
+            `WARNING : The response didn't fully match the one expected by the SDK.
+Make sure the SDK is up to date. If the SDK is up to date and you still get the warning, please contact our support.
+
+Here is the first error :
+            
+${firstError.substring(0, errorSampleLength)}${firstError.length > errorSampleLength ? '\n... (continued in .body)' : ''}`,
+            errors,
+          );
+          return value;
+        }
+        case 'error':
+          throw new InvalidResponseTypeError(validator.Errors(value), value);
+      }
     }
 
     return value;

@@ -1,6 +1,6 @@
+import { TSchema } from '@sinclair/typebox';
 import { TypeCheck } from '@sinclair/typebox/compiler';
 import { ClientOptions, SupportedProtocols } from './client.js';
-import { TSchema } from '@sinclair/typebox';
 
 export type DefaultHeaders = {
   'X-API-KEY': string;
@@ -11,7 +11,7 @@ export type DefaultHeaders = {
 export type RequestHeaders = Omit<DefaultHeaders, 'X-API-KEY' | 'accept'>;
 
 type OverwritableClientOptions = Partial<
-  Pick<ClientOptions, 'logRequestResult' | 'logRequestPayload' | 'validateRequestPayload'>
+  Pick<ClientOptions, 'logRequestResult' | 'logRequestPayload' | 'validateRequestPayload' | 'validateRequestPayloadLevel'>
 >;
 export type RequestOptions = OverwritableClientOptions; // & {}
 
