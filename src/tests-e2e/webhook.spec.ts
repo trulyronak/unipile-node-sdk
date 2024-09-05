@@ -8,7 +8,7 @@ describe("WebhookResource", () => {
   //   beforeAll(async () => {});
   beforeEach(() => {
     client = new UnipileClient(config.BASE_URL, config.ACCESS_TOKEN, {
-      logRequestPayload: config.logRequestPayload,
+      logRequestPayload: true,
       logRequestResult: config.logRequestResult,
       validateRequestPayload: true,
     });
@@ -35,7 +35,7 @@ describe("WebhookResource", () => {
   //----------------------------------------------------------------------------
   describe("create", () => {
     //--------------------------------------------------------------------------
-    it(
+    it.only(
       "should return a validated WebhookCreated " + "on create " + "when ",
       async () => {
         // try {
@@ -47,6 +47,8 @@ describe("WebhookResource", () => {
           source: "messaging",
         });
         expect(resultCreate.object).toBe("WebhookCreated");
+
+        console.log(resultCreate);
         const resultDelete = await client.webhook.delete(
           resultCreate.webhook_id,
         );

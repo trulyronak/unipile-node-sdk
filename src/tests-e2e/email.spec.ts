@@ -73,7 +73,7 @@ describe("EmailResource", () => {
   //----------------------------------------------------------------------------
   describe("getOne", () => {
     //--------------------------------------------------------------------------
-    it.only(
+    it(
       "should return a validated Email " + "on getOne " + "when mail Id",
       async () => {
         // try {

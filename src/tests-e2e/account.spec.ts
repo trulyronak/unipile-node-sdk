@@ -11,6 +11,7 @@ describe("AccountResource", () => {
       logRequestPayload: config.logRequestPayload,
       logRequestResult: config.logRequestResult,
       validateRequestPayload: true,
+      validateRequestPayloadLevel: "error",
     });
   });
 
@@ -207,7 +208,7 @@ describe("AccountResource", () => {
   //----------------------------------------------------------------------------
   describe("reconnectTelegram", () => {
     //--------------------------------------------------------------------------
-    it.only(
+    it(
       "should return a validated PostQrCodeBasedAccount response  " +
         "on reconnectTelegram " +
         "when ",
