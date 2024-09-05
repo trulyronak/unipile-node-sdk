@@ -17,13 +17,14 @@ describe("WebhookResource", () => {
   //----------------------------------------------------------------------------
   describe("getAll", () => {
     //--------------------------------------------------------------------------
-    it(
+    it.only(
       "should return a validated WebhookList " +
         "on getAll " +
         "when no arguments",
       async () => {
         // try {
         const result = await client.webhook.getAll();
+        // console.log(JSON.stringify(result, null, 2));
         expect(result.object).toBe("WebhookList");
         // } catch (err) {
         //   console.log(err);
@@ -35,7 +36,7 @@ describe("WebhookResource", () => {
   //----------------------------------------------------------------------------
   describe("create", () => {
     //--------------------------------------------------------------------------
-    it.only(
+    it(
       "should return a validated WebhookCreated " + "on create " + "when ",
       async () => {
         // try {
@@ -48,7 +49,7 @@ describe("WebhookResource", () => {
         });
         expect(resultCreate.object).toBe("WebhookCreated");
 
-        console.log(resultCreate);
+        // console.log(resultCreate);
         const resultDelete = await client.webhook.delete(
           resultCreate.webhook_id,
         );
