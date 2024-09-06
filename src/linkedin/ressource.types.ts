@@ -1,5 +1,6 @@
-import { Static, Type } from "@sinclair/typebox";
-import { UniqueIdSchema } from "../common/common.types.js";
+import { Static, Type } from '@sinclair/typebox';
+import { UniqueIdSchema } from '../common/common.types.js';
+import { PostSchema } from '../users/ressource.types.js';
 
 export const LinkedinCompanyProfileSchema = Type.Object({
   id: Type.String(),
@@ -38,14 +39,14 @@ export const LinkedinCompanyProfileSchema = Type.Object({
     canSeeOrganizationAdministrativePage: Type.Boolean(),
   }),
   organization_type: Type.Union([
-    Type.Literal("PUBLIC_COMPANY"),
-    Type.Literal("EDUCATIONAL"),
-    Type.Literal("SELF_EMPLOYED"),
-    Type.Literal("GOVERNMENT_AGENCY"),
-    Type.Literal("NON_PROFIT"),
-    Type.Literal("SELF_OWNED"),
-    Type.Literal("PRIVATELY_HELD"),
-    Type.Literal("PARTNERSHIP"),
+    Type.Literal('PUBLIC_COMPANY'),
+    Type.Literal('EDUCATIONAL'),
+    Type.Literal('SELF_EMPLOYED'),
+    Type.Literal('GOVERNMENT_AGENCY'),
+    Type.Literal('NON_PROFIT'),
+    Type.Literal('SELF_OWNED'),
+    Type.Literal('PRIVATELY_HELD'),
+    Type.Literal('PARTNERSHIP'),
   ]),
   locations: Type.Array(
     Type.Object({
@@ -56,26 +57,29 @@ export const LinkedinCompanyProfileSchema = Type.Object({
       street: Type.Array(Type.String()),
       description: Type.Optional(Type.String()),
       area: Type.Optional(Type.String()),
-    })
+    }),
   ),
   logo: Type.Optional(Type.String()),
   localized_description: Type.Optional(
-    Type.Record(Type.String(), Type.String(), {
-      description:
-        "In this localized object, the key corresponds to the locale of the value e.g. fr_FR, en_US...",
-    })
+    Type.Array(
+      Type.Record(Type.String(), Type.String(), {
+        description: 'In this localized object, the key corresponds to the locale of the value e.g. fr_FR, en_US...',
+      }),
+    ),
   ),
   localized_name: Type.Optional(
-    Type.Record(Type.String(), Type.String(), {
-      description:
-        "In this localized object, the key corresponds to the locale of the value e.g. fr_FR, en_US...",
-    })
+    Type.Array(
+      Type.Record(Type.String(), Type.String(), {
+        description: 'In this localized object, the key corresponds to the locale of the value e.g. fr_FR, en_US...',
+      }),
+    ),
   ),
   localized_tagline: Type.Optional(
-    Type.Record(Type.String(), Type.String(), {
-      description:
-        "In this localized object, the key corresponds to the locale of the value e.g. fr_FR, en_US...",
-    })
+    Type.Array(
+      Type.Record(Type.String(), Type.String(), {
+        description: 'In this localized object, the key corresponds to the locale of the value e.g. fr_FR, en_US...',
+      }),
+    ),
   ),
   industry: Type.Optional(Type.Array(Type.String())),
   activities: Type.Optional(Type.Array(Type.String())),
@@ -89,24 +93,20 @@ export const LinkedinCompanyProfileSchema = Type.Object({
         Type.Object({
           totalCount: Type.Number(),
           averageTenure: Type.String(),
-          employeesCountGraph: Type.Array(
-            Type.Object({ date: Type.String(), count: Type.Number() })
-          ),
+          employeesCountGraph: Type.Array(Type.Object({ date: Type.String(), count: Type.Number() })),
           growthGraph: Type.Array(
             Type.Object({
               monthRange: Type.Number(),
               growthPercentage: Type.Number(),
-            })
+            }),
           ),
-        })
+        }),
       ),
-    })
+    }),
   ),
 });
 
-export type LinkedinCompanyProfile = Static<
-  typeof LinkedinCompanyProfileSchema
->;
+export type LinkedinCompanyProfile = Static<typeof LinkedinCompanyProfileSchema>;
 
 /**
  *
@@ -127,18 +127,13 @@ export type LinkedinHiringProject = Static<typeof LinkedinHiringProjectSchema>;
 export const LinkedinSearchItemSchema = Type.Object({
   id: UniqueIdSchema,
   title: Type.String(),
-  additional_data: Type.Optional(
-    Type.Record(
-      Type.String(),
-      Type.Union([Type.String(), Type.Number(), Type.Boolean()])
-    )
-  ),
+  additional_data: Type.Optional(Type.Record(Type.String(), Type.Union([Type.String(), Type.Number(), Type.Boolean()]))),
 });
 
 export type LinkedinSearchItem = Static<typeof LinkedinSearchItemSchema>;
 
 export const LinkedinPeopleSearchResultSchema = Type.Object({
-  type: Type.Literal("PEOPLE"),
+  type: Type.Literal('PEOPLE'),
   id: Type.String(),
   public_identifier: Type.Union([Type.String(), Type.Null()]),
   public_profile_url: Type.Union([Type.String(), Type.Null()]),
@@ -149,10 +144,10 @@ export const LinkedinPeopleSearchResultSchema = Type.Object({
   first_name: Type.Optional(Type.String()),
   last_name: Type.Optional(Type.String()),
   network_distance: Type.Union([
-    Type.Literal("DISTANCE_1"),
-    Type.Literal("DISTANCE_2"),
-    Type.Literal("DISTANCE_3"),
-    Type.Literal("OUT_OF_NETWORK"),
+    Type.Literal('DISTANCE_1'),
+    Type.Literal('DISTANCE_2'),
+    Type.Literal('DISTANCE_3'),
+    Type.Literal('OUT_OF_NETWORK'),
   ]),
   location: Type.Union([Type.String(), Type.Null()]),
   industry: Type.Union([Type.String(), Type.Null()]),
@@ -166,12 +161,9 @@ export const LinkedinPeopleSearchResultSchema = Type.Object({
   shared_connections_count: Type.Optional(Type.Number()),
   last_outreach_activity: Type.Optional(
     Type.Object({
-      type: Type.Union([
-        Type.Literal("SEND_MESSAGE"),
-        Type.Literal("ACCEPT_INVITATION"),
-      ]),
+      type: Type.Union([Type.Literal('SEND_MESSAGE'), Type.Literal('ACCEPT_INVITATION')]),
       performed_at: Type.String(),
-    })
+    }),
   ),
   current_positions: Type.Optional(
     Type.Array(
@@ -185,28 +177,28 @@ export const LinkedinPeopleSearchResultSchema = Type.Object({
           Type.Object({
             years: Type.Optional(Type.Number()),
             months: Type.Optional(Type.Number()),
-          })
+          }),
         ),
         tenure_at_company: Type.Optional(
           Type.Object({
             years: Type.Optional(Type.Number()),
             months: Type.Optional(Type.Number()),
-          })
+          }),
         ),
         start: Type.Optional(
           Type.Object({
             year: Type.Optional(Type.Number()),
             month: Type.Optional(Type.Number()),
-          })
+          }),
         ),
         end: Type.Optional(
           Type.Object({
             year: Type.Optional(Type.Number()),
             month: Type.Optional(Type.Number()),
-          })
+          }),
         ),
-      })
-    )
+      }),
+    ),
   ),
   education: Type.Optional(
     Type.Array(
@@ -222,10 +214,10 @@ export const LinkedinPeopleSearchResultSchema = Type.Object({
           Type.Object({
             year: Type.Optional(Type.Number()),
             month: Type.Optional(Type.Number()),
-          })
+          }),
         ),
-      })
-    )
+      }),
+    ),
   ),
   work_experience: Type.Optional(
     Type.Array(
@@ -242,15 +234,15 @@ export const LinkedinPeopleSearchResultSchema = Type.Object({
           Type.Object({
             year: Type.Optional(Type.Number()),
             month: Type.Optional(Type.Number()),
-          })
+          }),
         ),
-      })
-    )
+      }),
+    ),
   ),
 });
 
 export const LinkedinCompanySearchResultSchema = Type.Object({
-  type: Type.Literal("COMPANY"),
+  type: Type.Literal('COMPANY'),
   id: Type.String(),
   name: Type.String(),
   location: Type.Union([Type.String(), Type.Null()]),
@@ -262,9 +254,17 @@ export const LinkedinCompanySearchResultSchema = Type.Object({
   headcount: Type.Optional(Type.String()),
 });
 
+export const LinkedinPostSearchResultSchema = Type.Composite([
+  Type.Object({
+    type: Type.Literal('POST'),
+  }),
+  PostSchema,
+]);
+
 export const LinkedinSearchResultSchema = Type.Union([
   LinkedinPeopleSearchResultSchema,
   LinkedinCompanySearchResultSchema,
+  LinkedinPostSearchResultSchema,
 ]);
 
 export type LinkedinSearchResult = Static<typeof LinkedinSearchResultSchema>;

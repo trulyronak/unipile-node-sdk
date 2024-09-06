@@ -12,6 +12,7 @@ describe("MessagingResource", () => {
       logRequestPayload: config.logRequestPayload,
       logRequestResult: config.logRequestResult,
       validateRequestPayload: true,
+      validateRequestPayloadLevel: "error",
     });
   });
 
@@ -271,7 +272,7 @@ describe("MessagingResource", () => {
         /**
          * @todo Find another way to guarantee a message with an attachment exists.
          *       Sending one and waiting for it to be synced is very flaky.
-         *       Also it WON'T WORK with Account types that do not return a 
+         *       Also it WON'T WORK with Account types that do not return a
          *       message_id when sending a message, e.g. WHATSAPP.
          */
         await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -346,7 +347,7 @@ describe("MessagingResource", () => {
       async () => {
         try {
           const chat = await client.messaging.getAllChats({ limit: 1 });
-        //   console.log(chat);
+          //   console.log(chat);
           const result = await client.messaging.setChatStatus({
             chat_id: chat.items[0].id,
             action: "setReadStatus",

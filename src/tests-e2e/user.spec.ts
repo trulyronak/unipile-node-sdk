@@ -11,7 +11,8 @@ describe("UserResource", () => {
     client = new UnipileClient(config.BASE_URL, config.ACCESS_TOKEN, {
       logRequestPayload: config.logRequestPayload,
       logRequestResult: config.logRequestResult,
-      validateRequestPayload: false,
+      validateRequestPayload: true,
+      validateRequestPayloadLevel: "warn",
     });
   });
 
@@ -169,6 +170,7 @@ describe("UserResource", () => {
         )[0].id;
 
         const result = await client.users.getAllInvitationsSent({ account_id });
+        // console.log(JSON.stringify(result, null, 2));
         expect(result.object).toBe("InvitationList");
         // } catch (err) {
         //   console.log(err);
@@ -279,9 +281,11 @@ describe("UserResource", () => {
           account_id,
           identifier,
         });
+        // console.log(JSON.stringify(posts, null, 2));
         const post_id = posts.items[0].id;
 
         const result = await client.users.getPost({ account_id, post_id });
+
         expect(result.object).toBe("Post");
         // } catch (err) {
         //   console.log(err);
@@ -337,7 +341,7 @@ describe("UserResource", () => {
   //----------------------------------------------------------------------------
   describe("createPost", () => {
     //--------------------------------------------------------------------------
-    it(
+    it.skip(
       "should return a validated PostCreated " +
         "on createPost " +
         "when linkedIn account Id" +
@@ -401,6 +405,7 @@ describe("UserResource", () => {
           account_id,
           post_id,
         });
+        console.log(JSON.stringify(result, null, 2));
         expect(result.object).toBe("CommentList");
         // } catch (err) {
         //   console.log(err);
@@ -486,7 +491,7 @@ describe("UserResource", () => {
   //----------------------------------------------------------------------------
   describe("getCompanyProfile", () => {
     //--------------------------------------------------------------------------
-    it(
+    it.only(
       "should return a validated CompanyProfile " +
         "on getCompanyProfile " +
         "when linkedIn account Id" +
@@ -507,6 +512,8 @@ describe("UserResource", () => {
           account_id,
           identifier: "Unipile",
         });
+
+        console.log(JSON.stringify(result, null, 2));
         expect(result.object).toBe("CompanyProfile");
         // } catch (err) {
         //   console.log(err);

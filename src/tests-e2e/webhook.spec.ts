@@ -8,16 +8,17 @@ describe("WebhookResource", () => {
   //   beforeAll(async () => {});
   beforeEach(() => {
     client = new UnipileClient(config.BASE_URL, config.ACCESS_TOKEN, {
-      logRequestPayload: true,
+      logRequestPayload: config.logRequestPayload,
       logRequestResult: config.logRequestResult,
       validateRequestPayload: true,
+      validateRequestPayloadLevel: "error",
     });
   });
 
   //----------------------------------------------------------------------------
   describe("getAll", () => {
     //--------------------------------------------------------------------------
-    it.only(
+    it(
       "should return a validated WebhookList " +
         "on getAll " +
         "when no arguments",
