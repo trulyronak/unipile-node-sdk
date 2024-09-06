@@ -12,7 +12,7 @@ describe("UserResource", () => {
       logRequestPayload: config.logRequestPayload,
       logRequestResult: config.logRequestResult,
       validateRequestPayload: true,
-      validateRequestPayloadLevel: "warn",
+      validateRequestPayloadLevel: "error",
     });
   });
 
@@ -491,7 +491,7 @@ describe("UserResource", () => {
   //----------------------------------------------------------------------------
   describe("getCompanyProfile", () => {
     //--------------------------------------------------------------------------
-    it.only(
+    it(
       "should return a validated CompanyProfile " +
         "on getCompanyProfile " +
         "when linkedIn account Id" +
@@ -513,7 +513,7 @@ describe("UserResource", () => {
           identifier: "Unipile",
         });
 
-        console.log(JSON.stringify(result, null, 2));
+        // console.log(JSON.stringify(result, null, 2));
         expect(result.object).toBe("CompanyProfile");
         // } catch (err) {
         //   console.log(err);

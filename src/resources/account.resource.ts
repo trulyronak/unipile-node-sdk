@@ -12,10 +12,10 @@ import {
   PostInstagramAccountInput,
   PostMessengerAccountInput,
   postQrCodeBasedAccountValidator,
-  PostTwitterAccountInput,
   LinkedinBasicAuthenticationInput,
   LinkedinCookieAuthenticationInput,
   InvalidInputTypeError,
+  PostTwitterAccountInput,
 } from '../index.js';
 import { AccountListApiResponse, AccountListResponseValidator } from '../accounts/accounts-list.schema.js';
 import { AccountApiResponse, AccountApiResponseValidator } from '../accounts/account.types.js';
@@ -282,7 +282,10 @@ export class AccountResource {
     });
   }
 
-  async connectTwitter(input: PostTwitterAccountInput, options?: RequestOptions): Promise<AccountConnectApiResponse> {
+  async connectTwitter(
+    input: PostTwitterAccountInput,
+    options?: RequestOptions,
+  ): Promise<AccountConnectApiResponse> {
     return await this.client.request.send({
       path: ['accounts'],
       method: 'POST',

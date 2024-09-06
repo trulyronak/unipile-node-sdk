@@ -1,4 +1,12 @@
-import { AccountCreateBody } from '../../accounts/accounts-create.types.js';
+import { Static } from '@sinclair/typebox';
+import {
+  AccountCreateBody,
+  AccountCreateLinkedinBasicBodySchema,
+  AccountCreateTwitterBodySchema,
+  AccountCreateLinkedinCookieBodySchema,
+  AccountCreateInstagramBodySchema,
+  AccountCreateMessengerBodySchema,
+} from '../../accounts/accounts-create.types.js';
 import { SupportedProvider } from '../client.js';
 
 export type GetAccountsInput = {
@@ -12,47 +20,17 @@ export type ConnectAccountInput = AccountCreateBody;
 /** ReconnectAccountInput */
 export type ReconnectAccountInput = ConnectAccountInput & { account_id: string };
 
-/** PostLinkedinAccountInput */
-type ProxyParams = {
-  protocol?: 'https' | 'http' | 'socks5';
-  port: number;
-  host: string;
-  username?: string;
-  password?: string;
-};
-
-export type LinkedinBasicAuthenticationInput = {
-  username: string;
-  password: string;
-  recruiter_contract_id?: string;
-  proxy?: ProxyParams;
-};
-
-export type LinkedinCookieAuthenticationInput = {
-  proxy?: ProxyParams;
-  recruiter_contract_id?: string;
-  access_token: string;
-  premium_token?: string;
-  user_agent?: string;
-};
+export type LinkedinBasicAuthenticationInput = Omit<Static<typeof AccountCreateLinkedinBasicBodySchema>, 'provider'>;
+export type LinkedinCookieAuthenticationInput = Omit<Static<typeof AccountCreateLinkedinCookieBodySchema>, 'provider'>;
 
 /** PostInstagramAccountInput */
-export type PostInstagramAccountInput = {
-  username: string;
-  password: string;
-};
+export type PostInstagramAccountInput = Omit<Static<typeof AccountCreateInstagramBodySchema>, 'disabled_features' | 'provider'>;
 
 /** PostTwitterAccountInput */
-export type PostTwitterAccountInput = {
-  username: string;
-  password: string;
-};
+export type PostTwitterAccountInput = Omit<Static<typeof AccountCreateTwitterBodySchema>, 'disabled_features' | 'provider'>;
 
 /** PostMessengerAccountInput */
-export type PostMessengerAccountInput = {
-  username: string;
-  password: string;
-};
+export type PostMessengerAccountInput = Omit<Static<typeof AccountCreateMessengerBodySchema>, 'disabled_features' | 'provider'>;
 
 /** PostCodeCheckpointInput */
 type ProviderUsingCodeCheckpoint = 'LINKEDIN' | 'INSTAGRAM' | 'TWITTER' | 'MESSENGER';

@@ -422,7 +422,7 @@ describe("AccountResource", () => {
   //----------------------------------------------------------------------------
   describe("connectTwitter", () => {
     //--------------------------------------------------------------------------
-    it(
+    it.only(
       "should return a validated AccountCreated or Checkpoint response " +
         "on connectTwitter " +
         "when ",
@@ -430,6 +430,7 @@ describe("AccountResource", () => {
         // try {
         const result = await client.account.connectTwitter({
           username: config.TWITTER_USERNAME,
+          email: config.TWITTER_EMAIL,
           password: config.TWITTER_PASSWORD,
         });
         expect(
@@ -454,6 +455,7 @@ describe("AccountResource", () => {
         //   throw err;
         // }
       },
+      15000,
     );
   });
   //----------------------------------------------------------------------------
@@ -473,6 +475,7 @@ describe("AccountResource", () => {
         const result = await client.account.reconnectTwitter({
           account_id: config.TWITTER_RECONNECT_ACCOUNT_ID,
           username: config.TWITTER_RECONNECT_USERNAME,
+          email: config.TWITTER_EMAIL,
           password: config.TWITTER_RECONNECT_PASSWORD,
         });
         expect(
