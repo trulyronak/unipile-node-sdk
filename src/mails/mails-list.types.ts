@@ -1,17 +1,13 @@
-import { Static, Type } from "@sinclair/typebox";
-import { TypeCompiler } from "@sinclair/typebox/compiler";
-import { i18n } from "../common/i18n.fake.js";
-import { UniqueIdSchema } from "../common/common.types.js";
-import { RequiredProps } from "../common/core.types.tmp.js";
-import { UTCDateTimeMsSchema } from "../common/date.types.js";
-import { EncodedQueryCursorType } from "../common/query-cursor.js";
-import {
-  AccountIdParamSchema,
-  ListCursorQuerySchema,
-  ListLimitQuerySchema,
-} from "../common/query-parameters.type.js";
-import { FolderRoleSchema } from "./folders/folders.types.js";
-import { PartialMailSchema } from "./ressource.types.js";
+import { Static, Type } from '@sinclair/typebox';
+import { TypeCompiler } from '@sinclair/typebox/compiler';
+import { i18n } from '../common/i18n.fake.js';
+import { UniqueIdSchema } from '../common/common.types.js';
+import { RequiredProps } from '../common/core.types.tmp.js';
+import { UTCDateTimeMsSchema } from '../common/date.types.js';
+import { EncodedQueryCursorType } from '../common/query-cursor.js';
+import { AccountIdParamSchema, ListCursorQuerySchema, ListLimitQuerySchema } from '../common/query-parameters.type.js';
+import { FolderRoleSchema } from './folders/folders.types.js';
+import { MailFullSchema, MailMetaSchema, MailReferenceSchema } from './ressource.types.js';
 
 // --------------------------------------------------------------------------
 // REQUEST
@@ -52,27 +48,21 @@ export const MailListDecodedCursorSchema = Type.Composite([
 
 export type MailListDecodedCursor = Static<typeof MailListDecodedCursorSchema>;
 
-export const MailListDecodedCursorValidator = TypeCompiler.Compile(
-  MailListDecodedCursorSchema
-);
+export const MailListDecodedCursorValidator = TypeCompiler.Compile(MailListDecodedCursorSchema);
 
 /**
  *
  */
-export const MailListBaseQuerySchema = Type.Composite([
-  MailListOptionsQuerySchema,
-  ListLimitQuerySchema,
-]);
+export const MailListBaseQuerySchema = Type.Composite([MailListOptionsQuerySchema, ListLimitQuerySchema]);
 
 export type MailListBaseQuery = Static<typeof MailListBaseQuerySchema>;
 
 /**
  *
  */
-export const MailListQuerySchema = Type.Union(
-  [MailListBaseQuerySchema, ListCursorQuerySchema],
-  { description: i18n.t("@todo api.Query.Cursor.ignore_other_params") }
-);
+export const MailListQuerySchema = Type.Union([MailListBaseQuerySchema, ListCursorQuerySchema], {
+  description: i18n.t('@todo api.Query.Cursor.ignore_other_params'),
+});
 
 export type MailListQuery = Static<typeof MailListQuerySchema>;
 
@@ -108,29 +98,40 @@ export const MailGetQueryValidator = TypeCompiler.Compile(MailGetQuerySchema);
 /**
  *
  */
-export type MailListQueryDTO =
-  | RequiredProps<MailListBaseQuery, "limit">
-  | { cursor: MailListDecodedCursor };
+export type MailListQueryDTO = RequiredProps<MailListBaseQuery, 'limit'> | { cursor: MailListDecodedCursor };
 
 // --------------------------------------------------------------------------
 // RESPONSE
 // --------------------------------------------------------------------------
+
+/** */
+export const MailRefApiResponse = Type.Composite(
+    [Type.Object({ object: Type.Literal('Email') }), MailReferenceSchema],
+    { title:  'Mail reference' },
+);
+
+/** */
+export const MailMetaApiResponse = Type.Composite(
+    [Type.Object({ object: Type.Literal('Email') }), MailMetaSchema],
+    { title:  'Mail metas' },
+);
+
+/** */
+export const MailFullApiResponse = Type.Composite(
+  [Type.Object({ object: Type.Literal('Email') }), MailFullSchema],
+  { title: 'Full mail' },
+);
 
 /**
  *
  */
 export const MailListApiResponseSchema = Type.Object(
   {
-    object: Type.Literal("EmailList"),
-    items: Type.Array(
-      Type.Composite([
-        Type.Object({ object: Type.Literal("Email") }),
-        PartialMailSchema,
-      ])
-    ),
+    object: Type.Literal('EmailList'),
+    items: Type.Array(Type.Union([MailRefApiResponse, MailMetaApiResponse, MailFullApiResponse])),
     cursor: Type.Union([EncodedQueryCursorType(), Type.Null()]),
   },
-  { description: "@todo List of Emails." }
+  { description: '@todo List of Emails.' },
 );
 
 // /**

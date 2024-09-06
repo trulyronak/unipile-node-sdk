@@ -1,34 +1,44 @@
 import { FormData } from 'formdata-node';
 import { Blob } from 'node-fetch';
+
 import {
   GetAllEmailsInput,
   GetAllFoldersInput,
+  GetEmailAttachmentByProviderIdInput,
   GetEmailAttachmentInput,
-  UpdateEmailInput,
   RequestOptions,
-  Response,
   SendEmailInput,
   UnipileClient,
   untypedYetValidator,
   UpdateEmailByProviderIdInput,
-  GetEmailAttachmentByProviderIdInput,
+  UpdateEmailInput,
 } from '../index.js';
-import { MailApiResponse, MailApiResponseValidator } from '../mails/mail.types.js';
-import { MailDeletedApiResponse, MailDeletedApiResponseValidator } from '../mails/mail.delete.types.js';
-import { MailUpdatedApiResponse, MailUpdatedApiResponseValidator } from '../mails/mail.update.types.js';
-import { MailListApiResponse, MailListApiResponseValidator } from '../mails/mails-list.types.js';
 import {
   FolderApiResponse,
   FolderApiResponseValidator,
   FolderListApiResponse,
   FolderListApiResponseValidator,
 } from '../mails/folders/folders.types.js';
+import { MailDeletedApiResponse, MailDeletedApiResponseValidator } from '../mails/mail.delete.types.js';
 import { MailSentApiResponse, MailSentApiResponseValidator } from '../mails/mail.send.types.js';
+import { MailApiResponse, MailApiResponseValidator } from '../mails/mail.types.js';
+import { MailUpdatedApiResponse, MailUpdatedApiResponseValidator } from '../mails/mail.update.types.js';
+import { MailListApiResponse, MailListApiResponseValidator } from '../mails/mails-list.types.js';
 
-type EmailMethodCallableByProviderId<T> = {
-  (...args: any): Promise<T>;
-  byId(...args: any): Promise<T>;
-  byProviderId(...args: any): Promise<T>;
+/**
+ * @note The whole approach of having sub methods on methods is kept as is as to
+ *       not break API for existing clients.
+ *
+ *       BUT IT SHOULD NOT BE USED/REPRODUCED ELSEWHERE :
+ *         - It's hard to discover submethods as they are lost in whatever props
+ *           exist on js functions.
+ *         - The types were just using 'any' as args and the fix is ugly and complex.
+ *         - No other resource in the sdk follows this pattern.
+ */
+type EmailMethodCallableByProviderId<TReturn, TArgs1 extends unknown[], TArgs2 extends unknown[], TArgs3 extends unknown[]> = {
+  (...args: [...TArgs1, options?: RequestOptions]): Promise<TReturn>;
+  byId(...args: [...TArgs2, options?: RequestOptions]): Promise<TReturn>;
+  byProviderId(...args: [...TArgs3, options?: RequestOptions]): Promise<TReturn>;
 };
 
 export class EmailResource {
@@ -37,54 +47,79 @@ export class EmailResource {
    * @example email.getOne('email_id')
    * @example email.getOne.byProviderId('email_provider_id', 'account_id')
    */
-  public getOne: EmailMethodCallableByProviderId<MailApiResponse>;
+  public getOne: EmailMethodCallableByProviderId<
+    MailApiResponse,
+    [email_id: string],
+    [email_id: string],
+    [email_provider_id: string, account_id: string]
+  >;
 
   /**
    * Delete an email, either by its ID or by its provider ID.
    * @example email.delete('email_id')
    * @example email.delete.byProviderId('email_provider_id', 'account_id')
    */
-  public delete: EmailMethodCallableByProviderId<MailDeletedApiResponse>;
+  public delete: EmailMethodCallableByProviderId<
+    MailDeletedApiResponse,
+    [email_id: string],
+    [email_id: string],
+    [email_provider_id: string, account_id: string]
+  >;
 
   /**
    * Update an email, either by its ID or by its provider ID.
    * @example email.update({ email_id: 'email_id', folders: ['folder'] })
    * @example email.update.byProviderId({ email_provider_id: 'email_provider_id', account_id: 'account_id', folders: ['folder'] })
    */
-  public update: EmailMethodCallableByProviderId<MailUpdatedApiResponse>;
+  public update: EmailMethodCallableByProviderId<
+    MailUpdatedApiResponse,
+    [input: UpdateEmailInput],
+    [input: UpdateEmailInput],
+    [input: UpdateEmailByProviderIdInput]
+  >;
 
   /**
    * Get one folder, either by its ID or by its provider ID.
    * @example email.getOneFolder('folder_id')
    * @example email.getOneFolder.byProviderId('folder_provider_id', 'account_id')
    */
-  public getOneFolder: EmailMethodCallableByProviderId<FolderApiResponse>;
+  public getOneFolder: EmailMethodCallableByProviderId<
+    FolderApiResponse,
+    [folder_id: string],
+    [folder_id: string],
+    [folder_provider_id: string, account_id: string]
+  >;
 
   /**
    * Get an attachment, either by the email ID or by the email provider ID.
    * @example email.getEmailAttachment({ email_id: 'email_id', attachment_id: 'attachment_id' })
    * @example email.getEmailAttachment.byProviderId({ email_provider_id: 'email_provider_id', attachment_id: 'attachment_id', account_id: 'account_id' })
    */
-  public getEmailAttachment: EmailMethodCallableByProviderId<Response.UntypedYet>;
+  public getEmailAttachment: EmailMethodCallableByProviderId<
+    Blob,
+    [input: GetEmailAttachmentInput],
+    [input: GetEmailAttachmentInput],
+    [input: GetEmailAttachmentByProviderIdInput]
+  >;
 
   constructor(private client: UnipileClient) {
-    this.getOne = this._getOne.bind(this) as EmailMethodCallableByProviderId<MailApiResponse>;
+    this.getOne = this._getOne.bind(this) as EmailResource['getOne'];
     this.getOne.byId = this._getOne.bind(this);
     this.getOne.byProviderId = this._getOneByProviderId.bind(this);
 
-    this.delete = this._delete.bind(this) as EmailMethodCallableByProviderId<MailDeletedApiResponse>;
+    this.delete = this._delete.bind(this) as EmailResource['delete'];
     this.delete.byId = this._delete.bind(this);
     this.delete.byProviderId = this._deleteByProviderId.bind(this);
 
-    this.update = this._update.bind(this) as EmailMethodCallableByProviderId<MailUpdatedApiResponse>;
+    this.update = this._update.bind(this) as EmailResource['update'];
     this.update.byId = this._update.bind(this);
     this.update.byProviderId = this._updateByProviderId.bind(this);
 
-    this.getOneFolder = this._getOneFolder.bind(this) as EmailMethodCallableByProviderId<Response.UntypedYet>;
+    this.getOneFolder = this._getOneFolder.bind(this) as EmailResource['getOneFolder'];
     this.getOneFolder.byId = this._getOneFolder.bind(this);
     this.getOneFolder.byProviderId = this._getOneFolderByProviderId.bind(this);
 
-    this.getEmailAttachment = this._getEmailAttachment.bind(this) as EmailMethodCallableByProviderId<Blob>;
+    this.getEmailAttachment = this._getEmailAttachment.bind(this) as EmailResource['getEmailAttachment'];
     this.getEmailAttachment.byId = this._getEmailAttachment.bind(this);
     this.getEmailAttachment.byProviderId = this._getEmailAttachmentByProviderId.bind(this);
   }
@@ -114,6 +149,7 @@ export class EmailResource {
   }
 
   private async _getOne(email_id: string, options?: RequestOptions): Promise<MailApiResponse> {
+    console.log('_getOne', email_id);
     return await this.client.request.send({
       path: ['emails', email_id],
       method: 'GET',
@@ -283,7 +319,7 @@ export class EmailResource {
     const { email_id, attachment_id } = input;
 
     return await this.client.request.send({
-      path: [email_id, 'attachments', attachment_id],
+      path: ['emails', email_id, 'attachments', attachment_id],
       method: 'GET',
       options,
       validator: untypedYetValidator,
@@ -297,7 +333,7 @@ export class EmailResource {
     const { email_provider_id, attachment_id, account_id } = input;
 
     return await this.client.request.send({
-      path: [email_provider_id, 'attachments', attachment_id],
+      path: ['emails', email_provider_id, 'attachments', attachment_id],
       method: 'GET',
       options,
       parameters: { account_id },

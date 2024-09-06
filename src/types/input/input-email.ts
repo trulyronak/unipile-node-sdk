@@ -28,7 +28,7 @@ export type GetAllFoldersInput = {
   account_id?: string;
 };
 
-type MailAttendee = { display_name?: string; identifier: string };
+export type MailAttendee = { display_name?: string; identifier: string };
 
 export type SendEmailInput = {
   account_id: string;
@@ -45,7 +45,7 @@ export type SendEmailInput = {
     opens?: boolean;
     links?: boolean;
     label?: string;
-  }
+  };
 };
 
 export type GetEmailAttachmentInput = {

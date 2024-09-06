@@ -1,6 +1,6 @@
-import { Static, Type } from "@sinclair/typebox";
-import { PartialMailSchema } from "./ressource.types.js";
-import { TypeCompiler } from "@sinclair/typebox/compiler";
+import { Static, Type } from '@sinclair/typebox';
+import { TypeCompiler } from '@sinclair/typebox/compiler';
+import { MailFullApiResponse, MailMetaApiResponse, MailRefApiResponse } from './mails-list.types.js';
 
 // --------------------------------------------------------------------------
 // RESPONSE
@@ -9,14 +9,11 @@ import { TypeCompiler } from "@sinclair/typebox/compiler";
 /**
  *
  */
-export const MailApiResponseSchema = Type.Composite(
-  [
-    Type.Object({
-      object: Type.Literal("Email"),
-    }),
-    PartialMailSchema,
-  ],
-  { description: "@todo Email" }
+export const MailApiResponseSchema = Type.Union(
+    [MailRefApiResponse, MailMetaApiResponse, MailFullApiResponse],
+    {
+      description: "@todo Email",
+    }
 );
 
 export type MailApiResponse = Static<typeof MailApiResponseSchema>;

@@ -1,5 +1,5 @@
-type LinkedinSection = "experience" | "education" | "languages" | "skills" | "certifications" | "about";
-type LinkedinAllSections = "*";
+type LinkedinSection = 'experience' | 'education' | 'languages' | 'skills' | 'certifications' | 'about';
+type LinkedinAllSections = '*';
 
 type LinkedinSectionParameter = LinkedinSection | LinkedinSection[] | LinkedinAllSections;
 
@@ -8,6 +8,7 @@ export type GetProfileInput = {
   identifier: string;
   linkedin_api?: string;
   linkedin_sections?: LinkedinSectionParameter;
+  notify?: boolean;
 };
 
 export type GetAllRelationsInput = {
@@ -69,4 +70,9 @@ export type GetAllInvitationsSentInput = {
 export type CancelInvitationsSentInput = {
   account_id: string;
   invitation_id: string;
+};
+
+export type CompanyProfileInput = {
+  account_id: string;
+  identifier: string;
 };
