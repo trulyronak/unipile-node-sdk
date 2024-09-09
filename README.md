@@ -114,6 +114,7 @@ You can easily connect multiple accounts
     await client.account.connectTwitter({
       username: 'your X username',
       password: 'your X password',
+      email : 'your@email.com'
     });
     ```
 
