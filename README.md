@@ -43,7 +43,7 @@ const client = new UnipileClient('https://{YOUR_DSN}', '{YOUR_ACCESS_TOKEN}');
 Add a messaging account : LinkedIn
 
 ```javascript
-const linkedinAccount = await client.account.connectLinkedin({
+const response = await client.account.connectLinkedin({
   username: 'your LinkedIn username',
   password: 'your LinkedIn password',
 });
@@ -62,7 +62,7 @@ const response = await client.users.getCompanyProfile({
 
 ## Account_Connection
 
-You can connect multiple accounts easyly
+You can easily connect multiple accounts
 
 - Generate a Hosted Auth Wizard link
 
