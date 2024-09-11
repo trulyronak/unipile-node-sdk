@@ -305,7 +305,7 @@ export class EmailResource {
     }
 
     if (reply_to !== undefined) {
-      formDataBody.append('reply_to', JSON.stringify(reply_to));
+      formDataBody.append('reply_to', reply_to);
     }
 
     return await this.client.request.send({
