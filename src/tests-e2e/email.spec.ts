@@ -617,8 +617,8 @@ describe("EmailResource", () => {
         const result = await client.email.send({
           account_id,
           body: "send a mail",
-          //   subject: "email subject",
-          //   to,
+          subject: "re: email subject",
+          to,
           reply_to: "17790f78678df10b",
         });
 

@@ -15,6 +15,7 @@ The Unipile Node.js SDK provides powerful tools to easily integrate with LinkedI
 </p>
 
 # LinkedIn API and Messaging APIs
+
 ## Features for Messaging APIs
 
 🔸 [Account Connection](#account-connection): Generate a Hosted Auth, Implement a custom authentication<br>
@@ -26,7 +27,9 @@ The Unipile Node.js SDK provides powerful tools to easily integrate with LinkedI
 🔸 [User Profile](#users): Retrieve users profiles, Retrieve my profile<br>
 <br>
 🔸 <a href="https://developer.unipile.com/docs/list-provider-features" target="_blank">Documentation</a>: Access to All Messaging API Features
+
 ## LinkedIn Specific
+
 🔹 [Send InMail LinkedIn API](#inmail-linkedin-api) <br>
 <br>
 🔹 [Send Invitation LinkedIn API](#invitations-linkedin-api): Profile view notification, Send invitation, List pending invitation, Delete invitation<br>
@@ -37,11 +40,14 @@ The Unipile Node.js SDK provides powerful tools to easily integrate with LinkedI
 <br>
 🔹 <a href="https://developer.unipile.com/docs/list-provider-features#linkedin-specific" target="_blank">Documentation</a>: Access to All LinkedIn API Features
 <br>
+
 # EMAIL API
+
 🔸 Get emails history<br>
 🔸 Send an email<br>
 🔸 Reply to an email<br>
 🔸 <a href="https://developer.unipile.com/docs/list-provider-features" target="_blank">Documentation</a>: Access to All Email API Features
+
 # Installation
 
 Node 18 recommended
@@ -108,6 +114,16 @@ You can easily connect multiple accounts
       password: 'your LinkedIn password',
     });
     ```
+
+- LinkedIn cookie/user-agent
+
+  ```javascript
+  await client.account.connectLinkedinWithCookie({
+    access_token: 'V2VsY29tZSB0byBVbmlwaWxlICE-gU2hhbnRheSB5b3Ugc3RheSAh',
+    user_agent: 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:15.0) Gecko/20100101 Firefox/15.0.1',
+  });
+  ```
+
   - Whatsapp API
     ```javascript
     await client.account.connectWhatsapp();
@@ -341,6 +357,16 @@ await client.messaging.startNewChat({
     account_id: 't5XY4yQzR9WVrlNFyzPMhw',
   });
   ```
+- Retrieve User Profiles
+  ```javascript
+  await client.users.getProfile({
+    account_id: 't5XY4yQzR9WVrlNFyzPMhw',
+    identifier: 'user provider id',
+    linkedin_api: 'sales_navigator',
+    linkedin_sections: ['experience', 'about'],
+    notify: true,
+  });
+  ```
 - Retrieve Companies Profiles
   ```javascript
   await client.users.getCompanyProfile({
@@ -348,7 +374,99 @@ await client.messaging.startNewChat({
     identifier: 'Unipile',
   });
   ```
+
 # EMAIL API
+
 ## Get emails history
+
+- List all emails
+
+  ```javascript
+  await client.email.getAll({ account_id: 't5XY4yQzR9WVrlNFyzPMhw' });
+  ```
+
+- Retrieve a specific email
+
+```javascript
+await client.email.getOne('TnOWcaycS52dwnhgADlb2w');
+```
+
+- Retrieve a specific email by external provider id
+
+```javascript
+await client.email.getOne.byProvider('some email provider id', 'some account id');
+```
+
+- List all folders from an email Account
+
+```javascript
+await client.email.getAllFolders({ account_id: 't5XY4yQzR9WVrlNFyzPMhw' });
+```
+
+- Retrieve a specific folder
+
+```javascript
+await client.email.getOneFolder('aG0z55cmQOO1y2180eAeuQ');
+```
+
+- Retrieve a specific folder by external provider id
+
+```javascript
+await client.email.getOneFolder.byProviderId('some folder provider id', 'some account id');
+```
+
+- Retrieve a specific attachment
+
+```javascript
+await client.email.getEmailAttachment({
+  email_id: 'TnOWcaycS52dwnhgADlb2w',
+  attachment_id: 'AQMkADAwATNiZmYAZC1jM2ZmAC00MzA1LTAwAi0wMAoARgAAA6zgXpjd',
+});
+```
+
+- Retrieve a specific attachment using an email external provider id
+
+```javascript
+await client.email.getEmailAttachment.byProviderId({
+  account_id: 't5XY4yQzR9WVrlNFyzPMhw',
+  email_id: 'some email provider id',
+  attachment_id: 'AQMkADAwATNiZmYAZC1jM2ZmAC00MzA1LTAwAi0wMAoARgAAA6zgXpjd',
+});
+```
+
+## Delete an email
+
+- Delete a specific email
+
+```javascript
+await client.email.delete('TnOWcaycS52dwnhgADlb2w');
+```
+
+- Delete a specific email by external provider id
+
+```javascript
+await client.email.delete.byProviderId('some email provider id', 'some account id');
+```
+
 ## Send an email
+
+```javascript
+await client.email.send({
+  account_id: 't5XY4yQzR9WVrlNFyzPMhw',
+  to: [{ identifier: 'unipile@gmail.com' }],
+  subject: 'email subject',
+  body: 'email body content',
+});
+```
+
 ## Reply to an email
+
+```javascript
+await client.email.send({
+  account_id,
+  body: 'send a mail',
+  subject: 're: email subject',
+  to,
+  reply_to: '17790f78678df10b',
+});
+```
