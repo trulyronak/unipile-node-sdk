@@ -465,8 +465,8 @@ await client.email.send({
 await client.email.send({
   account_id,
   body: 'send a mail',
-  subject: 're: email subject',
-  to,
+  subject: 're: parent email subject',
+  to: [{ identifier: 'unipile@gmail.com' }],
   reply_to: 'some email provider id',
 });
 ```
