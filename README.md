@@ -467,6 +467,6 @@ await client.email.send({
   body: 'send a mail',
   subject: 're: email subject',
   to,
-  reply_to: '17790f78678df10b',
+  reply_to: 'some email provider id',
 });
 ```
