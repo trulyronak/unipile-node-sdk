@@ -6,7 +6,7 @@ type LinkedinSectionParameter = LinkedinSection | LinkedinSection[] | LinkedinAl
 export type GetProfileInput = {
   account_id: string;
   identifier: string;
-  linkedin_api?: string;
+  linkedin_api?: 'recruiter' | 'sales_navigator';
   linkedin_sections?: LinkedinSectionParameter;
   notify?: boolean;
 };
