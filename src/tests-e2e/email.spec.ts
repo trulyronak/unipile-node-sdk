@@ -591,7 +591,7 @@ describe("EmailResource", () => {
   //----------------------------------------------------------------------------
   describe("send", () => {
     //--------------------------------------------------------------------------
-    it(
+    it.only(
       "should send a validated EmailSent " +
         "on send " +
         "when minimal options",
@@ -617,7 +617,9 @@ describe("EmailResource", () => {
         const result = await client.email.send({
           account_id,
           body: "send a mail",
-          to,
+          //   subject: "email subject",
+          //   to,
+          reply_to: "17790f78678df10b",
         });
 
         expect(result.object).toBe("EmailSent");

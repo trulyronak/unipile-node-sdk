@@ -270,7 +270,8 @@ export class EmailResource {
   }
 
   async send(input: SendEmailInput, options?: RequestOptions): Promise<MailSentApiResponse> {
-    const { account_id, to, cc, bcc, subject, draft_id, body, attachments, from, custom_headers, tracking_options } = input;
+    const { account_id, to, cc, bcc, subject, draft_id, body, attachments, from, custom_headers, tracking_options, reply_to } =
+      input;
     const formDataBody = new FormData();
 
     formDataBody.append('body', body);
@@ -301,6 +302,10 @@ export class EmailResource {
 
     if (tracking_options !== undefined) {
       formDataBody.append('tracking_options', JSON.stringify(tracking_options));
+    }
+
+    if (reply_to !== undefined) {
+      formDataBody.append('reply_to', JSON.stringify(reply_to));
     }
 
     return await this.client.request.send({

@@ -41,6 +41,8 @@ describe("UserResource", () => {
           const result = await client.users.getProfile({
             account_id,
             identifier,
+            // linkedin_api: "sales_navigator",
+            // linkedin_sections: ["experience", "about"],
           });
 
           expect(result.object).toBe("UserProfile");

@@ -46,6 +46,7 @@ export type SendEmailInput = {
     links?: boolean;
     label?: string;
   };
+  reply_to?: string;
 };
 
 export type GetEmailAttachmentInput = {
