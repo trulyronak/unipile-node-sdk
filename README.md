@@ -41,11 +41,12 @@ The Unipile Node.js SDK provides powerful tools to easily integrate with LinkedI
 🔹 <a href="https://developer.unipile.com/docs/list-provider-features#linkedin-specific" target="_blank">Documentation</a>: Access to All LinkedIn API Features
 <br>
 
-# EMAIL API
+# Email API
 
-🔸 Get emails history<br>
-🔸 Send an email<br>
-🔸 Reply to an email<br>
+🔸 [Get emails history](#get-emails-history)<br>
+🔸 [Delete an email](#delete-an-email)<br>
+🔸 [Send an email](#send-an-email)<br>
+🔸 [Reply to an email](#reply-to-an-email)<br>
 🔸 <a href="https://developer.unipile.com/docs/list-provider-features" target="_blank">Documentation</a>: Access to All Email API Features
 
 # Installation
@@ -375,7 +376,7 @@ await client.messaging.startNewChat({
   });
   ```
 
-# EMAIL API
+# Email API
 
 ## Get emails history
 
