@@ -13,7 +13,9 @@ export type RequestHeaders = Omit<DefaultHeaders, 'X-API-KEY' | 'accept'>;
 type OverwritableClientOptions = Partial<
   Pick<ClientOptions, 'logRequestResult' | 'logRequestPayload' | 'validateRequestPayload' | 'validateRequestPayloadLevel'>
 >;
-export type RequestOptions = OverwritableClientOptions; // & {}
+export type RequestOptions = OverwritableClientOptions & {
+  extra_params?: Record<string, string>;
+}; // & {}
 
 export type RequestUrl = {
   protocol: SupportedProtocols;
