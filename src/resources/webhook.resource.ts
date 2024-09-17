@@ -1,10 +1,6 @@
 import { UnipileClient } from '../client.js';
 import { RequestOptions } from '../types/index.js';
-import {
-  WebhookCreateBody,
-  WebhookCreateResponse,
-  WebhookCreateResponseValidator,
-} from '../webhooks/webhooks-create.types.js';
+import { WebhookCreateBody, WebhookCreateResponse, WebhookCreateResponseValidator } from '../webhooks/webhooks-create.types.js';
 import { WebhookDeleteResponse, WebhookDeleteResponseValidator } from '../webhooks/webhooks-delete.types.js';
 import { WebhookListResponse, WebhookListResponseValidator } from '../webhooks/webhooks-list.types.js';
 
@@ -16,6 +12,7 @@ export class WebhookResource {
       path: ['webhooks'],
       method: 'GET',
       options,
+      ...(options?.extra_params && { parameters: options.extra_params }),
       validator: WebhookListResponseValidator,
     });
   }
@@ -27,7 +24,7 @@ export class WebhookResource {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: input,
+      body: { ...options?.extra_params, ...input },
       options,
       validator: WebhookCreateResponseValidator,
     });
@@ -38,6 +35,7 @@ export class WebhookResource {
       path: ['webhooks', id],
       method: 'DELETE',
       options,
+      ...(options?.extra_params && { parameters: options.extra_params }),
       validator: WebhookDeleteResponseValidator,
     });
   }
