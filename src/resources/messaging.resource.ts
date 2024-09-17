@@ -38,7 +38,7 @@ export class MessagingResource {
   async getAllChats(input: GetAllChatsInput = {}, options?: RequestOptions): Promise<ChatListApiResponse> {
     const { before, after, limit, account_type, account_id, cursor, unread } = input;
 
-    const parameters: Record<string, string> = {};
+    const parameters: Record<string, string> = { ...options?.extra_params };
     if (before) parameters.before = before;
     if (after) parameters.after = after;
     if (limit) parameters.limit = String(limit);
@@ -61,6 +61,7 @@ export class MessagingResource {
       path: ['chats', chatId],
       method: 'GET',
       options,
+      ...(options?.extra_params && { parameters: options.extra_params }),
       validator: ChatResponseValidator,
     });
   }
@@ -68,7 +69,7 @@ export class MessagingResource {
   async getAllMessagesFromChat(input: GetAllMessagesFromChatInput, options?: RequestOptions): Promise<MessageListApiResponse> {
     const { chat_id, sender_id, before, after, limit, cursor } = input;
 
-    const parameters: Record<string, string> = {};
+    const parameters: Record<string, string> = { ...options?.extra_params };
     if (sender_id) parameters.sender_id = sender_id;
     if (before) parameters.before = before;
     if (after) parameters.after = after;
@@ -87,6 +88,10 @@ export class MessagingResource {
   async sendMessage(input: PostMessageInput, options?: RequestOptions): Promise<MessageSentResponse> {
     const { chat_id, text, thread_id, attachments } = input;
     const body = new FormData();
+
+    if (options?.extra_params) {
+      Object.entries(options.extra_params).forEach(([k, v]) => body.append(k, v));
+    }
 
     body.append('text', text);
     if (thread_id) body.append('thread_id', thread_id);
@@ -112,6 +117,10 @@ export class MessagingResource {
   async startNewChat(input: PostNewChatInput, options?: RequestOptions): Promise<ChatStartedApiResponse> {
     const { account_id, text, subject, options: input_options, attendees_ids, attachments } = input;
     const body = new FormData();
+
+    if (options?.extra_params) {
+      Object.entries(options.extra_params).forEach(([k, v]) => body.append(k, v));
+    }
 
     body.append('account_id', account_id);
     body.append('text', text);
@@ -170,6 +179,7 @@ export class MessagingResource {
       path: ['chats', chat_id, 'attendees'],
       method: 'GET',
       options,
+      ...(options?.extra_params && { parameters: options.extra_params }),
       validator: ChatAttendeeByChatListApiResponseValidator,
     });
   }
@@ -179,6 +189,7 @@ export class MessagingResource {
       path: ['messages', message_id],
       method: 'GET',
       options,
+      ...(options?.extra_params && { parameters: options.extra_params }),
       validator: MessageResponseValidator,
     });
   }
@@ -209,7 +220,7 @@ export class MessagingResource {
   ): Promise<MessageListApiResponse> {
     const { attendee_id, cursor, before, after, limit } = input;
 
-    const parameters: Record<string, string> = {};
+    const parameters: Record<string, string> = { ...options?.extra_params };
     if (cursor) parameters.cursor = cursor;
     if (before) parameters.before = before;
     if (after) parameters.after = after;
@@ -227,7 +238,7 @@ export class MessagingResource {
   async getAllChatsFromAttendee(input: GetAllChatsFromAttendeeInput, options?: RequestOptions): Promise<ChatListApiResponse> {
     const { attendee_id, cursor, before, after, limit, account_id } = input;
 
-    const parameters: Record<string, string> = {};
+    const parameters: Record<string, string> = { ...options?.extra_params };
     if (cursor) parameters.cursor = cursor;
     if (before) parameters.before = before;
     if (after) parameters.after = after;
@@ -250,6 +261,7 @@ export class MessagingResource {
       path: ['messages', message_id, 'attachments', attachment_id],
       method: 'GET',
       options,
+      ...(options?.extra_params && { parameters: options.extra_params }),
       validator: untypedYetValidator,
     });
   }
@@ -257,7 +269,7 @@ export class MessagingResource {
   async getAllAttendees(input: GetAllAttendeesInput = {}, options?: RequestOptions): Promise<ChatAttendeeListApiResponse> {
     const { cursor, limit, account_id } = input;
 
-    const parameters: Record<string, string> = {};
+    const parameters: Record<string, string> = { ...options?.extra_params };
     if (cursor) parameters.cursor = cursor;
     if (limit) parameters.limit = String(limit);
     if (account_id) parameters.account_id = account_id;
@@ -276,6 +288,7 @@ export class MessagingResource {
       path: ['chat_attendees', attendee_id],
       method: 'GET',
       options,
+      ...(options?.extra_params && { parameters: options.extra_params }),
       validator: ChatAttendeeResponseValidator,
     });
   }
@@ -284,6 +297,7 @@ export class MessagingResource {
     const { chat_id, action, value } = input;
 
     const body = {
+      ...options?.extra_params,
       action,
       value,
     };
