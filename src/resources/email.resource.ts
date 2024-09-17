@@ -154,6 +154,7 @@ export class EmailResource {
       path: ['emails', email_id],
       method: 'GET',
       options,
+      ...(options?.extra_params && { parameters: options.extra_params }),
       validator: MailApiResponseValidator,
     });
   }
@@ -167,7 +168,7 @@ export class EmailResource {
       path: ['emails', email_provider_id],
       method: 'GET',
       options,
-      parameters: { account_id },
+      parameters: { ...options?.extra_params, account_id },
       validator: MailApiResponseValidator,
     });
   }
@@ -177,6 +178,7 @@ export class EmailResource {
       path: ['emails', email_id],
       method: 'DELETE',
       options,
+      ...(options?.extra_params && { parameters: options.extra_params }),
       validator: MailDeletedApiResponseValidator,
     });
   }
@@ -190,7 +192,7 @@ export class EmailResource {
       path: ['emails', email_provider_id],
       method: 'DELETE',
       options,
-      parameters: { account_id },
+      parameters: { ...options?.extra_params, account_id },
       validator: MailDeletedApiResponseValidator,
     });
   }
@@ -205,7 +207,10 @@ export class EmailResource {
     return await this.client.request.send({
       path: ['emails', email_id],
       method: 'PUT',
-      body,
+      body: {
+        ...options?.extra_params,
+        ...body,
+      },
       options,
       validator: MailUpdatedApiResponseValidator,
     });
@@ -224,7 +229,10 @@ export class EmailResource {
     return await this.client.request.send({
       path: ['emails', email_provider_id],
       method: 'PUT',
-      body,
+      body: {
+        ...options?.extra_params,
+        ...body,
+      },
       options,
       parameters: { account_id },
       validator: MailUpdatedApiResponseValidator,
@@ -234,7 +242,7 @@ export class EmailResource {
   async getAllFolders(input: GetAllFoldersInput = {}, options?: RequestOptions): Promise<FolderListApiResponse> {
     const { account_id } = input;
 
-    const parameters: Record<string, string> = {};
+    const parameters: Record<string, string> = { ...options?.extra_params };
     if (account_id) parameters.account_id = account_id;
 
     return await this.client.request.send({
@@ -251,6 +259,7 @@ export class EmailResource {
       path: ['folders', folder_id],
       method: 'GET',
       options,
+      ...(options?.extra_params && { parameters: options.extra_params }),
       validator: FolderApiResponseValidator,
     });
   }
@@ -264,7 +273,7 @@ export class EmailResource {
       path: ['folders', folder_provider_id],
       method: 'GET',
       options,
-      parameters: { account_id },
+      parameters: { ...options?.extra_params, account_id },
       validator: FolderApiResponseValidator,
     });
   }
@@ -273,6 +282,10 @@ export class EmailResource {
     const { account_id, to, cc, bcc, subject, draft_id, body, attachments, from, custom_headers, tracking_options, reply_to } =
       input;
     const formDataBody = new FormData();
+
+    if (options?.extra_params) {
+      Object.entries(options.extra_params).forEach(([k, v]) => formDataBody.append(k, v));
+    }
 
     formDataBody.append('body', body);
     formDataBody.append('account_id', account_id);
@@ -327,6 +340,7 @@ export class EmailResource {
       path: ['emails', email_id, 'attachments', attachment_id],
       method: 'GET',
       options,
+      ...(options?.extra_params && { parameters: options.extra_params }),
       validator: untypedYetValidator,
     });
   }
@@ -341,7 +355,7 @@ export class EmailResource {
       path: ['emails', email_provider_id, 'attachments', attachment_id],
       method: 'GET',
       options,
-      parameters: { account_id },
+      parameters: { ...options?.extra_params, account_id },
       validator: untypedYetValidator,
     });
   }
