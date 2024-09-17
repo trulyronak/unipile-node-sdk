@@ -1,7 +1,6 @@
 import { Static, Type } from '@sinclair/typebox';
 import { StringEnum, UniqueIdSchema } from '../common/common.types.js';
 import { UTCDateTimeMsSchema } from '../common/date.types.js';
-import { FolderSyncErrorSchema, FolderSyncingSchema } from '../mails/folders/folders.types.js';
 import { i18n } from '../common/i18n.fake.js';
 // --------------------------------------------------------------
 //  CONNECTION PARAMS

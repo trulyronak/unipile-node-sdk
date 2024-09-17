@@ -76,9 +76,11 @@ export class RequestSender {
     let formattedParameters: string;
     if (Object.keys(parameters).length === 0) formattedParameters = '';
     else {
-      const parametersEntries = Object.entries(parameters);
-      const formattedEntries = parametersEntries.map(([key, value]) => `${key}=${value}`);
-      formattedParameters = '?' + formattedEntries.join('&');
+        /** 
+         * @todo Check if we need to something about + signs ?
+         *       cf. https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams#preserving_plus_signs
+         */
+      formattedParameters = '?' + new URLSearchParams(parameters).toString();
     }
 
     const url = protocol + '://' + domain + '/api' + formattedApiVersion + formattedPath + formattedParameters;
