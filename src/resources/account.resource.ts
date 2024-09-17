@@ -36,7 +36,7 @@ export class AccountResource {
   async getAll(input: GetAccountsInput = {}, options?: RequestOptions): Promise<AccountListApiResponse> {
     const { limit, cursor } = input;
 
-    const parameters: Record<string, string> = {};
+    const parameters: Record<string, string> = { ...options?.extra_params };
     if (limit) parameters.limit = String(limit);
     if (cursor) parameters.cursor = cursor;
 
@@ -54,6 +54,7 @@ export class AccountResource {
       path: ['accounts', account_id],
       method: 'GET',
       options,
+      ...(options?.extra_params && { parameters: options.extra_params }),
       validator: AccountApiResponseValidator,
     });
   }
@@ -62,7 +63,10 @@ export class AccountResource {
     return await this.client.request.send({
       path: ['accounts'],
       method: 'POST',
-      body: input,
+      body: {
+        ...options?.extra_params,
+        ...input,
+      },
       headers: {
         'Content-Type': 'application/json',
       },
@@ -75,7 +79,10 @@ export class AccountResource {
     return await this.client.request.send({
       path: ['accounts', input.account_id],
       method: 'POST',
-      body: input,
+      body: {
+        ...options?.extra_params,
+        ...input,
+      },
       headers: {
         'Content-Type': 'application/json',
       },
@@ -89,6 +96,7 @@ export class AccountResource {
       path: ['accounts'],
       method: 'POST',
       body: {
+        ...options?.extra_params,
         provider: 'WHATSAPP',
       },
       headers: {
@@ -113,6 +121,7 @@ export class AccountResource {
       path: ['accounts', account_id],
       method: 'POST',
       body: {
+        ...options?.extra_params,
         provider: 'WHATSAPP',
       },
       headers: {
@@ -134,6 +143,7 @@ export class AccountResource {
       path: ['accounts'],
       method: 'POST',
       body: {
+        ...options?.extra_params,
         provider: 'TELEGRAM',
       },
       headers: {
@@ -158,6 +168,7 @@ export class AccountResource {
       path: ['accounts', account_id],
       method: 'POST',
       body: {
+        ...options?.extra_params,
         provider: 'TELEGRAM',
       },
       headers: {
@@ -179,8 +190,9 @@ export class AccountResource {
       path: ['accounts'],
       method: 'POST',
       body: {
-        provider: 'LINKEDIN',
+        ...options?.extra_params,
         ...input,
+        provider: 'LINKEDIN',
       },
       headers: {
         'Content-Type': 'application/json',
@@ -198,8 +210,9 @@ export class AccountResource {
       path: ['accounts'],
       method: 'POST',
       body: {
-        provider: 'LINKEDIN',
+        ...options?.extra_params,
         ...input,
+        provider: 'LINKEDIN',
       },
       headers: {
         'Content-Type': 'application/json',
@@ -217,8 +230,9 @@ export class AccountResource {
       path: ['accounts', input.account_id],
       method: 'POST',
       body: {
-        provider: 'LINKEDIN',
+        ...options?.extra_params,
         ...input,
+        provider: 'LINKEDIN',
       },
       headers: {
         'Content-Type': 'application/json',
@@ -236,8 +250,9 @@ export class AccountResource {
       path: ['accounts', input.account_id],
       method: 'POST',
       body: {
-        provider: 'LINKEDIN',
+        ...options?.extra_params,
         ...input,
+        provider: 'LINKEDIN',
       },
       headers: {
         'Content-Type': 'application/json',
@@ -252,8 +267,9 @@ export class AccountResource {
       path: ['accounts'],
       method: 'POST',
       body: {
-        provider: 'INSTAGRAM',
+        ...options?.extra_params,
         ...input,
+        provider: 'INSTAGRAM',
       },
       headers: {
         'Content-Type': 'application/json',
@@ -271,8 +287,9 @@ export class AccountResource {
       path: ['accounts', input.account_id],
       method: 'POST',
       body: {
-        provider: 'INSTAGRAM',
+        ...options?.extra_params,
         ...input,
+        provider: 'INSTAGRAM',
       },
       headers: {
         'Content-Type': 'application/json',
@@ -282,16 +299,14 @@ export class AccountResource {
     });
   }
 
-  async connectTwitter(
-    input: PostTwitterAccountInput,
-    options?: RequestOptions,
-  ): Promise<AccountConnectApiResponse> {
+  async connectTwitter(input: PostTwitterAccountInput, options?: RequestOptions): Promise<AccountConnectApiResponse> {
     return await this.client.request.send({
       path: ['accounts'],
       method: 'POST',
       body: {
-        provider: 'TWITTER',
+        ...options?.extra_params,
         ...input,
+        provider: 'TWITTER',
       },
       headers: {
         'Content-Type': 'application/json',
@@ -309,8 +324,9 @@ export class AccountResource {
       path: ['accounts', input.account_id],
       method: 'POST',
       body: {
-        provider: 'TWITTER',
+        ...options?.extra_params,
         ...input,
+        provider: 'TWITTER',
       },
       headers: {
         'Content-Type': 'application/json',
@@ -325,8 +341,9 @@ export class AccountResource {
       path: ['accounts'],
       method: 'POST',
       body: {
-        provider: 'MESSENGER',
+        ...options?.extra_params,
         ...input,
+        provider: 'MESSENGER',
       },
       headers: {
         'Content-Type': 'application/json',
@@ -344,8 +361,9 @@ export class AccountResource {
       path: ['accounts', input.account_id],
       method: 'POST',
       body: {
-        provider: 'MESSENGER',
+        ...options?.extra_params,
         ...input,
+        provider: 'MESSENGER',
       },
       headers: {
         'Content-Type': 'application/json',
@@ -360,6 +378,7 @@ export class AccountResource {
       path: ['accounts', account_id],
       method: 'DELETE',
       options,
+      ...(options?.extra_params && { parameters: options.extra_params }),
       validator: AccountDeletedApiResponseValidator,
     });
   }
@@ -371,7 +390,10 @@ export class AccountResource {
     return await this.client.request.send({
       path: ['accounts', 'checkpoint'],
       method: 'POST',
-      body: input,
+      body: {
+        ...options?.extra_params,
+        ...input,
+      },
       headers: {
         'Content-Type': 'application/json',
       },
@@ -384,7 +406,10 @@ export class AccountResource {
     return await this.client.request.send({
       path: ['hosted', 'accounts', 'link'],
       method: 'POST',
-      body: input,
+      body: {
+        ...options?.extra_params,
+        ...input,
+      },
       headers: {
         'Content-Type': 'application/json',
       },
