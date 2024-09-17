@@ -40,7 +40,7 @@ export class UsersResource {
   async getProfile(input: GetProfileInput, options?: RequestOptions): Promise<UserProfileApiResponse> {
     const { identifier, account_id, linkedin_api, linkedin_sections } = input;
 
-    const parameters: Record<string, string> = {};
+    const parameters: Record<string, string> = { ...options?.extra_params };
     parameters.account_id = account_id;
     if (linkedin_api) parameters.linkedin_api = linkedin_api;
     if (linkedin_sections)
@@ -60,7 +60,7 @@ export class UsersResource {
       path: ['users', 'me'],
       method: 'GET',
       options,
-      parameters: { account_id },
+      parameters: { ...options?.extra_params, account_id },
       validator: AccountOwnerProfileApiResponseValidator,
     });
   }
@@ -68,7 +68,7 @@ export class UsersResource {
   async getAllRelations(input: GetAllRelationsInput, options?: RequestOptions): Promise<UserRelationsListApiResponse> {
     const { account_id, limit, cursor } = input;
 
-    const parameters: Record<string, string> = {};
+    const parameters: Record<string, string> = { ...options?.extra_params };
     parameters.account_id = account_id;
     if (limit !== undefined && limit > 0) parameters.limit = String(limit);
     if (cursor) parameters.cursor = cursor;
@@ -86,7 +86,10 @@ export class UsersResource {
     return await this.client.request.send({
       path: ['users', 'invite'],
       method: 'POST',
-      body: input,
+      body: {
+        ...options?.extra_params,
+        ...input,
+      },
       headers: {
         'Content-Type': 'application/json',
       },
@@ -98,7 +101,7 @@ export class UsersResource {
   async getAllPosts(input: GetAllPostsInput, options?: RequestOptions): Promise<UserPostListApiResponse> {
     const { identifier, account_id, limit, is_company, cursor } = input;
 
-    const parameters: Record<string, string> = {};
+    const parameters: Record<string, string> = { ...options?.extra_params };
     parameters.account_id = account_id;
     if (is_company !== undefined) parameters.is_company = is_company ? 'true' : 'false';
     if (limit) parameters.limit = String(limit);
@@ -120,6 +123,7 @@ export class UsersResource {
       path: ['posts', post_id],
       method: 'GET',
       parameters: {
+        ...options?.extra_params,
         account_id,
       },
       options,
@@ -130,7 +134,7 @@ export class UsersResource {
   async getAllPostComments(input: GetAllPostCommentsInput, options?: RequestOptions): Promise<PostCommentListApiResponse> {
     const { account_id, post_id, limit, cursor } = input;
 
-    const parameters: Record<string, string> = {};
+    const parameters: Record<string, string> = { ...options?.extra_params };
     parameters.account_id = account_id;
     if (limit !== undefined && limit > 0) parameters.limit = String(limit);
     if (cursor) parameters.cursor = cursor;
@@ -147,6 +151,10 @@ export class UsersResource {
   async createPost(input: CreatePostInput, options?: RequestOptions): Promise<CreatePostResponse> {
     const { account_id, text, attachments } = input;
     const body = new FormData();
+
+    if (options?.extra_params) {
+      Object.entries(options.extra_params).forEach(([k, v]) => body.append(k, v));
+    }
 
     body.append('text', text);
     if (account_id) body.append('account_id', account_id);
@@ -176,6 +184,7 @@ export class UsersResource {
       path: ['posts', post_id, 'comments'],
       method: 'POST',
       body: {
+        ...options?.extra_params,
         account_id,
         text,
       },
@@ -191,7 +200,10 @@ export class UsersResource {
     return await this.client.request.send({
       path: ['posts', 'reaction'],
       method: 'POST',
-      body: input,
+      body: {
+        ...options?.extra_params,
+        ...input,
+      },
       headers: {
         'Content-Type': 'application/json',
       },
@@ -206,7 +218,7 @@ export class UsersResource {
   ): Promise<UserInvitationSentListApiResponse> {
     const { account_id, limit, cursor } = input;
 
-    const parameters: Record<string, string> = {};
+    const parameters: Record<string, string> = { ...options?.extra_params };
     parameters.account_id = account_id;
     if (limit !== undefined && limit > 0) parameters.limit = String(limit);
     if (cursor) parameters.cursor = cursor;
@@ -230,6 +242,7 @@ export class UsersResource {
       path: ['users', 'invite', 'sent', invitation_id],
       method: 'DELETE',
       parameters: {
+        ...options?.extra_params,
         account_id,
       },
       options,
@@ -244,6 +257,7 @@ export class UsersResource {
       path: ['linkedin', 'company', identifier],
       method: 'GET',
       parameters: {
+        ...options?.extra_params,
         account_id,
       },
       options,
