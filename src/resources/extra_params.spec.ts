@@ -66,7 +66,7 @@ describe('extra_params', () => {
           { provider: 'WHATSAPP' },
           { extra_params: { provider: 'garbage', legit: 'test' } },
         );
-        console.log(r);
+        // console.log(r);
         expect((r as any).url).toBe(API_URL + 'accounts');
         expect(fetchMock.mock.calls[0]?.[1]?.body).toBe(JSON.stringify({ provider: 'WHATSAPP', legit: 'test' }));
       },

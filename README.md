@@ -250,6 +250,26 @@ You can easily connect multiple accounts
   await client.users.getOwnProfile('t5XY4yQzR9WVrlNFyzPMhw');
   ```
 
+## Extra parameters
+
+If you want to pass some extra parameters for a request beyond what the SDK input defines, all methods allow an `extra_params` options.
+
+```javascript
+await client.messaging.getMessageAttachment(
+  {
+    attachment_id: '5882031366722404334',
+    message_id: '3aRdnf34UiympaebB4-NRA',
+  },
+  {
+    extra_params: { my_param_name: 'my param value' },
+  },
+);
+```
+
+Depending on the underlying HTTP request mode used, `extra_params` will be added to the request query string or json or formData body.
+
+This may be useful if you know about and want to use a parameter that is either omitted or not yet defined in the sdk.
+
 # LinkedIn Specific
 
 ## InMail LinkedIn API

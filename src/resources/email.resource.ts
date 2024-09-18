@@ -324,6 +324,7 @@ export class EmailResource {
         }
       });
     }
+
     return await this.client.request.send({
       path: ['emails'],
       method: 'POST',
