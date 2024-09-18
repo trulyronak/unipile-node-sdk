@@ -89,10 +89,6 @@ export class MessagingResource {
     const { chat_id, text, thread_id, attachments } = input;
     const body = new FormData();
 
-    if (options?.extra_params) {
-      Object.entries(options.extra_params).forEach(([k, v]) => body.append(k, v));
-    }
-
     body.append('text', text);
     if (thread_id) body.append('thread_id', thread_id);
 
@@ -100,6 +96,14 @@ export class MessagingResource {
       for (const [filename, buffer] of attachments) {
         body.append('attachments', new Blob([buffer]), filename);
       }
+    }
+
+    if (options?.extra_params) {
+      Object.entries(options.extra_params).forEach(([k, v]) => {
+        if (!body.has(k)) {
+          body.append(k, v);
+        }
+      });
     }
 
     return await this.client.request.send({
@@ -117,10 +121,6 @@ export class MessagingResource {
   async startNewChat(input: PostNewChatInput, options?: RequestOptions): Promise<ChatStartedApiResponse> {
     const { account_id, text, subject, options: input_options, attendees_ids, attachments } = input;
     const body = new FormData();
-
-    if (options?.extra_params) {
-      Object.entries(options.extra_params).forEach(([k, v]) => body.append(k, v));
-    }
 
     body.append('account_id', account_id);
     body.append('text', text);
@@ -160,6 +160,14 @@ export class MessagingResource {
       for (const [filename, buffer] of attachments) {
         body.append('attachments', new Blob([buffer]), filename);
       }
+    }
+
+    if (options?.extra_params) {
+      Object.entries(options.extra_params).forEach(([k, v]) => {
+        if (!body.has(k)) {
+          body.append(k, v);
+        }
+      });
     }
 
     return await this.client.request.send({

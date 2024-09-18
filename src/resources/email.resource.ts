@@ -283,10 +283,6 @@ export class EmailResource {
       input;
     const formDataBody = new FormData();
 
-    if (options?.extra_params) {
-      Object.entries(options.extra_params).forEach(([k, v]) => formDataBody.append(k, v));
-    }
-
     formDataBody.append('body', body);
     formDataBody.append('account_id', account_id);
     if (draft_id) formDataBody.append('draft_id', draft_id);
@@ -321,6 +317,13 @@ export class EmailResource {
       formDataBody.append('reply_to', reply_to);
     }
 
+    if (options?.extra_params) {
+      Object.entries(options.extra_params).forEach(([k, v]) => {
+        if (!formDataBody.has(k)) {
+          formDataBody.append(k, v);
+        }
+      });
+    }
     return await this.client.request.send({
       path: ['emails'],
       method: 'POST',

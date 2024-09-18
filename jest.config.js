@@ -4,7 +4,7 @@
  */
 
 const config = {
-//   preset: 'ts-jest',
+  //   preset: 'ts-jest',
   testEnvironment: 'node',
   verbose: true,
   transform: {
@@ -18,11 +18,12 @@ const config = {
   //   modulePathIgnorePatterns: ['/node_modules/'],
   clearMocks: true,
   collectCoverage: false,
-//   coverageDirectory: 'coverage',
-//   coverageReporters: ['html'],
+  //   coverageDirectory: 'coverage',
+  //   coverageReporters: ['html'],
   moduleNameMapper: {
     '^(.+)\\.js$': '$1',
   },
+  setupFilesAfterEnv: ['./jest.setup.js'],
 };
 
 export default config;

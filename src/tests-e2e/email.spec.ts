@@ -22,7 +22,7 @@ describe("EmailResource", () => {
   describe("getAll", () => {
     //--------------------------------------------------------------------------
     it(
-      "should return return a validated EmailList " +
+      "should return a validated EmailList " +
         "on getAll " +
         "when account_id",
       async () => {

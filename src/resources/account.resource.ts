@@ -37,6 +37,7 @@ export class AccountResource {
     const { limit, cursor } = input;
 
     const parameters: Record<string, string> = { ...options?.extra_params };
+    // console.log('getAll', options, parameters);
     if (limit) parameters.limit = String(limit);
     if (cursor) parameters.cursor = cursor;
 

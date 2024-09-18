@@ -29,6 +29,13 @@ export class RequestSender {
       parameters: input.parameters ?? {},
     });
 
+    // console.log('url', url, {
+    //   protocol: this.clientState.protocol,
+    //   domain: this.clientState.domain,
+    //   apiVersion: this.clientState.apiVersion,
+    //   path: input.path,
+    //   parameters: input.parameters ?? {},
+    // });
     let parsedBody;
     if (input.body !== undefined && input.headers?.['Content-Type'] === 'application/json')
       parsedBody = JSON.stringify(input.body);
@@ -76,10 +83,10 @@ export class RequestSender {
     let formattedParameters: string;
     if (Object.keys(parameters).length === 0) formattedParameters = '';
     else {
-        /** 
-         * @todo Check if we need to something about + signs ?
-         *       cf. https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams#preserving_plus_signs
-         */
+      /**
+       * @todo Check if we need to something about + signs ?
+       *       cf. https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams#preserving_plus_signs
+       */
       formattedParameters = '?' + new URLSearchParams(parameters).toString();
     }
 

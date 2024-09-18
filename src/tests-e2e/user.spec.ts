@@ -1,4 +1,5 @@
 import { UnipileClient } from "../client.js";
+import { RequestOptions } from "../types/request.js";
 import { config } from "./instance.config.js";
 
 /** */
@@ -6,6 +7,11 @@ import { config } from "./instance.config.js";
 describe("UserResource", () => {
   let client: UnipileClient;
   //   beforeAll(async () => {});
+
+  const extra_params: NonNullable<RequestOptions["extra_params"]> = {
+    a: "3",
+    b: "test$ !H/n,9",
+  };
 
   beforeEach(async () => {
     client = new UnipileClient(config.BASE_URL, config.ACCESS_TOKEN, {
@@ -19,13 +25,16 @@ describe("UserResource", () => {
   //----------------------------------------------------------------------------
   describe("getProfile", () => {
     //--------------------------------------------------------------------------
-    it(
+    it.only(
       "should return UserProfile for any account provider" +
         "on getProfile " +
         "when identifier",
       async () => {
         try {
-          const accounts = await client.account.getAll({ limit: 1 });
+          const accounts = await client.account.getAll(
+            { limit: 1 },
+            { extra_params },
+          );
           //   accounts.items = [accounts.items[0]];
           //   console.log(
           //     ...AccountListResponseValidator.Errors(accounts),

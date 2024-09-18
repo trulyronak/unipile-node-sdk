@@ -152,10 +152,6 @@ export class UsersResource {
     const { account_id, text, attachments } = input;
     const body = new FormData();
 
-    if (options?.extra_params) {
-      Object.entries(options.extra_params).forEach(([k, v]) => body.append(k, v));
-    }
-
     body.append('text', text);
     if (account_id) body.append('account_id', account_id);
 
@@ -163,6 +159,14 @@ export class UsersResource {
       for (const [filename, buffer] of attachments) {
         body.append('attachments', new Blob([buffer]), filename);
       }
+    }
+
+    if (options?.extra_params) {
+      Object.entries(options.extra_params).forEach(([k, v]) => {
+        if (!body.has(k)) {
+          body.append(k, v);
+        }
+      });
     }
 
     return await this.client.request.send({
