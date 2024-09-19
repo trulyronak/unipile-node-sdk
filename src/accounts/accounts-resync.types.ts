@@ -52,3 +52,7 @@ export const AccountResyncResponseSchema = Type.Object({
 export type AccountResyncApiResponse = Static<
   typeof AccountResyncResponseSchema
 >;
+
+export const AccountResyncResponseValidator = TypeCompiler.Compile(
+    AccountResyncResponseSchema
+);

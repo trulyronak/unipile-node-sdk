@@ -29,6 +29,7 @@ import {
 import { AccountDeletedApiResponse, AccountDeletedApiResponseValidator } from '../accounts/accounts-delete.types.js';
 import { HostedAuthLinkResponse, HostedAuthLinkResponseValidator } from '../hosted/hosted-auth-link.types.js';
 import { UniqueIdValidator } from '../common/common.types.js';
+import { AccountResyncApiResponse, AccountResyncInput, AccountResyncResponseValidator } from '../accounts/accounts-resync.types.js';
 
 export class AccountResource {
   constructor(private client: UnipileClient) {}
@@ -416,6 +417,33 @@ export class AccountResource {
       },
       options,
       validator: HostedAuthLinkResponseValidator,
+    });
+  }
+
+  async resyncLinkedinAccount(input: AccountResyncInput, options?: RequestOptions): Promise<AccountResyncApiResponse> {
+    const { before, after, linkedin_product, account_id } = input;
+
+    if (!UniqueIdValidator.Check(account_id)) {
+      throw new InvalidInputTypeError(UniqueIdValidator.Errors(account_id));
+    }
+
+    const parameters: Record<string, string> = { ...options?.extra_params };
+    if (linkedin_product) {
+      parameters.linkedin_product = linkedin_product;
+    }
+    if (before) {
+      parameters.before = before + '';
+    }
+    if (after) {
+      parameters.after = after + '';
+    }
+
+    return await this.client.request.send({
+      path: ['accounts', account_id, 'sync'],
+      method: 'GET',
+      parameters,
+      options,
+      validator: AccountResyncResponseValidator,
     });
   }
 }
