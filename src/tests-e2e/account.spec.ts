@@ -1,6 +1,9 @@
 import { UnipileClient } from "../client.js";
 import { config } from "./instance.config.js";
 
+import fetchMock from 'jest-fetch-mock';
+
+
 /** */
 //------------------------------------------------------------------------------
 describe("AccountResource", () => {
@@ -422,7 +425,7 @@ describe("AccountResource", () => {
   //----------------------------------------------------------------------------
   describe("connectTwitter", () => {
     //--------------------------------------------------------------------------
-    it.only(
+    it(
       "should return a validated AccountCreated or Checkpoint response " +
         "on connectTwitter " +
         "when ",
@@ -646,6 +649,22 @@ describe("AccountResource", () => {
         //   console.log(err);
         //   throw err;
         // }
+      },
+    );
+  });
+
+  //----------------------------------------------------------------------------
+  describe("resyncLinkedinAccount", () => {
+    //--------------------------------------------------------------------------
+    it(
+      "should return a validated AccountResync " +
+        "on resyncLinkedinAccount " +
+        "when ",
+      async () => {
+        const result = await client.account.resyncLinkedinAccount({
+          account_id: config.LINKEDIN_RECONNECT_BASIC_ACCOUNT_ID,
+        });
+        expect(result.object).toBe("AccountResync");
       },
     );
   });
