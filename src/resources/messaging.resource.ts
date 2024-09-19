@@ -205,7 +205,7 @@ export class MessagingResource {
   async getAllMessages(input: GetAllMessagesInput = {}, options?: RequestOptions): Promise<MessageListApiResponse> {
     const { before, after, limit, sender_id, account_id, cursor } = input;
 
-    const parameters: Record<string, string> = {};
+    const parameters: Record<string, string> = {...options?.extra_params };
     if (before) parameters.before = before;
     if (after) parameters.after = after;
     if (limit) parameters.limit = String(limit);

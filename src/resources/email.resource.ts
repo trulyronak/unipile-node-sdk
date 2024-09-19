@@ -127,7 +127,7 @@ export class EmailResource {
   async getAll(input: GetAllEmailsInput = {}, options?: RequestOptions): Promise<MailListApiResponse> {
     const { account_id, role, folder, from, to, any_email, before, after, limit, cursor } = input;
 
-    const parameters: Record<string, string> = {};
+    const parameters: Record<string, string> = { ...options?.extra_params };
     if (account_id) parameters.account_id = account_id;
     if (role) parameters.role = role;
     if (folder) parameters.folder = folder;
@@ -149,7 +149,6 @@ export class EmailResource {
   }
 
   private async _getOne(email_id: string, options?: RequestOptions): Promise<MailApiResponse> {
-    console.log('_getOne', email_id);
     return await this.client.request.send({
       path: ['emails', email_id],
       method: 'GET',
