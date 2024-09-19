@@ -156,11 +156,19 @@ You can easily connect multiple accounts
     ```
 
 - Have 2FA / OTP / In-app validation security ? Solve the checkpoint 2FA / OTP
+
   ```javascript
   await client.account.solveCodeCheckpoint({
     account_id: 't5XY4yQzR9WVrlNFyzPMhw',
     provider: 'LINKEDIN',
     code: '******',
+  });
+  ```
+
+- LinkedIn : initiate or monitor a sync process
+  ```javascript
+  await client.account.resyncLinkedinAccount({
+    account_id: 't5XY4yQzR9WVrlNFyzPMhw',
   });
   ```
 
