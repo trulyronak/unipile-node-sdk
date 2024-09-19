@@ -52,12 +52,15 @@ export class RequestSender {
 
     const bodyType = response.headers.get('content-type');
     let body;
-    if (bodyType === 'application/json; charset=utf-8') body = await response.json();
-    else body = await response.blob();
+    if (bodyType?.includes('application/json')) {
+      body = await response.json();
+    } else {
+      body = await response.blob();
+    }
 
     if (options.logRequestPayload ?? this.clientState.logRequestPayload) {
       console.log(body);
-      //   console.log(JSON.stringify(body, null, 2));
+      //   console.log(JSON.stringify({ bodyType, body }, null, 2));
     }
 
     const successfulRequest = response.status >= 200 && response.status < 300;
